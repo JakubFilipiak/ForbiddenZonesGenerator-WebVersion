@@ -30,24 +30,6 @@ public class MapService {
         return new Color(mapImage.getRGB(pixelX, pixelY));
     }
 
-    private void setMapImage() {
-
-        FileService fileService = new FileService();
-        String pathname = MapProperties.INSTANCE.getFilePathname();
-
-        if (fileService.fileExists(pathname)) {
-            if (fileService.isFileTypeCorrect(pathname, FileType.PNG)) {
-                try {
-                    mapImage = fileService.createBufferedImage(pathname);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     public int calculatePixelX(PointOfTrack pointOfTrack) {
 
         float relativeX =
@@ -64,5 +46,23 @@ public class MapService {
         float pixelY =
                 relativeY / MapProperties.INSTANCE.getLatitudeResolution() * mapImage.getHeight() - 1;
         return (int) pixelY;
+    }
+
+    private void setMapImage() {
+
+        FileService fileService = new FileService();
+        String pathname = MapProperties.INSTANCE.getFilePathname();
+
+        if (fileService.fileExists(pathname)) {
+            if (fileService.isFileTypeCorrect(pathname, FileType.PNG)) {
+                try {
+                    mapImage = fileService.createBufferedImage(pathname);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
