@@ -14,7 +14,7 @@ public class TurnService {
         double x2 = endPoint.getLongitude();
         double y2 = endPoint.getLatitude();
 
-        double absoluteAngleInRad = Math.atan2(y1 - y2, x1 - x2);
+        double absoluteAngleInRad = Math.atan2(y2 - y1, x2 - x1);
         return Math.toDegrees(absoluteAngleInRad);
     }
 
@@ -33,7 +33,7 @@ public class TurnService {
         if (!theSameSignOfAngles) {
             double rawAngle = Math.abs(entranceAngle) + Math.abs(departureAngle);
             if (rawAngle > 180)
-                return rawAngle - 180;
+                return 180 - (rawAngle - 180);
             return rawAngle;
         }
         return Math.abs(Math.abs(entranceAngle) - Math.abs(departureAngle));
