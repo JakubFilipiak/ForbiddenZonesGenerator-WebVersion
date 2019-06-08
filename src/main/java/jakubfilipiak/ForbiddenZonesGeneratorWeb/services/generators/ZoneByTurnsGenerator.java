@@ -31,14 +31,6 @@ public class ZoneByTurnsGenerator {
         return isBufferReady();
     }
 
-    public boolean isTotalTurnAngleAllowed() {
-
-        double totalAngle = TurnService.calculateTurnAngle(entranceTurn.getAngle()
-                , departureTurn.getAngle());
-        return totalAngle >= Properties.INSTANCE.getIgnoredTurnMinValue()
-                && totalAngle <= Properties.INSTANCE.getIgnoredTurnMaxValue();
-    }
-
     public ForbiddenZone createZoneFromBuffer() {
 
         ForbiddenZone forbiddenZone;
@@ -65,7 +57,7 @@ public class ZoneByTurnsGenerator {
                 turnsCounter >= Properties.INSTANCE.getMinTurnsNumberInSeries();
         boolean tooManyPauses =
                 pauseCounter > Properties.INSTANCE.getMaxPauseOfTurns();
-        boolean bufferReady =
+        boolean dataReady =
                 enoughTurns && tooManyPauses;
 
         if (!enoughTurns) {
@@ -75,7 +67,22 @@ public class ZoneByTurnsGenerator {
             }
             return false;
         }
-        return bufferReady;
+        if (dataReady) {
+            if (!isTotalTurnAngleAllowed()) {
+                return true;
+            } else {
+                cleanBuffer();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    private boolean isTotalTurnAngleAllowed() {
+
+        double totalAngle = TurnService.calculateTurnAngle(entranceTurn.getAbsoluteEntranceAngle(), departureTurn.getAbsoluteDepartureAngle());
+        return totalAngle >= Properties.INSTANCE.getIgnoredTurnMinValue()
+                && totalAngle <= Properties.INSTANCE.getIgnoredTurnMaxValue();
     }
 
     private boolean isOnlyOneTurn() {

@@ -3,6 +3,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.FileService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.FileType;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.MapProperties;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
 
 import java.awt.*;
@@ -21,10 +22,10 @@ public class MapService {
         setMapImage();
     }
 
-    public Color getPixelColor(PointOfTrack pointOfTrack) {
+    public Color getPixelColor(Coordinates coordinates) {
 
-        int pixelX = calculatePixelX(pointOfTrack);
-        int pixelY = calculatePixelY(pointOfTrack);
+        int pixelX = coordinates.getPixelX();
+        int pixelY = coordinates.getPixelY();
 
         return new Color(mapImage.getRGB(pixelX, pixelY));
     }
@@ -47,7 +48,7 @@ public class MapService {
         }
     }
 
-    private int calculatePixelX(PointOfTrack pointOfTrack) {
+    public int calculatePixelX(PointOfTrack pointOfTrack) {
 
         float relativeX =
                 pointOfTrack.getLongitude() - MapProperties.INSTANCE.getRelativeLongitudeZero();
@@ -56,7 +57,7 @@ public class MapService {
         return (int)pixelX;
     }
 
-    private int calculatePixelY(PointOfTrack pointOfTrack) {
+    public int calculatePixelY(PointOfTrack pointOfTrack) {
 
         float relativeY =
                 MapProperties.INSTANCE.getRelativeLatitudeZero() - pointOfTrack.getLatitude();

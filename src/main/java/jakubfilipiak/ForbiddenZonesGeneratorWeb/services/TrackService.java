@@ -38,10 +38,8 @@ public class TrackService {
                         boolean zoneBufferReady =
                                 zoneByTurnsGenerator.updateTurnsBuffer(turnOfTrack);
                         if (zoneBufferReady) {
-                            if (!zoneByTurnsGenerator.isTotalTurnAngleAllowed()) {
-                                ForbiddenZone zone = zoneByTurnsGenerator.createZoneFromBuffer();
-                                System.out.println(zone);
-                            }
+                            ForbiddenZone zoneByTurns = zoneByTurnsGenerator.createZoneFromBuffer();
+                            System.out.println(zoneByTurns);
                         }
                     }
                     System.out.println(pointOfTrack);

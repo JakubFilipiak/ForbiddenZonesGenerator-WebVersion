@@ -24,14 +24,15 @@ public enum Properties {
     private int groupOfTurnsZoneBeginOffset = 2;
     private int groupOfTurnsZoneEndOffset = 2;
 
+    private boolean pointNeighborhoodVerification = true;
+    private int radiusOfPixelsToBeVerified = 2;
+
     private int minPointsNumberInSeries = 1;
     private int maxPauseOfPoints = 2;
 
-    private boolean singlePointZoneFullTime = true;
     private int singlePointZoneBeginOffset = 2;
     private int singlePointZoneEndOffset = 2;
 
-    private boolean groupOfPointsZoneFullTime = true;
     private int groupOfPointsZoneBeginOffset = 2;
     private int groupOfPointsZoneEndOffset = 2;
 
@@ -79,6 +80,14 @@ public enum Properties {
         return groupOfTurnsZoneEndOffset;
     }
 
+    public boolean isPointNeighborhoodVerification() {
+        return pointNeighborhoodVerification;
+    }
+
+    public int getRadiusOfPixelsToBeVerified() {
+        return radiusOfPixelsToBeVerified;
+    }
+
     public int getMinPointsNumberInSeries() {
         return minPointsNumberInSeries;
     }
@@ -87,20 +96,12 @@ public enum Properties {
         return maxPauseOfPoints;
     }
 
-    public boolean isSinglePointZoneFullTime() {
-        return singlePointZoneFullTime;
-    }
-
     public int getSinglePointZoneBeginOffset() {
         return singlePointZoneBeginOffset;
     }
 
     public int getSinglePointZoneEndOffset() {
         return singlePointZoneEndOffset;
-    }
-
-    public boolean isGroupOfPointsZoneFullTime() {
-        return groupOfPointsZoneFullTime;
     }
 
     public int getGroupOfPointsZoneBeginOffset() {

@@ -1,12 +1,15 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.Properties;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.ColorService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.CoordinatesService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.MapService;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by Jakub Filipiak on 30.05.2019.
@@ -20,6 +23,7 @@ public class ZoneByColorGenerator {
 
     private MapService mapService = new MapService();
     private ColorService colorService = new ColorService();
+    private CoordinatesService coordinatesService = new CoordinatesService();
 
     public boolean updatePointsBuffer(PointOfTrack pointOfTrack) {
         if (isPointForbidden(pointOfTrack)) {
@@ -71,8 +75,25 @@ public class ZoneByColorGenerator {
 
     private boolean isPointForbidden(PointOfTrack pointOfTrack) {
 
-        Color pixelColor = mapService.getPixelColor(pointOfTrack);
-        return colorService.isColorForbidden(pixelColor);
+        Coordinates pixelCoordinates =
+                new Coordinates(mapService.calculatePixelX(pointOfTrack),
+                        mapService.calculatePixelY(pointOfTrack));
+
+        Color pixelColor = mapService.getPixelColor(pixelCoordinates);
+        boolean pixelForbidden = colorService.isColorForbidden(pixelColor);
+
+        Properties properties = Properties.INSTANCE;
+        if (properties.isPointNeighborhoodVerification() && pixelForbidden) {
+            List<Coordinates> pixelNeighbors =
+                    coordinatesService.getPixelNeighbors(pixelCoordinates);
+            for (Coordinates neighbor : pixelNeighbors) {
+                Color neighborColor = mapService.getPixelColor(neighbor);
+                if (colorService.isColorForbidden(neighborColor))
+                    return true;
+            }
+            return false;
+        }
+        return pixelForbidden;
     }
 
     private boolean isForbiddenZoneStarted() {

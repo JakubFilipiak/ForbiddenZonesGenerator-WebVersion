@@ -12,7 +12,7 @@ public class ForbiddenZone {
     private LocalTime entranceTime;
     private LocalTime departureTime;
 
-    public ForbiddenZone(LocalTime entranceTime, LocalTime departureTime) {
+    private ForbiddenZone(LocalTime entranceTime, LocalTime departureTime) {
         this.entranceTime = entranceTime;
         this.departureTime = departureTime;
     }
@@ -54,15 +54,26 @@ public class ForbiddenZone {
 
     public static ForbiddenZone fromSinglePoint(PointOfTrack pointOfTrack) {
         Properties properties = Properties.INSTANCE;
+        LocalTime entranceTime = pointOfTrack
+                .getTime()
+                .minusSeconds(properties.getSinglePointZoneBeginOffset());
+        LocalTime departureTime = pointOfTrack
+                .getTime()
+                .plusSeconds(properties.getSinglePointZoneEndOffset());
 
-        // TODO
-        return null;
+        return new ForbiddenZone(entranceTime, departureTime);
     }
 
     public static ForbiddenZone fromGroupOfPoints(PointOfTrack entrancePoint, PointOfTrack departurePoint) {
+        Properties properties = Properties.INSTANCE;
+        LocalTime entranceTime = entrancePoint
+                .getTime()
+                .minusSeconds(properties.getGroupOfPointsZoneBeginOffset());
+        LocalTime departureTime = departurePoint
+                .getTime()
+                .plusSeconds(properties.getGroupOfPointsZoneEndOffset());
 
-        // TODO
-        return null;
+        return new ForbiddenZone(entranceTime, departureTime);
     }
 
     @Override
