@@ -1,5 +1,8 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.awt.*;
 import java.util.List;
 
@@ -10,28 +13,17 @@ public enum MapProperties {
 
     INSTANCE;
 
-    private String filePathname;
+    @Getter @Setter private String filePathname;
 
-    private float bottomLeftCornerLatitude;
-    private float bottomLeftCornerLongitude;
+    @Getter @Setter private List<Color> allowedColors;
+    @Getter @Setter private List<Color> forbiddenColors;
 
-    private float upperRightCornerLatitude;
-    private float upperRightCornerLongitude;
+    @Setter private float bottomLeftCornerLatitude;
+    @Setter private float bottomLeftCornerLongitude;
 
-    private List<Color> allowedColors;
-    private List<Color> forbiddenColors;
+    @Setter private float upperRightCornerLatitude;
+    @Setter private float upperRightCornerLongitude;
 
-    public String getFilePathname() {
-        return filePathname;
-    }
-
-    public List<Color> getAllowedColors() {
-        return allowedColors;
-    }
-
-    public List<Color> getForbiddenColors() {
-        return forbiddenColors;
-    }
 
     public float getRelativeLongitudeZero(){
         return bottomLeftCornerLongitude;
