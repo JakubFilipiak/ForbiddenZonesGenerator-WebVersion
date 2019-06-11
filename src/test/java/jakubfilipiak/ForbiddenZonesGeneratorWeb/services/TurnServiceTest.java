@@ -10,7 +10,7 @@ import org.junit.Test;
 public class TurnServiceTest {
 
     @Test
-    public void shouldCorrectCalculateAbsoluteAngleOfLineWhenHorizontalRight() {
+    public void shouldCorrectCalculateAbsoluteAngleOfLineWhenHorizontalRightDirection() {
         // given
         PointOfTrack beginPoint = new PointOfTrack.PointOfTrackBuilder()
                 .setLongitude(0f)
@@ -31,7 +31,7 @@ public class TurnServiceTest {
     }
 
     @Test
-    public void shouldCorrectCalculateAbsoluteAngleOfLineWhenHorizontalLeft() {
+    public void shouldCorrectCalculateAbsoluteAngleOfLineWhenHorizontalLeftDirection() {
         // given
         PointOfTrack beginPoint = new PointOfTrack.PointOfTrackBuilder()
                 .setLongitude(0f)
@@ -52,7 +52,7 @@ public class TurnServiceTest {
     }
 
     @Test
-    public void shouldCorrectCalculateAbsoluteAngleOfLineWhenVerticalUp() {
+    public void shouldCorrectCalculateAbsoluteAngleOfLineWhenVerticalUpDirection() {
         // given
         PointOfTrack beginPoint = new PointOfTrack.PointOfTrackBuilder()
                 .setLongitude(0f)
@@ -73,7 +73,7 @@ public class TurnServiceTest {
     }
 
     @Test
-    public void shouldCorrectCalculateAbsoluteAngleOfLineWhenVerticalDown() {
+    public void shouldCorrectCalculateAbsoluteAngleOfLineWhenVerticalDownDirection() {
         // given
         PointOfTrack beginPoint = new PointOfTrack.PointOfTrackBuilder()
                 .setLongitude(0f)
