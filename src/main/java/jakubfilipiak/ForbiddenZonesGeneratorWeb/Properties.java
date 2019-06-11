@@ -1,5 +1,8 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Created by Jakub Filipiak on 29.05.2019.
  */
@@ -7,108 +10,31 @@ public enum Properties {
 
     INSTANCE;
 
-    private int maxAllowedAngle = 10;
+    @Getter @Setter private int maxAllowedAngle = 10;
 
+    @Getter @Setter private int ignoredTurnMinValue = 65;
+    @Getter @Setter private int ignoredTurnMaxValue = 115;
 
-    private int ignoredTurnMinValue = 65;
-    private int ignoredTurnMaxValue = 115;
+    @Getter @Setter private int minTurnsNumberInSeries = 1;
+    @Getter @Setter private int maxPauseOfTurns = 2;
 
-    private int minTurnsNumberInSeries = 1;
-    private int maxPauseOfTurns = 2;
+    @Getter @Setter private boolean singleTurnZoneFullTime = true;
+    @Getter @Setter private int singleTurnZoneBeginOffset = 2;
+    @Getter @Setter private int singleTurnZoneEndOffset = 2;
 
-    private boolean singleTurnZoneFullTime = true;
-    private int singleTurnZoneBeginOffset = 2;
-    private int singleTurnZoneEndOffset = 2;
+    @Getter @Setter private boolean groupOfTurnsZoneFullTime = true;
+    @Getter @Setter private int groupOfTurnsZoneBeginOffset = 2;
+    @Getter @Setter private int groupOfTurnsZoneEndOffset = 2;
 
-    private boolean groupOfTurnsZoneFullTime = true;
-    private int groupOfTurnsZoneBeginOffset = 2;
-    private int groupOfTurnsZoneEndOffset = 2;
+    @Getter @Setter private boolean pointNeighborhoodVerification = true;
+    @Getter @Setter private int radiusOfPixelsToBeVerified = 2;
 
-    private boolean pointNeighborhoodVerification = true;
-    private int radiusOfPixelsToBeVerified = 2;
+    @Getter @Setter private int minPointsNumberInSeries = 1;
+    @Getter @Setter private int maxPauseOfPoints = 2;
 
-    private int minPointsNumberInSeries = 1;
-    private int maxPauseOfPoints = 2;
+    @Getter @Setter private int singlePointZoneBeginOffset = 2;
+    @Getter @Setter private int singlePointZoneEndOffset = 2;
 
-    private int singlePointZoneBeginOffset = 2;
-    private int singlePointZoneEndOffset = 2;
-
-    private int groupOfPointsZoneBeginOffset = 2;
-    private int groupOfPointsZoneEndOffset = 2;
-
-    public int getMaxAllowedAngle() {
-        return maxAllowedAngle;
-    }
-
-    public int getMaxPauseOfTurns() {
-        return maxPauseOfTurns;
-    }
-
-    public int getIgnoredTurnMinValue() {
-        return ignoredTurnMinValue;
-    }
-
-    public int getIgnoredTurnMaxValue() {
-        return ignoredTurnMaxValue;
-    }
-
-    public int getMinTurnsNumberInSeries() {
-        return minTurnsNumberInSeries;
-    }
-
-    public boolean isSingleTurnZoneFullTime() {
-        return singleTurnZoneFullTime;
-    }
-
-    public boolean isGroupOfTurnsZoneFullTime() {
-        return groupOfTurnsZoneFullTime;
-    }
-
-    public int getSingleTurnZoneBeginOffset() {
-        return singleTurnZoneBeginOffset;
-    }
-
-    public int getSingleTurnZoneEndOffset() {
-        return singleTurnZoneEndOffset;
-    }
-
-    public int getGroupOfTurnsZoneBeginOffset() {
-        return groupOfTurnsZoneBeginOffset;
-    }
-
-    public int getGroupOfTurnsZoneEndOffset() {
-        return groupOfTurnsZoneEndOffset;
-    }
-
-    public boolean isPointNeighborhoodVerification() {
-        return pointNeighborhoodVerification;
-    }
-
-    public int getRadiusOfPixelsToBeVerified() {
-        return radiusOfPixelsToBeVerified;
-    }
-
-    public int getMinPointsNumberInSeries() {
-        return minPointsNumberInSeries;
-    }
-
-    public int getMaxPauseOfPoints() {
-        return maxPauseOfPoints;
-    }
-
-    public int getSinglePointZoneBeginOffset() {
-        return singlePointZoneBeginOffset;
-    }
-
-    public int getSinglePointZoneEndOffset() {
-        return singlePointZoneEndOffset;
-    }
-
-    public int getGroupOfPointsZoneBeginOffset() {
-        return groupOfPointsZoneBeginOffset;
-    }
-
-    public int getGroupOfPointsZoneEndOffset() {
-        return groupOfPointsZoneEndOffset;
-    }
+    @Getter @Setter private int groupOfPointsZoneBeginOffset = 2;
+    @Getter @Setter private int groupOfPointsZoneEndOffset = 2;
 }
