@@ -11,10 +11,10 @@ public class ForbiddenZonesGeneratorWebApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ForbiddenZonesGeneratorWebApplication.class, args);
 
-		ProcessingApi processingApi = new ProcessingApi();
-
-		Track track = new Track("D:/ForbiddenZonesGenerator " +
-				"resources/LU-53-SP-ABM.trk");
-		processingApi.processTrack(track);
+//		ProcessingApi processingApi = new ProcessingApi();
+//
+//		Track track = new Track("D:/ForbiddenZonesGenerator " +
+//				"resources/LU-53-SP-ABM.trk");
+//		processingApi.processTrack(track);
 	}
 }

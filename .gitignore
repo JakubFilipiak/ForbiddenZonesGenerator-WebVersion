@@ -30,4 +30,5 @@ HELP.md
 
 .mvn
 mvnw*
+database.mv.db
 /src/main/resources/
