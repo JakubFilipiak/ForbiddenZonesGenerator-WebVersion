@@ -1,6 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.Properties;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingProperties;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
@@ -57,9 +57,9 @@ public class ZoneByColorGenerator {
     private boolean isBufferReady() {
 
         boolean enoughPoints =
-                pointsCounter >= Properties.INSTANCE.getMinPointsNumberInSeries();
+                pointsCounter >= ProcessingProperties.INSTANCE.getMinPointsNumberInSeries();
         boolean tooManyPauses =
-                pauseCounter > Properties.INSTANCE.getMaxPauseOfPoints();
+                pauseCounter > ProcessingProperties.INSTANCE.getMaxPausesNumberBetweenPoints();
         boolean bufferReady =
                 enoughPoints && tooManyPauses;
 
@@ -82,8 +82,8 @@ public class ZoneByColorGenerator {
         Color pixelColor = mapService.getPixelColor(pixelCoordinates);
         boolean pixelForbidden = colorService.isColorForbidden(pixelColor);
 
-        Properties properties = Properties.INSTANCE;
-        if (properties.isPointNeighborhoodVerification() && pixelForbidden) {
+        ProcessingProperties processingProperties = ProcessingProperties.INSTANCE;
+        if (processingProperties.isPointNeighborhoodVerification() && pixelForbidden) {
             List<Coordinates> pixelNeighbors =
                     coordinatesService.getPixelNeighbors(pixelCoordinates);
             for (Coordinates neighbor : pixelNeighbors) {
