@@ -6,7 +6,7 @@ import lombok.Setter;
 /**
  * Created by Jakub Filipiak on 29.05.2019.
  */
-public enum ProcessingPropertiesSingleton {
+public enum ProcessingConfigSingleton {
 
     INSTANCE;
 

@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class MapProperties {
+public class MapConfig {
 
     private String filePathname;
 

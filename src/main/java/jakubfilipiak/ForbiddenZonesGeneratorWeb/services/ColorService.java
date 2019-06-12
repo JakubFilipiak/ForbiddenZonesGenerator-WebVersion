@@ -1,6 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.MapPropertiesSingleton;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.MapConfigSingleton;
 
 import java.awt.*;
 import java.util.List;
@@ -12,7 +12,7 @@ public class ColorService {
 
     public boolean isColorForbidden(Color pixelColor) {
 
-        List<Color> forbiddenColors = MapPropertiesSingleton.INSTANCE.getForbiddenColors();
+        List<Color> forbiddenColors = MapConfigSingleton.INSTANCE.getForbiddenColors();
         return forbiddenColors.contains(pixelColor);
     }
 }

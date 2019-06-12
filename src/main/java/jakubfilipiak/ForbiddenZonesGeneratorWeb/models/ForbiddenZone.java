@@ -1,6 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingPropertiesSingleton;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingConfigSingleton;
 
 import java.time.LocalTime;
 
@@ -18,60 +18,60 @@ public class ForbiddenZone {
     }
 
     public static ForbiddenZone fromSingleTurn(TurnOfTrack turnOfTrack) {
-        ProcessingPropertiesSingleton processingProperties = ProcessingPropertiesSingleton.INSTANCE;
+        ProcessingConfigSingleton processingConfig = ProcessingConfigSingleton.INSTANCE;
 
-        if (processingProperties.isSingleTurnZoneFullTime()) {
+        if (processingConfig.isSingleTurnZoneFullTime()) {
             LocalTime entranceTime = turnOfTrack.getEntranceTime();
             LocalTime departureTime = turnOfTrack.getDepartureTime();
             return new ForbiddenZone(entranceTime, departureTime);
         }
         LocalTime entranceTime = turnOfTrack
                         .getMiddleTime()
-                        .minusSeconds(processingProperties.getSingleTurnZoneBeginOffset());
+                        .minusSeconds(processingConfig.getSingleTurnZoneBeginOffset());
         LocalTime departureTime = turnOfTrack
                         .getMiddleTime()
-                        .plusSeconds(processingProperties.getSingleTurnZoneEndOffset());
+                        .plusSeconds(processingConfig.getSingleTurnZoneEndOffset());
         return new ForbiddenZone(entranceTime, departureTime);
     }
 
     public static ForbiddenZone fromGroupOfTurns(TurnOfTrack entranceTurn,
                                                  TurnOfTrack departureTurn) {
-        ProcessingPropertiesSingleton processingProperties = ProcessingPropertiesSingleton.INSTANCE;
+        ProcessingConfigSingleton processingConfig = ProcessingConfigSingleton.INSTANCE;
 
-        if (processingProperties.isGroupOfTurnsZoneFullTime()) {
+        if (processingConfig.isGroupOfTurnsZoneFullTime()) {
             LocalTime entranceTime = entranceTurn.getEntranceTime();
             LocalTime departureTime = departureTurn.getDepartureTime();
             return new ForbiddenZone(entranceTime, departureTime);
         }
         LocalTime entranceTime = entranceTurn
                 .getMiddleTime()
-                .minusSeconds(processingProperties.getGroupOfTurnsZoneBeginOffset());
+                .minusSeconds(processingConfig.getGroupOfTurnsZoneBeginOffset());
         LocalTime departureTime = departureTurn
                 .getMiddleTime()
-                .plusSeconds(processingProperties.getGroupOfTurnsZoneEndOffset());
+                .plusSeconds(processingConfig.getGroupOfTurnsZoneEndOffset());
         return new ForbiddenZone(entranceTime, departureTime);
     }
 
     public static ForbiddenZone fromSinglePoint(PointOfTrack pointOfTrack) {
-        ProcessingPropertiesSingleton processingProperties = ProcessingPropertiesSingleton.INSTANCE;
+        ProcessingConfigSingleton processingConfig = ProcessingConfigSingleton.INSTANCE;
         LocalTime entranceTime = pointOfTrack
                 .getTime()
-                .minusSeconds(processingProperties.getSinglePointZoneBeginOffset());
+                .minusSeconds(processingConfig.getSinglePointZoneBeginOffset());
         LocalTime departureTime = pointOfTrack
                 .getTime()
-                .plusSeconds(processingProperties.getSinglePointZoneEndOffset());
+                .plusSeconds(processingConfig.getSinglePointZoneEndOffset());
 
         return new ForbiddenZone(entranceTime, departureTime);
     }
 
     public static ForbiddenZone fromGroupOfPoints(PointOfTrack entrancePoint, PointOfTrack departurePoint) {
-        ProcessingPropertiesSingleton processingProperties = ProcessingPropertiesSingleton.INSTANCE;
+        ProcessingConfigSingleton processingConfig = ProcessingConfigSingleton.INSTANCE;
         LocalTime entranceTime = entrancePoint
                 .getTime()
-                .minusSeconds(processingProperties.getGroupOfPointsZoneBeginOffset());
+                .minusSeconds(processingConfig.getGroupOfPointsZoneBeginOffset());
         LocalTime departureTime = departurePoint
                 .getTime()
-                .plusSeconds(processingProperties.getGroupOfPointsZoneEndOffset());
+                .plusSeconds(processingConfig.getGroupOfPointsZoneEndOffset());
 
         return new ForbiddenZone(entranceTime, departureTime);
     }

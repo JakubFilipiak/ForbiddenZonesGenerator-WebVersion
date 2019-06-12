@@ -2,7 +2,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.FileService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.FileType;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.MapPropertiesSingleton;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.MapConfigSingleton;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
 
@@ -33,25 +33,25 @@ public class MapService {
     public int calculatePixelX(PointOfTrack pointOfTrack) {
 
         float relativeX =
-                pointOfTrack.getLongitude() - MapPropertiesSingleton.INSTANCE.getRelativeLongitudeZero();
+                pointOfTrack.getLongitude() - MapConfigSingleton.INSTANCE.getRelativeLongitudeZero();
         float pixelX =
-                relativeX / MapPropertiesSingleton.INSTANCE.getLongitudeResolution() * mapImage.getWidth() - 1;
+                relativeX / MapConfigSingleton.INSTANCE.getLongitudeResolution() * mapImage.getWidth() - 1;
         return (int)pixelX;
     }
 
     public int calculatePixelY(PointOfTrack pointOfTrack) {
 
         float relativeY =
-                MapPropertiesSingleton.INSTANCE.getRelativeLatitudeZero() - pointOfTrack.getLatitude();
+                MapConfigSingleton.INSTANCE.getRelativeLatitudeZero() - pointOfTrack.getLatitude();
         float pixelY =
-                relativeY / MapPropertiesSingleton.INSTANCE.getLatitudeResolution() * mapImage.getHeight() - 1;
+                relativeY / MapConfigSingleton.INSTANCE.getLatitudeResolution() * mapImage.getHeight() - 1;
         return (int) pixelY;
     }
 
     private void setMapImage() {
 
         FileService fileService = new FileService();
-        String pathname = MapPropertiesSingleton.INSTANCE.getFilePathname();
+        String pathname = MapConfigSingleton.INSTANCE.getFilePathname();
 
         if (fileService.fileExists(pathname)) {
             if (fileService.isFileTypeCorrect(pathname, FileType.PNG)) {
