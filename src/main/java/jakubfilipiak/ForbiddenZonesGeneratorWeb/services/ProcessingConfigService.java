@@ -7,6 +7,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ProcessingConfigRep
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Jakub Filipiak on 12.06.2019.
@@ -26,8 +27,12 @@ public class ProcessingConfigService {
         return configRepository.save(configMapper.reverseMap(configDto));
     }
 
-    public List<ProcessingConfig> getConfigs() {
-        return configRepository.findAll();
+    public List<ProcessingConfigDto> getConfigsDto() {
+        return configRepository
+                .findAll()
+                .stream()
+                .map(configMapper::map)
+                .collect(Collectors.toList());
     }
 
     public void updateConfig(ProcessingConfigDto configDto) {
