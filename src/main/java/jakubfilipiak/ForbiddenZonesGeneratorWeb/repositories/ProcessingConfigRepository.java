@@ -1,6 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ProcessingConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

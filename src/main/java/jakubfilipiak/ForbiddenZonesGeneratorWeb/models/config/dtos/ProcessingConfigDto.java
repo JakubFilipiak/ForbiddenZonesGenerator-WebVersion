@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.dtos;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos;
 
 import lombok.Builder;
 import lombok.Getter;

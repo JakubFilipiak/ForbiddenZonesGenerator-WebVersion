@@ -1,8 +1,8 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.commons.Mapper;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ProcessingConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.dtos.ProcessingConfigDto;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ProcessingConfigDto;
 import org.springframework.stereotype.Component;
 
 /**
