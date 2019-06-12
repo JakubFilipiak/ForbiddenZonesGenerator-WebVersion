@@ -15,8 +15,8 @@ public enum MapConfigSingleton {
 
     @Getter @Setter private String filePathname;
 
-    @Getter @Setter private List<Color> allowedColors;
-    @Getter @Setter private List<Color> forbiddenColors;
+    @Getter @Setter private Color allowedColor;
+    @Getter @Setter private Color forbiddenColor;
 
     @Setter private float bottomLeftCornerLatitude;
     @Setter private float bottomLeftCornerLongitude;
