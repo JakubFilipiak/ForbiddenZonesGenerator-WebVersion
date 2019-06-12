@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Jakub Filipiak on 30.05.2019.
  */
-public enum MapProperties {
+public enum MapPropertiesSingleton {
 
     INSTANCE;
 

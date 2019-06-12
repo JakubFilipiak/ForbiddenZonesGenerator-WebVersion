@@ -1,6 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingProperties;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingPropertiesSingleton;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.TurnOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.TurnService;
@@ -44,7 +44,7 @@ public class ZoneByTurnsGenerator {
     }
 
     private boolean isTurnTakenIntoConsideration(TurnOfTrack turnOfTrack) {
-        return turnOfTrack.getAngle() >= ProcessingProperties.INSTANCE.getMinTurnInitiationAngle();
+        return turnOfTrack.getAngle() >= ProcessingPropertiesSingleton.INSTANCE.getMinTurnInitiationAngle();
     }
 
     private boolean isForbiddenZoneStarted() {
@@ -54,9 +54,9 @@ public class ZoneByTurnsGenerator {
     private boolean isBufferReady() {
 
         boolean enoughTurns =
-                turnsCounter >= ProcessingProperties.INSTANCE.getMinTurnsNumberInSeries();
+                turnsCounter >= ProcessingPropertiesSingleton.INSTANCE.getMinTurnsNumberInSeries();
         boolean tooManyPauses =
-                pauseCounter > ProcessingProperties.INSTANCE.getMaxPausesNumberBetweenTurns();
+                pauseCounter > ProcessingPropertiesSingleton.INSTANCE.getMaxPausesNumberBetweenTurns();
         boolean dataReady =
                 enoughTurns && tooManyPauses;
 
@@ -81,8 +81,8 @@ public class ZoneByTurnsGenerator {
     private boolean isTotalTurnAngleAllowed() {
 
         double totalAngle = TurnService.calculateTurnAngle(entranceTurn.getAbsoluteEntranceAngle(), departureTurn.getAbsoluteDepartureAngle());
-        return totalAngle >= ProcessingProperties.INSTANCE.getIgnoredTurnMinValue()
-                && totalAngle <= ProcessingProperties.INSTANCE.getIgnoredTurnMaxValue();
+        return totalAngle >= ProcessingPropertiesSingleton.INSTANCE.getIgnoredTurnMinValue()
+                && totalAngle <= ProcessingPropertiesSingleton.INSTANCE.getIgnoredTurnMaxValue();
     }
 
     private boolean isOnlyOneTurn() {

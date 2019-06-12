@@ -1,6 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingProperties;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingPropertiesSingleton;
 
 import java.time.LocalTime;
 
@@ -18,7 +18,7 @@ public class ForbiddenZone {
     }
 
     public static ForbiddenZone fromSingleTurn(TurnOfTrack turnOfTrack) {
-        ProcessingProperties processingProperties = ProcessingProperties.INSTANCE;
+        ProcessingPropertiesSingleton processingProperties = ProcessingPropertiesSingleton.INSTANCE;
 
         if (processingProperties.isSingleTurnZoneFullTime()) {
             LocalTime entranceTime = turnOfTrack.getEntranceTime();
@@ -36,7 +36,7 @@ public class ForbiddenZone {
 
     public static ForbiddenZone fromGroupOfTurns(TurnOfTrack entranceTurn,
                                                  TurnOfTrack departureTurn) {
-        ProcessingProperties processingProperties = ProcessingProperties.INSTANCE;
+        ProcessingPropertiesSingleton processingProperties = ProcessingPropertiesSingleton.INSTANCE;
 
         if (processingProperties.isGroupOfTurnsZoneFullTime()) {
             LocalTime entranceTime = entranceTurn.getEntranceTime();
@@ -53,7 +53,7 @@ public class ForbiddenZone {
     }
 
     public static ForbiddenZone fromSinglePoint(PointOfTrack pointOfTrack) {
-        ProcessingProperties processingProperties = ProcessingProperties.INSTANCE;
+        ProcessingPropertiesSingleton processingProperties = ProcessingPropertiesSingleton.INSTANCE;
         LocalTime entranceTime = pointOfTrack
                 .getTime()
                 .minusSeconds(processingProperties.getSinglePointZoneBeginOffset());
@@ -65,7 +65,7 @@ public class ForbiddenZone {
     }
 
     public static ForbiddenZone fromGroupOfPoints(PointOfTrack entrancePoint, PointOfTrack departurePoint) {
-        ProcessingProperties processingProperties = ProcessingProperties.INSTANCE;
+        ProcessingPropertiesSingleton processingProperties = ProcessingPropertiesSingleton.INSTANCE;
         LocalTime entranceTime = entrancePoint
                 .getTime()
                 .minusSeconds(processingProperties.getGroupOfPointsZoneBeginOffset());
