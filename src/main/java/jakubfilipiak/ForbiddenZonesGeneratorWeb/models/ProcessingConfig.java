@@ -1,5 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
  */
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "processing_configs")
 public class ProcessingConfig {
