@@ -1,5 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.FileType;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;

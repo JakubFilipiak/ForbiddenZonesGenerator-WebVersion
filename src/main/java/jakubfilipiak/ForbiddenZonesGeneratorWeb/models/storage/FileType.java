@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage;
 
 /**
  * Created by Jakub Filipiak on 29.05.2019.

@@ -1,7 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.apis;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.FileService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.FileType;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.FileType;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.TrackService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
 

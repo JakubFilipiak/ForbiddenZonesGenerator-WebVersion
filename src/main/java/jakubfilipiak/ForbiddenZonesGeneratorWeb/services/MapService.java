@@ -1,7 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.FileService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.FileType;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.FileType;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.MapConfigSingleton;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
@@ -32,18 +32,18 @@ public class MapService {
 
     public int calculatePixelX(PointOfTrack pointOfTrack) {
 
-        float relativeX =
+        double relativeX =
                 pointOfTrack.getLongitude() - MapConfigSingleton.INSTANCE.getRelativeLongitudeZero();
-        float pixelX =
+        double pixelX =
                 relativeX / MapConfigSingleton.INSTANCE.getLongitudeResolution() * mapImage.getWidth() - 1;
         return (int)pixelX;
     }
 
     public int calculatePixelY(PointOfTrack pointOfTrack) {
 
-        float relativeY =
+        double relativeY =
                 MapConfigSingleton.INSTANCE.getRelativeLatitudeZero() - pointOfTrack.getLatitude();
-        float pixelY =
+        double pixelY =
                 relativeY / MapConfigSingleton.INSTANCE.getLatitudeResolution() * mapImage.getHeight() - 1;
         return (int) pixelY;
     }
