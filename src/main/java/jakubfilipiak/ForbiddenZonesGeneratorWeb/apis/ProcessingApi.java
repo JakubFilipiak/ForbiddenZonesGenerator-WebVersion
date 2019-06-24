@@ -14,25 +14,25 @@ import java.io.IOException;
  */
 public class ProcessingApi {
 
-    private FileService fileService = new FileService();
-    private TrackService trackService = new TrackService();
+//    private FileService fileService = new FileService();
+//    private TrackService trackService = new TrackService();
 
     public void processTrack(Track track) {
 
-        String pathname = track.getTrackFilePathname();
-
-        if (fileService.fileExists(pathname)) {
-            if (fileService.isFileTypeCorrect(pathname, FileType.TRK)) {
-                try {
-                    BufferedReader bufferedReader =
-                            fileService.createBufferedReader(pathname);
-                    trackService.processPointsOfTrack(bufferedReader);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+//        String pathname = track.getTrackFilePathname();
+//
+//        if (fileService.fileExists(pathname)) {
+//            if (fileService.isFileTypeCorrect(pathname, FileType.TRK)) {
+//                try {
+//                    BufferedReader bufferedReader =
+//                            fileService.createBufferedReader(pathname);
+//                    trackService.processPointsOfTrack(bufferedReader);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
     }
 }

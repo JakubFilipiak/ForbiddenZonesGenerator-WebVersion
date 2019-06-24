@@ -1,8 +1,10 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Jakub Filipiak on 12.06.2019.
@@ -18,61 +20,31 @@ public class ProcessingConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_processing_config")
     private Long id;
 
     @Column(name = "config_name", nullable = false, unique = true)
     private String configName;
 
-    // Turn
+    // types of zones to be created
 
-    @Column(name = "min_turn_initiation_angle", nullable = false)
-    private int minTurnInitiationAngle;
+    @Column(name = "zone_by_drop_time_creation", nullable = false)
+    private boolean zoneByDropTimeCreation;
+    @Column(name = "zone_by_points_creation", nullable = false)
+    private boolean zoneByPointsCreation;
+    @Column(name = "zone_by_turns_creation", nullable = false)
+    private boolean zoneByTurnsCreation;
 
-    @Column(name = "ignored_turn_min_value", nullable = false)
-    private int ignoredTurnMinValue;
-    @Column(name = "ignored_turn_max_value", nullable = false)
-    private int ignoredTurnMaxValue;
+    // properties
 
-    // Zone forbidden by turns
+    @Column(name = "verified", nullable = false)
+    private boolean verified;
 
-    @Column(name = "min_turns_number_in_series", nullable = false)
-    private int minTurnsNumberInSeries;
-    @Column(name = "max_pauses_number_between_turns", nullable = false)
-    private int maxPausesNumberBetweenTurns;
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted;
 
-    @Column(name = "single_turn_zone_full_time", nullable = false)
-    private boolean singleTurnZoneFullTime;
-    @Column(name = "single_turn_zone_begin_offset", nullable = false)
-    private int singleTurnZoneBeginOffset;
-    @Column(name = "single_turn_zone_end_offset", nullable = false)
-    private int singleTurnZoneEndOffset;
+    // relation
 
-    @Column(name = "group_of_turns_zone_full_time", nullable = false)
-    private boolean groupOfTurnsZoneFullTime;
-    @Column(name = "group_of_turns_zone_begin_offset", nullable = false)
-    private int groupOfTurnsZoneBeginOffset;
-    @Column(name = "group_of_turns_zone_end_offset", nullable = false)
-    private int groupOfTurnsZoneEndOffset;
-
-    // Zone forbidden by points
-
-    @Column(name = "point_neighborhood_verification", nullable = false)
-    private boolean pointNeighborhoodVerification;
-    @Column(name = "radius_of_pixels_to_be_verified", nullable = false)
-    private int radiusOfPixelsToBeVerified;
-
-    @Column(name = "min_points_number_in_series", nullable = false)
-    private int minPointsNumberInSeries;
-    @Column(name = "max_pauses_number_between_points", nullable = false)
-    private int maxPausesNumberBetweenPoints;
-
-    @Column(name = "single_point_zone_begin_offset", nullable = false)
-    private int singlePointZoneBeginOffset;
-    @Column(name = "single_point_zone_end_offset", nullable = false)
-    private int singlePointZoneEndOffset;
-
-    @Column(name = "group_of_points_zone_begin_offset", nullable = false)
-    private int groupOfPointsZoneBeginOffset;
-    @Column(name = "group_of_points_zone_end_offset", nullable = false)
-    private int groupOfPointsZoneEndOffset;
+    @OneToMany(mappedBy = "processingConfig", cascade = CascadeType.ALL)
+    private List<Track> tracks;
 }

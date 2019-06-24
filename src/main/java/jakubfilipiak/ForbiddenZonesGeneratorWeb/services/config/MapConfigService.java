@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.MapConfigMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
@@ -7,6 +7,8 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.MapConfigRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,39 +21,39 @@ public class MapConfigService {
 
     private MapConfigMapper configMapper;
     private MapConfigRepository configRepository;
-    private ColorService colorService;
 
-    public MapConfigService(MapConfigMapper configMapper, MapConfigRepository configRepository, ColorService colorService) {
+    public MapConfigService(MapConfigMapper configMapper,
+                            MapConfigRepository configRepository) {
         this.configMapper = configMapper;
         this.configRepository = configRepository;
-        this.colorService = colorService;
     }
 
-    public MapConfig addConfig(MapConfigDto configDto, LocalFile localFile) {
+    public void addConfig(MapConfigDto configDto, LocalFile localFile) {
         MapConfig config = configMapper.reverseMap(configDto);
-        config.setFilename(localFile.getOriginalName());
-        config.setFilePathname(localFile.getUniquePathname());
-        return configRepository.save(config);
+        config.setMapFile(localFile);
+        configRepository.save(config);
+    }
+
+    public List<MapConfigDto> getConfigsDto() {
+        return configRepository
+                .findAllNotDeleted()
+                .stream()
+                .map(configMapper::map)
+                .collect(Collectors.toList());
     }
 
     public Optional<MapConfig> getConfigByConfigName(String configName) {
         return configRepository.findByConfigName(configName);
     }
 
-    public List<MapConfigDto> getConfigsDto() {
-        return configRepository
-                .findAll()
-                .stream()
-                .map(configMapper::map)
-                .collect(Collectors.toList());
-    }
-
     public void updateConfig(MapConfigDto configDto) {
         configRepository
                 .findByConfigName(configDto.getConfigName())
                 .ifPresent(config -> {
-                    config.setAllowedRGBColor(configDto.getAllowedRGBColor());
-                    config.setForbiddenRGBColor(configDto.getForbiddenRGBColor());
+                    config.setAllowedRGBColor(
+                            configDto.getAllowedRGBColor());
+                    config.setForbiddenRGBColor(
+                            configDto.getForbiddenRGBColor());
                     config.setBottomLeftCornerLatitude(
                             configDto.getBottomLeftCornerLatitude());
                     config.setBottomLeftCornerLongitude(
@@ -61,12 +63,25 @@ public class MapConfigService {
                     config.setUpperRightCornerLongitude(
                             configDto.getUpperRightCornerLongitude());
                     config.setVerified(false);
-
                     configRepository.save(config);
                 });
     }
 
-    public void deleteConfig(String configName) {
-        configRepository.deleteByConfigName(configName);
+    public void setConfigAsDeleted(String configName) {
+        configRepository
+                .findByConfigName(configName)
+                .ifPresent(config -> {
+                    config.setDeleted(true);
+                    config.setConfigName(createDeprecatedName(config.getConfigName()));
+                    configRepository.save(config);
+                });
+    }
+
+    private String createDeprecatedName(String configName) {
+        final String DATE_FORMAT = "yyyy-MM-dd---HH-mm-ss-";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        String localTimeNow = LocalDateTime.now().format(formatter);
+        String prefix = "DEPRECATED-from-";
+        return prefix + localTimeNow + configName;
     }
 }

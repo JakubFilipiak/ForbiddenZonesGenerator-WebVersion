@@ -1,8 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ProcessingConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.ProcessingConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.ProcessingConfigService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +21,8 @@ public class ProcessingConfigController {
     }
 
     @PostMapping("/dto/processing-configs")
-    public ProcessingConfig addConfig(@RequestBody ProcessingConfigDto configDto) {
-        return configService.addConfig(configDto);
+    public void addConfig(@RequestBody ProcessingConfigDto configDto) {
+        configService.addConfig(configDto);
     }
 
     @GetMapping("/dto/processing-configs")
@@ -36,8 +35,8 @@ public class ProcessingConfigController {
         configService.updateConfig(configDto);
     }
 
-    @DeleteMapping("/dto/processing-configs/{configName}")
-    public void deleteConfig(@PathVariable String configName) {
-        configService.deleteConfig(configName);
+    @DeleteMapping("/dto/processing-configs")
+    public void deleteConfig(@RequestParam String configName) {
+        configService.setConfigAsDeleted(configName);
     }
 }

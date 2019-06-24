@@ -14,37 +14,14 @@ public class ProcessingConfigDto {
 
     private String configName;
 
-    // Turn
+    // types of zones to be created
 
-    private int minTurnInitiationAngle;
+    private boolean zoneByDropTimeCreation;
+    private boolean zoneByPointsCreation;
+    private boolean zoneByTurnsCreation;
 
-    private int ignoredTurnMinValue;
-    private int ignoredTurnMaxValue;
+    // properties
 
-    // Zone forbidden by turns
-
-    private int minTurnsNumberInSeries;
-    private int maxPausesNumberBetweenTurns;
-
-    private boolean singleTurnZoneFullTime;
-    private int singleTurnZoneBeginOffset;
-    private int singleTurnZoneEndOffset;
-
-    private boolean groupOfTurnsZoneFullTime;
-    private int groupOfTurnsZoneBeginOffset;
-    private int groupOfTurnsZoneEndOffset;
-
-    // Zone forbidden by points
-
-    private boolean pointNeighborhoodVerification;
-    private int radiusOfPixelsToBeVerified;
-
-    private int minPointsNumberInSeries;
-    private int maxPausesNumberBetweenPoints;
-
-    private int singlePointZoneBeginOffset;
-    private int singlePointZoneEndOffset;
-
-    private int groupOfPointsZoneBeginOffset;
-    private int groupOfPointsZoneEndOffset;
+    private boolean verified;
+    private boolean deleted;
 }

@@ -10,12 +10,12 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class MapConfigDto {
 
     private String configName;
 
-    private String filename;
+    private String originalFileName;
+    private String uniqueFileName;
 
     private String allowedRGBColor;
     private String forbiddenRGBColor;
@@ -26,5 +26,8 @@ public class MapConfigDto {
     private double upperRightCornerLatitude;
     private double upperRightCornerLongitude;
 
+    // properties
+
     private boolean verified;
+    private boolean deleted;
 }

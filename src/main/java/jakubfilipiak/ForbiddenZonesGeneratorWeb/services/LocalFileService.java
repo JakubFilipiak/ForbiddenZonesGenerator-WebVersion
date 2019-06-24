@@ -2,6 +2,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.FileType;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.LocalFileRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,11 +28,14 @@ public class LocalFileService {
     private static final Logger LOGGER =
             Logger.getLogger(LocalFileService.class.getName());
 
+    private LocalFileRepository fileRepository;
     private ServletContext servletContext;
     private String tmpUploadsPath;
-    private final String uploadsPath = "uploadedMapFiles/";
+    private final String uploadsPath = "uploadedFiles/";
 
-    public LocalFileService(ServletContext servletContext) {
+    public LocalFileService(LocalFileRepository fileRepository,
+                            ServletContext servletContext) {
+        this.fileRepository = fileRepository;
         this.servletContext = servletContext;
         createContextDirectory();
     }
@@ -50,13 +54,18 @@ public class LocalFileService {
     }
 
     public Optional<LocalFile> uploadFile(MultipartFile file) {
-        String originalFilename = file.getOriginalFilename();
-        Optional<String> uniquePathname = createUniquePathname(originalFilename);
-        if (uniquePathname.isPresent()) {
+        String originalFileName = file.getOriginalFilename();
+        String uniqueFileName = createUniqueName(originalFileName);
+        Optional<String> pathName = createPathname(uniqueFileName);
+        if (pathName.isPresent()) {
             try {
-                saveFile(file, uniquePathname.get());
-                return Optional.of(
-                        new LocalFile(originalFilename, uniquePathname.get()));
+                saveFile(file, pathName.get());
+                return Optional.of(LocalFile
+                        .builder()
+                        .originalName(originalFileName)
+                        .uniqueName(uniqueFileName)
+                        .pathName(pathName.get())
+                        .build());
             } catch (IOException e) {
                 e.printStackTrace();
                 return Optional.empty();
@@ -65,21 +74,22 @@ public class LocalFileService {
         return Optional.empty();
     }
 
-    private Optional<String> createUniquePathname(String originalFilename) {
-        FileType fileType = getFileType(originalFilename);
+    private String createUniqueName(String originalFileName) {
+        return UUID.randomUUID().toString() + originalFileName;
+    }
+
+    private Optional<String> createPathname(String uniqueFileName) {
         String directory;
-        switch (fileType) {
-            case PNG:
-                directory = uploadsPath;
-                break;
-            case TRK:
-                directory = tmpUploadsPath;
-                break;
-            default:
-                return Optional.empty();
+        if (isFileAMapOrATrack(uniqueFileName)) {
+            directory = uploadsPath;
+            return Optional.of(directory + uniqueFileName);
         }
-        return Optional.of(
-                directory + UUID.randomUUID().toString() + originalFilename);
+        return Optional.empty();
+    }
+
+    private boolean isFileAMapOrATrack(String uniqueFileName) {
+        FileType fileType = getFileType(uniqueFileName);
+        return fileType == FileType.PNG || fileType == FileType.TRK;
     }
 
     private FileType getFileType(String filename) {
@@ -87,14 +97,22 @@ public class LocalFileService {
         return FileType.fromString(extension);
     }
 
-    private void saveFile(MultipartFile file, String pathname) throws IOException {
+    private void saveFile(MultipartFile file, String pathName) throws IOException {
         InputStream fileStream = file.getInputStream();
-        File targetFile = new File(pathname);
+        File targetFile = new File(pathName);
         FileUtils.copyInputStreamToFile(fileStream, targetFile);
     }
 
-    public File downloadFile(String pathname) {
-        return new File(pathname);
+    public Optional<LocalFile> getLocalFileByUniqueName(String uniqueFileName) {
+        return fileRepository.findByUniqueName(uniqueFileName);
+    }
+
+    public Optional<LocalFile> getLocalFileByUniquePathname(String uniquePathname) {
+        return fileRepository.findByUniquePathname(uniquePathname);
+    }
+
+    public File downloadFile(String uniqueFileName) {
+        return new File(uploadsPath + uniqueFileName);
     }
 
     public boolean deleteFile(String pathname) {
@@ -155,4 +173,7 @@ public class LocalFileService {
 
         return ImageIO.read(createBufferedInputStream(pathname));
     }
+
+
+
 }

@@ -3,7 +3,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.LocalFileService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.MapConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.MapConfigService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,20 +20,35 @@ public class MapConfigController {
 
     private MapConfigService configService;
     private LocalFileService fileService;
+    private ObjectMapper jsonMapper;
 
     public MapConfigController(MapConfigService configService, LocalFileService fileService) {
         this.configService = configService;
         this.fileService = fileService;
+        jsonMapper = new ObjectMapper();
     }
 
-    @PostMapping(value = "/dto/map-configs", consumes = {"application/json",
-            "multipart/form-data"})
-    public void addConfig(@RequestParam("stringConfigDto") String stringConfigDto,
-                          @RequestParam("file") MultipartFile file) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        MapConfigDto configDto = mapper.readValue(stringConfigDto, MapConfigDto.class);
-        fileService.uploadFile(file).ifPresent(value ->
-                configService.addConfig(configDto, value));
+    @PostMapping(value = "/dto/map-configs", consumes = "multipart/form-data")
+    public void addConfig(
+            @RequestParam("stringConfigDto") String jsonConfigDto,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        MapConfigDto configDto =
+                jsonMapper.readValue(jsonConfigDto, MapConfigDto.class);
+        fileService
+                .uploadFile(file)
+                .ifPresent(uploadedFile ->
+                        configService.addConfig(configDto, uploadedFile));
+    }
+
+    @PostMapping(value = "/dto/map-configs/from-existing")
+    public void addConfigFromExistingConfig(
+            @RequestParam("existingUniqueFileName") String existingUniqueFileName,
+            @RequestParam("stringConfigDto") String jsonConfigDto) throws IOException {
+        MapConfigDto configDto =
+                jsonMapper.readValue(jsonConfigDto, MapConfigDto.class);
+        fileService
+                .getLocalFileByUniqueName(existingUniqueFileName)
+                .ifPresent(localFile -> configService.addConfig(configDto, localFile));
     }
 
     @GetMapping("/dto/map-configs")
@@ -46,11 +61,8 @@ public class MapConfigController {
         configService.updateConfig(configDto);
     }
 
-    @DeleteMapping("/dto/map-configs/{configName}")
-    public void deleteConfig(@PathVariable String configName) {
-        configService.getConfigByConfigName(configName).ifPresent(config -> {
-            fileService.deleteFile(config.getFilePathname());
-            configService.deleteConfig(configName);
-        });
+    @DeleteMapping("/dto/map-configs")
+    public void deleteConfig(@RequestParam String configName) {
+        configService.setConfigAsDeleted(configName);
     }
 }
