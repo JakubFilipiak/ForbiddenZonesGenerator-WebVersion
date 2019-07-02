@@ -18,6 +18,7 @@ public class TrackMapper implements Mapper<Track, TrackDto> {
         TrackDto dto =  TrackDto
                 .builder()
                 .trackName(dao.getTrackName())
+                .mapConfigName(dao.getMapConfig().getConfigName())
                 .processingConfigName(dao.getProcessingConfig().getConfigName())
                 .originalTrackFileName(dao.getTrackFile().getOriginalName())
                 .uniqueTrackFileName(dao.getTrackFile().getUniqueName())
@@ -27,10 +28,6 @@ public class TrackMapper implements Mapper<Track, TrackDto> {
                 .deleted(dao.isDeleted())
                 .processed(dao.isProcessed())
                 .build();
-
-        if (dao.getMapConfig() != null) {
-            dto.setMapConfigName(dao.getMapConfig().getConfigName());
-        }
         if (dao.getZoneByPointsConfig() != null) {
             dto.setZoneByPointsConfigName(dao.getZoneByPointsConfig().getConfigName());
         }
@@ -41,16 +38,25 @@ public class TrackMapper implements Mapper<Track, TrackDto> {
             dto.setOriginalOutputFileName(dao.getOutputFile().getOriginalName());
             dto.setUniqueOutputFileName(dao.getOutputFile().getUniqueName());
         }
+        if (dao.getOutputFileInDebugMode() != null) {
+            dto.setOriginalOutputDebugFileName(dao.getOutputFileInDebugMode().getOriginalName());
+            dto.setUniqueOutputDebugFileName(dao.getOutputFileInDebugMode().getUniqueName());
+        }
         return dto;
     }
 
     @Override
     public Track reverseMap(TrackDto dto) {
-        return Track
+        Track dao = Track
                 .builder()
                 .trackName(dto.getTrackName())
-                .dropStartTime(LocalTime.parse(dto.getDropStartTime()))
-                .dropStopTime(LocalTime.parse(dto.getDropStopTime()))
                 .build();
+        if (dto.getDropStartTime() != null && !dto.getDropStartTime().isEmpty()) {
+            dao.setDropStartTime(LocalTime.parse(dto.getDropStartTime()));
+        }
+        if (dto.getDropStopTime() != null && !dto.getDropStopTime().isEmpty()) {
+            dao.setDropStopTime(LocalTime.parse(dto.getDropStopTime()));
+        }
+        return dao;
     }
 }

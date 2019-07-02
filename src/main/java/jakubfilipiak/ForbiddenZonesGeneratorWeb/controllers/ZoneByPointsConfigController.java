@@ -1,7 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.ZoneByPointsConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByPointsConfigService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

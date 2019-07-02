@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ProcessingConfigMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;

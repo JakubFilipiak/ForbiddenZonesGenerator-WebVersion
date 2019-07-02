@@ -7,6 +7,7 @@ public enum FileType {
 
     TRK(".trk"),
     PNG(".png"),
+    TXT(".txt"),
     UNKNOWN(".unknown");
 
     private String type;

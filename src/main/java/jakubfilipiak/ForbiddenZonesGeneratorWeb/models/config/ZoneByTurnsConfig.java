@@ -31,6 +31,9 @@ public class ZoneByTurnsConfig {
     @Column(name = "min_turn_initiation_angle", nullable = false)
     private int minTurnInitiationAngle;
 
+    @Column(name = "ignore_turns", nullable = false)
+    private boolean ignoreTurns;
+
     @Column(name = "ignored_turn_min_value")
     private int ignoredTurnMinValue;
     @Column(name = "ignored_turn_max_value")

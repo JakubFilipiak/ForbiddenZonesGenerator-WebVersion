@@ -30,8 +30,8 @@ public class LocalFileService {
 
     private LocalFileRepository fileRepository;
     private ServletContext servletContext;
-    private String tmpUploadsPath;
-    private final String uploadsPath = "uploadedFiles/";
+    private String tmpStoragePath;
+    private final String storagePath = "uploadedFiles/";
 
     public LocalFileService(LocalFileRepository fileRepository,
                             ServletContext servletContext) {
@@ -41,10 +41,10 @@ public class LocalFileService {
     }
 
     private void createContextDirectory() {
-        tmpUploadsPath = servletContext.getRealPath("/uploads");
-        LOGGER.log(Level.INFO, tmpUploadsPath);
+        tmpStoragePath = servletContext.getRealPath("/uploads");
+        LOGGER.log(Level.INFO, tmpStoragePath);
 
-        Path path = Paths.get(tmpUploadsPath);
+        Path path = Paths.get(tmpStoragePath);
         if (!Files.exists(path))
             try {
                 Files.createDirectories(path);
@@ -59,7 +59,7 @@ public class LocalFileService {
         Optional<String> pathName = createPathname(uniqueFileName);
         if (pathName.isPresent()) {
             try {
-                saveFile(file, pathName.get());
+                saveMultipartFile(file, pathName.get());
                 return Optional.of(LocalFile
                         .builder()
                         .originalName(originalFileName)
@@ -74,22 +74,39 @@ public class LocalFileService {
         return Optional.empty();
     }
 
+    public Optional<LocalFile> createFileInStorageDir(String fileName) {
+        String uniqueFileName = createUniqueName(fileName);
+        Optional<String> pathName = createPathname(uniqueFileName);
+        if (pathName.isPresent()) {
+            new File(pathName.get());
+            return Optional.of(LocalFile
+                    .builder()
+                    .originalName(fileName)
+                    .uniqueName(uniqueFileName)
+                    .pathName(pathName.get())
+                    .build());
+        }
+        return Optional.empty();
+    }
+
     private String createUniqueName(String originalFileName) {
         return UUID.randomUUID().toString() + originalFileName;
     }
 
     private Optional<String> createPathname(String uniqueFileName) {
         String directory;
-        if (isFileAMapOrATrack(uniqueFileName)) {
-            directory = uploadsPath;
+        if (isFileTypeAllowed(uniqueFileName)) {
+            directory = storagePath;
             return Optional.of(directory + uniqueFileName);
         }
         return Optional.empty();
     }
 
-    private boolean isFileAMapOrATrack(String uniqueFileName) {
+    private boolean isFileTypeAllowed(String uniqueFileName) {
         FileType fileType = getFileType(uniqueFileName);
-        return fileType == FileType.PNG || fileType == FileType.TRK;
+        return fileType == FileType.PNG
+                || fileType == FileType.TRK
+                || fileType == FileType.TXT;
     }
 
     private FileType getFileType(String filename) {
@@ -97,7 +114,7 @@ public class LocalFileService {
         return FileType.fromString(extension);
     }
 
-    private void saveFile(MultipartFile file, String pathName) throws IOException {
+    private void saveMultipartFile(MultipartFile file, String pathName) throws IOException {
         InputStream fileStream = file.getInputStream();
         File targetFile = new File(pathName);
         FileUtils.copyInputStreamToFile(fileStream, targetFile);
@@ -112,7 +129,7 @@ public class LocalFileService {
     }
 
     public File downloadFile(String uniqueFileName) {
-        return new File(uploadsPath + uniqueFileName);
+        return new File(storagePath + uniqueFileName);
     }
 
     public boolean deleteFile(String pathname) {

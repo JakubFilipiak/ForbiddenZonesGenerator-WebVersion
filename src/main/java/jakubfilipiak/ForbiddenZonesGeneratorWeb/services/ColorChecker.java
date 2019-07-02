@@ -1,20 +1,20 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.MapConfigSingleton;
-import org.springframework.stereotype.Service;
-
 import java.awt.*;
 
 /**
  * Created by Jakub Filipiak on 30.05.2019.
  */
-@Service
-public class ColorService {
+public class ColorChecker {
+
+    private Color forbiddenColor;
+
+    public ColorChecker(String forbiddenRGBColor) {
+        this.forbiddenColor = fromString(forbiddenRGBColor);
+    }
 
     public boolean isColorForbidden(Color pixelColor) {
-
-        Color forbiddenColors = MapConfigSingleton.INSTANCE.getForbiddenColor();
-        return forbiddenColors.equals(pixelColor);
+        return pixelColor.equals(forbiddenColor);
     }
 
     public String fromColor(Color color) {

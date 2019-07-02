@@ -1,7 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.ZoneByTurnsConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTurnsConfigService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

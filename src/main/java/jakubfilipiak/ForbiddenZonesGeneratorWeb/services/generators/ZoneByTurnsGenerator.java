@@ -1,21 +1,48 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingConfigSingleton;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.TurnOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.TurnService;
+
+import java.util.Optional;
 
 /**
  * Created by Jakub Filipiak on 29.05.2019.
  */
 public class ZoneByTurnsGenerator {
 
+    private ZoneByTurnsConfig config;
+
+    private int minTurnsNumberInSeries;
+    private int minTurnInitiationAngle;
+    private int maxPausesNumberBetweenTurns;
+    private boolean ignoreTurns;
+    private int ignoredTurnMinValue;
+    private int ignoredTurnMaxValue;
+
     private TurnOfTrack entranceTurn;
     private TurnOfTrack departureTurn;
     private int turnsCounter = 0;
     private int pauseCounter = 0;
 
-    public boolean updateTurnsBuffer(TurnOfTrack turnOfTrack) {
+    public ZoneByTurnsGenerator(ZoneByTurnsConfig config) {
+        this.config = config;
+        initConfig();
+    }
+
+    private void initConfig() {
+        this.minTurnsNumberInSeries = config.getMinTurnsNumberInSeries();
+        this.minTurnInitiationAngle = config.getMinTurnInitiationAngle();
+        this.maxPausesNumberBetweenTurns = config.getMaxPausesNumberBetweenTurns();
+        this.ignoreTurns = config.isIgnoreTurns();
+        if (config.isIgnoreTurns()) {
+            this.ignoredTurnMinValue = config.getIgnoredTurnMinValue();
+            this.ignoredTurnMaxValue = config.getIgnoredTurnMaxValue();
+        }
+    }
+
+    public void updateTurnsBuffer(TurnOfTrack turnOfTrack) {
         if (isTurnTakenIntoConsideration(turnOfTrack)) {
             if (!isForbiddenZoneStarted()) {
                 entranceTurn = turnOfTrack;
@@ -28,23 +55,43 @@ public class ZoneByTurnsGenerator {
         } else {
             pauseCounter++;
         }
-        return isBufferReady();
     }
 
-    public ForbiddenZone createZoneFromBuffer() {
+    public Optional<ForbiddenZone> createZoneFromBuffer() {
+        if (isBufferReady()) {
+            ForbiddenZone forbiddenZone;
+            if (isOnlyOneTurn()) {
+                forbiddenZone = ForbiddenZone.fromSingleTurn(entranceTurn, config);
+            } else {
+                forbiddenZone = ForbiddenZone.fromGroupOfTurns(entranceTurn,
+                        departureTurn, config);
+            }
+            cleanBuffer();
+            return Optional.of(forbiddenZone);
+        }
+        return Optional.empty();
+    }
 
-        ForbiddenZone forbiddenZone;
-        if (isOnlyOneTurn()) {
-            forbiddenZone = ForbiddenZone.fromSingleTurn(entranceTurn);
-        } else {
-            forbiddenZone = ForbiddenZone.fromGroupOfTurns(entranceTurn, departureTurn);
+    public Optional<ForbiddenZone> createPossibleZoneFromRemainingData() {
+        boolean enoughTurns = turnsCounter >= minTurnsNumberInSeries;
+        if (enoughTurns) {
+            ForbiddenZone forbiddenZone;
+            if (isOnlyOneTurn()) {
+                forbiddenZone = ForbiddenZone.fromSingleTurn(entranceTurn, config);
+            } else {
+                forbiddenZone = ForbiddenZone.fromGroupOfTurns(entranceTurn,
+                        departureTurn, config);
+            }
+            cleanBuffer();
+            return Optional.of(forbiddenZone);
         }
         cleanBuffer();
-        return forbiddenZone;
+        return Optional.empty();
     }
 
     private boolean isTurnTakenIntoConsideration(TurnOfTrack turnOfTrack) {
-        return turnOfTrack.getAngle() >= ProcessingConfigSingleton.INSTANCE.getMinTurnInitiationAngle();
+        System.out.println(turnOfTrack.getAngle() + " vs " + minTurnInitiationAngle);
+        return turnOfTrack.getAngle() >= minTurnInitiationAngle;
     }
 
     private boolean isForbiddenZoneStarted() {
@@ -52,11 +99,10 @@ public class ZoneByTurnsGenerator {
     }
 
     private boolean isBufferReady() {
-
         boolean enoughTurns =
-                turnsCounter >= ProcessingConfigSingleton.INSTANCE.getMinTurnsNumberInSeries();
+                turnsCounter >= minTurnsNumberInSeries;
         boolean tooManyPauses =
-                pauseCounter > ProcessingConfigSingleton.INSTANCE.getMaxPausesNumberBetweenTurns();
+                pauseCounter > maxPausesNumberBetweenTurns;
         boolean dataReady =
                 enoughTurns && tooManyPauses;
 
@@ -68,7 +114,7 @@ public class ZoneByTurnsGenerator {
             return false;
         }
         if (dataReady) {
-            if (!isTotalTurnAngleAllowed()) {
+            if (isTotalTurnAngleForbidden()) {
                 return true;
             } else {
                 cleanBuffer();
@@ -78,11 +124,15 @@ public class ZoneByTurnsGenerator {
         return false;
     }
 
-    private boolean isTotalTurnAngleAllowed() {
-
-        double totalAngle = TurnService.calculateTurnAngle(entranceTurn.getAbsoluteEntranceAngle(), departureTurn.getAbsoluteDepartureAngle());
-        return totalAngle >= ProcessingConfigSingleton.INSTANCE.getIgnoredTurnMinValue()
-                && totalAngle <= ProcessingConfigSingleton.INSTANCE.getIgnoredTurnMaxValue();
+    private boolean isTotalTurnAngleForbidden() {
+        if (ignoreTurns) {
+            double totalAngle = TurnService.calculateTurnAngle(
+                    entranceTurn.getAbsoluteEntranceAngle(),
+                    departureTurn.getAbsoluteDepartureAngle());
+            return totalAngle >= ignoredTurnMinValue
+                    && totalAngle <= ignoredTurnMaxValue;
+        }
+        return true;
     }
 
     private boolean isOnlyOneTurn() {

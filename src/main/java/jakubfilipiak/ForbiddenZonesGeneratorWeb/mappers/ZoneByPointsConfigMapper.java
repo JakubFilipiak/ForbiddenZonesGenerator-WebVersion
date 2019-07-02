@@ -28,10 +28,6 @@ public class ZoneByPointsConfigMapper implements Mapper<ZoneByPointsConfig,
                 .verified(dao.isVerified())
                 .deleted(dao.isDeleted())
                 .build();
-
-        if (dao.isPointsMultiplication()) {
-            dto.setPointsDivider(dao.getPointsDivider());
-        }
         if (dao.isPointNeighborhoodVerification()) {
             dto.setRadiusOfPixelsToBeVerified(dao.getRadiusOfPixelsToBeVerified());
         }
@@ -40,13 +36,11 @@ public class ZoneByPointsConfigMapper implements Mapper<ZoneByPointsConfig,
 
     @Override
     public ZoneByPointsConfig reverseMap(ZoneByPointsConfigDto dto) {
-        return ZoneByPointsConfig
+        ZoneByPointsConfig dao = ZoneByPointsConfig
                 .builder()
                 .configName(dto.getConfigName())
                 .pointsMultiplication(dto.isPointsMultiplication())
-                .pointsDivider(dto.getPointsDivider())
                 .pointNeighborhoodVerification(dto.isPointNeighborhoodVerification())
-                .radiusOfPixelsToBeVerified(dto.getRadiusOfPixelsToBeVerified())
                 .minPointsNumberInSeries(dto.getMinPointsNumberInSeries())
                 .maxPausesNumberBetweenPoints(dto.getMaxPausesNumberBetweenPoints())
                 .singlePointZoneBeginOffset(dto.getSinglePointZoneBeginOffset())
@@ -54,5 +48,9 @@ public class ZoneByPointsConfigMapper implements Mapper<ZoneByPointsConfig,
                 .groupOfPointsZoneBeginOffset(dto.getGroupOfPointsZoneBeginOffset())
                 .groupOfPointsZoneEndOffset(dto.getGroupOfPointsZoneEndOffset())
                 .build();
+        if (dto.isPointNeighborhoodVerification()) {
+            dao.setRadiusOfPixelsToBeVerified(dto.getRadiusOfPixelsToBeVerified());
+        }
+        return dao;
     }
 }

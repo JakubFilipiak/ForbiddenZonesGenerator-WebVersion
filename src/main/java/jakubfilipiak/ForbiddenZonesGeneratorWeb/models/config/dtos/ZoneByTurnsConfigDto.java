@@ -18,6 +18,8 @@ public class ZoneByTurnsConfigDto {
 
     private int minTurnInitiationAngle;
 
+    private boolean ignoreTurns;
+
     private int ignoredTurnMinValue;
     private int ignoredTurnMaxValue;
 

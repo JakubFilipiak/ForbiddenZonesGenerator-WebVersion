@@ -1,7 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ProcessingConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.ProcessingConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ProcessingConfigService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

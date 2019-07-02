@@ -17,7 +17,6 @@ public class ZoneByPointsConfigDto {
     // point
 
     private boolean pointsMultiplication;
-    private int pointsDivider;
 
     private boolean pointNeighborhoodVerification;
     private int radiusOfPixelsToBeVerified;

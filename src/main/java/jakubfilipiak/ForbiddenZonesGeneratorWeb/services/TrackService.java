@@ -1,19 +1,25 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.TypeOfZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.TrackMapper;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.dtos.TrackDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.TrackRepository;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.MapConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.ProcessingConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.ZoneByPointsConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.ZoneByTurnsConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.MapConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ProcessingConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByPointsConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTurnsConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.fileServices.TxtService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators.AllTypesOfZonesGenerator;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,12 +35,10 @@ public class TrackService {
     private ZoneByTurnsConfigService zoneByTurnsConfigService;
     private ProcessingConfigService processingConfigService;
     private LocalFileService localFileService;
+    private PointOfTrackService pointOfTrackService;
+    private ForbiddenZonesService forbiddenZonesService;
+    private TxtService txtService;
     private TrackRepository trackRepository;
-
-//    private PointOfTrackService pointOfTrackService = new PointOfTrackService();
-//    private TurnOfTrackGenerator turnOfTrackGenerator = new TurnOfTrackGenerator();
-//    private ZoneByTurnsGenerator zoneByTurnsGenerator = new ZoneByTurnsGenerator();
-
 
     public TrackService(
             TrackMapper trackMapper,
@@ -43,6 +47,9 @@ public class TrackService {
             ZoneByTurnsConfigService zoneByTurnsConfigService,
             ProcessingConfigService processingConfigService,
             LocalFileService localFileService,
+            PointOfTrackService pointOfTrackService,
+            ForbiddenZonesService forbiddenZonesService,
+            TxtService txtService,
             TrackRepository trackRepository) {
         this.trackMapper = trackMapper;
         this.mapConfigService = mapConfigService;
@@ -50,6 +57,9 @@ public class TrackService {
         this.zoneByTurnsConfigService = zoneByTurnsConfigService;
         this.processingConfigService = processingConfigService;
         this.localFileService = localFileService;
+        this.pointOfTrackService = pointOfTrackService;
+        this.forbiddenZonesService = forbiddenZonesService;
+        this.txtService = txtService;
         this.trackRepository = trackRepository;
     }
 
@@ -99,78 +109,77 @@ public class TrackService {
 
 
     public void processTrack(String trackName) {
-        Optional<Track> track = trackRepository.findByTrackName(trackName);
-        if (track.isPresent()) {
-            System.out.println("Processing track: " + track.toString());
-        }
-
-
+        trackRepository
+                .findByTrackName(trackName)
+                .ifPresent(track -> {
+                    createForbiddenZones(track);
+                    if (isZonesCreationCompletedSuccessfully(track))
+                        writeZonesIntoNewFileAndUpdateTrack(track);
+                });
     }
 
+    private void createForbiddenZones(Track track) {
+        AllTypesOfZonesGenerator zonesGenerator =
+                new AllTypesOfZonesGenerator(track);
+        TrkReader trkReader =
+                new TrkReader(track.getTrackFile().getPathName());
 
-//    public void processPointsOfTrack(BufferedReader bufferedReader) throws IOException {
-//
-//        String line;
-//
-//        while ((line = bufferedReader.readLine()) != null) {
-//
-//            if (line.startsWith("T")) {
-//                PointOfTrack pointOfTrack = createPointOfTrack(line);
-//
-//                if (pointOfTrackService.isPointOfTrackCorrect(pointOfTrack)) {
-//                    boolean bufferReady =
-//                            turnOfTrackGenerator.updatePointsBuffer(pointOfTrack);
-//
-//                    if (bufferReady) {
-//                        TurnOfTrack turnOfTrack = turnOfTrackGenerator.createTurnFromBuffer();
-//                        System.out.println(turnOfTrack);
-//                        boolean zoneBufferReady =
-//                                zoneByTurnsGenerator.updateTurnsBuffer(turnOfTrack);
-//                        if (zoneBufferReady) {
-//                            ForbiddenZone zoneByTurns = zoneByTurnsGenerator.createZoneFromBuffer();
-//                            System.out.println(zoneByTurns);
-//                        }
-//                    }
-//                    System.out.println(pointOfTrack);
-//                    System.out.println();
-//                }
-//            }
-//        }
-//    }
-//
-//    private PointOfTrack createPointOfTrack(String line) {
-//
-//        final int LATITUDE_INDEX = 2;
-//        final int LONGITUDE_INDEX = 3;
-//        final int TIME_INDEX = 5;
-//
-//        float latitude = 0f;
-//        float longitude = 0f;
-//        LocalTime time = LocalTime.of(0, 0, 0);
-//
-//        String[] fields = line.split(" ");
-//        int fieldIndex = 0;
-//
-//        for (String field : fields) {
-//            switch (fieldIndex) {
-//                case LATITUDE_INDEX:
-//                    latitude = Float.parseFloat(field.substring(1));
-//                    break;
-//                case LONGITUDE_INDEX:
-//                    longitude = Float.parseFloat(field.substring(2));
-//                    break;
-//                case TIME_INDEX:
-//                    time = LocalTime.parse(field);
-//                    break;
-//                default:
-//                    break;
-//            }
-//            fieldIndex++;
-//        }
-//        return new PointOfTrack.PointOfTrackBuilder()
-//                .setLatitude(latitude)
-//                .setLongitude(longitude)
-//                .setTime(time)
-//                .build();
-//    }
+        if (trkReader.isReady()) {
+            Optional<String> optRawDataLine;
+            String rawDataLine;
+            while (true) {
+                optRawDataLine = trkReader.readLine();
+                if (optRawDataLine.isPresent()) {
+                    rawDataLine = optRawDataLine.get();
+                    if (trkReader.isLineCorrect(rawDataLine)) {
+                        pointOfTrackService
+                                .createPointFromLine(rawDataLine)
+                                .ifPresent(zonesGenerator::updateBuffer);
+                    }
+                } else {
+                    trkReader.close();
+                    break;
+                }
+            }
+        }
+        zonesGenerator.closeOpenedZones();
+        assignZonesToTrack(zonesGenerator.getMapOfZonesCreatedFromBuffer(), track);
+    }
+
+    private boolean isZonesCreationCompletedSuccessfully(Track track) {
+        Map<TypeOfZone, List<ForbiddenZone>> assignedZones = track.getZonesMap();
+        if (assignedZones != null) {
+            if (assignedZones.containsKey(TypeOfZone.ALL_MERGED)) {
+                return !assignedZones.get(TypeOfZone.ALL_MERGED).isEmpty();
+            }
+        }
+        return false;
+    }
+
+    private void writeZonesIntoNewFileAndUpdateTrack(Track track) {
+        localFileService
+                .createFileInStorageDir(txtService.createFileNameFromTrack(track))
+                .ifPresent(txtLocalFile -> {
+                    File txtFile = new File(txtLocalFile.getPathName());
+                    txtService.writeOnlyMergedZones(track, txtFile);
+                    track.setOutputFile(txtLocalFile);
+                    trackRepository.save(track);
+                });
+        localFileService
+                .createFileInStorageDir(txtService.createDebugFileNameFromTrack(track))
+                .ifPresent(txtLocalFile -> {
+                    File txtFileInDebugMode = new File(txtLocalFile.getPathName());
+                    txtService.writeAllTypesOfZones(track, txtFileInDebugMode);
+                    track.setOutputFileInDebugMode(txtLocalFile);
+                    trackRepository.save(track);
+                });
+    }
+
+    private void assignZonesToTrack(
+            Map<TypeOfZone, List<ForbiddenZone>> zonesToBeAssigned, Track track) {
+        zonesToBeAssigned.put(
+                TypeOfZone.ALL_MERGED,
+                forbiddenZonesService.sortAndMergeZones(zonesToBeAssigned));
+        track.setZonesMap(zonesToBeAssigned);
+    }
 }

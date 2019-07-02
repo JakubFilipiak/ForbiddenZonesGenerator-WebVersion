@@ -12,13 +12,13 @@ public class TurnServiceTest {
     @Test
     public void shouldCorrectCalculateAbsoluteAngleOfLineWhenHorizontalRightDirection() {
         // given
-        PointOfTrack beginPoint = new PointOfTrack.PointOfTrackBuilder()
-                .setLongitude(0f)
-                .setLatitude(0f)
+        PointOfTrack beginPoint = PointOfTrack.builder()
+                .longitude(0f)
+                .latitude(0f)
                 .build();
-        PointOfTrack endPoint = new PointOfTrack.PointOfTrackBuilder()
-                .setLongitude(1f)
-                .setLatitude(0f)
+        PointOfTrack endPoint = PointOfTrack.builder()
+                .longitude(1f)
+                .latitude(0f)
                 .build();
         double expectedAbsoluteAngle = 0d;
 
@@ -33,13 +33,13 @@ public class TurnServiceTest {
     @Test
     public void shouldCorrectCalculateAbsoluteAngleOfLineWhenHorizontalLeftDirection() {
         // given
-        PointOfTrack beginPoint = new PointOfTrack.PointOfTrackBuilder()
-                .setLongitude(0f)
-                .setLatitude(0f)
+        PointOfTrack beginPoint = PointOfTrack.builder()
+                .longitude(0f)
+                .latitude(0f)
                 .build();
-        PointOfTrack endPoint = new PointOfTrack.PointOfTrackBuilder()
-                .setLongitude(-1f)
-                .setLatitude(0f)
+        PointOfTrack endPoint = PointOfTrack.builder()
+                .longitude(-1f)
+                .latitude(0f)
                 .build();
         double expectedAbsoluteAngle = 180d;
 
@@ -54,13 +54,13 @@ public class TurnServiceTest {
     @Test
     public void shouldCorrectCalculateAbsoluteAngleOfLineWhenVerticalUpDirection() {
         // given
-        PointOfTrack beginPoint = new PointOfTrack.PointOfTrackBuilder()
-                .setLongitude(0f)
-                .setLatitude(0f)
+        PointOfTrack beginPoint = PointOfTrack.builder()
+                .longitude(0f)
+                .latitude(0f)
                 .build();
-        PointOfTrack endPoint = new PointOfTrack.PointOfTrackBuilder()
-                .setLongitude(0f)
-                .setLatitude(1f)
+        PointOfTrack endPoint = PointOfTrack.builder()
+                .longitude(0f)
+                .latitude(1f)
                 .build();
         double expectedAbsoluteAngle = 90d;
 
@@ -75,13 +75,13 @@ public class TurnServiceTest {
     @Test
     public void shouldCorrectCalculateAbsoluteAngleOfLineWhenVerticalDownDirection() {
         // given
-        PointOfTrack beginPoint = new PointOfTrack.PointOfTrackBuilder()
-                .setLongitude(0f)
-                .setLatitude(0f)
+        PointOfTrack beginPoint = PointOfTrack.builder()
+                .longitude(0f)
+                .latitude(0f)
                 .build();
-        PointOfTrack endPoint = new PointOfTrack.PointOfTrackBuilder()
-                .setLongitude(0f)
-                .setLatitude(-1f)
+        PointOfTrack endPoint = PointOfTrack.builder()
+                .longitude(0f)
+                .latitude(-1f)
                 .build();
         double expectedAbsoluteAngle = -90d;
 

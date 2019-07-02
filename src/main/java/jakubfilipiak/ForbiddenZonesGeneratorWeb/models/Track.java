@@ -1,5 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.TypeOfZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
@@ -10,6 +11,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jakub Filipiak on 29.05.2019.
@@ -31,7 +33,7 @@ public class Track {
     @Column(name = "track_name", nullable = false, unique = true)
     private String trackName;
 
-    // ------- config -------
+    // ------- configServices -------
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_map_config")
@@ -49,7 +51,7 @@ public class Track {
     @JoinColumn(name = "id_processing_config", nullable = false)
     private ProcessingConfig processingConfig;
 
-    // ---- end of config ----
+    // ---- end of configServices ----
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_track_file", nullable = false)
@@ -73,15 +75,13 @@ public class Track {
     private boolean processed = false;
 
     @Transient
-    private List<ForbiddenZone> zonesByDrop;
-    @Transient
-    private List<ForbiddenZone> zonesByColor;
-    @Transient
-    private List<ForbiddenZone> zonesByTurns;
-    @Transient
-    private List<ForbiddenZone> mergedZones;
+    private Map<TypeOfZone, List<ForbiddenZone>> zonesMap;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_output_file")
     private LocalFile outputFile;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_output_debug_file")
+    private LocalFile outputFileInDebugMode;
 }

@@ -1,6 +1,5 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.ProcessingConfigSingleton;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
 
 import java.util.ArrayList;
@@ -11,12 +10,10 @@ import java.util.List;
  */
 public class CoordinatesService {
 
-    public List<Coordinates> getPixelNeighbors(Coordinates pixelCoordinates) {
-
-        int pixelRadius = ProcessingConfigSingleton.INSTANCE.getRadiusOfPixelsToBeVerified();
-        int sideOfNeighborsSquare = pixelRadius * 2 + 1;
-        int startPixelX = pixelCoordinates.getPixelX() - pixelRadius;
-        int startPixelY = pixelCoordinates.getPixelY() - pixelRadius;
+    public List<Coordinates> getPixelNeighbors(Coordinates pixelCoordinates, int RadiusOfPixelsToBeVerified) {
+        int sideOfNeighborsSquare = RadiusOfPixelsToBeVerified * 2 + 1;
+        int startPixelX = pixelCoordinates.getPixelX() - RadiusOfPixelsToBeVerified;
+        int startPixelY = pixelCoordinates.getPixelY() - RadiusOfPixelsToBeVerified;
         List<Coordinates> neighbors = new ArrayList<>();
 
         for (int rows = 0; rows < sideOfNeighborsSquare; rows++) {

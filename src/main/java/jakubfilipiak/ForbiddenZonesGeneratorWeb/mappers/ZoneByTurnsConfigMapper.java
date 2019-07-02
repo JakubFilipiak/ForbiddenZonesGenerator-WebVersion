@@ -14,12 +14,11 @@ public class ZoneByTurnsConfigMapper implements Mapper<ZoneByTurnsConfig,
 
     @Override
     public ZoneByTurnsConfigDto map(ZoneByTurnsConfig dao) {
-        return ZoneByTurnsConfigDto
+        ZoneByTurnsConfigDto dto = ZoneByTurnsConfigDto
                 .builder()
                 .configName(dao.getConfigName())
                 .minTurnInitiationAngle(dao.getMinTurnInitiationAngle())
-                .ignoredTurnMinValue(dao.getIgnoredTurnMinValue())
-                .ignoredTurnMaxValue(dao.getIgnoredTurnMaxValue())
+                .ignoreTurns(dao.isIgnoreTurns())
                 .minTurnsNumberInSeries(dao.getMinTurnsNumberInSeries())
                 .maxPausesNumberBetweenTurns(dao.getMaxPausesNumberBetweenTurns())
                 .singleTurnZoneFullTime(dao.isSingleTurnZoneFullTime())
@@ -31,16 +30,20 @@ public class ZoneByTurnsConfigMapper implements Mapper<ZoneByTurnsConfig,
                 .verified(dao.isVerified())
                 .deleted(dao.isDeleted())
                 .build();
+        if (dao.isIgnoreTurns()) {
+            dto.setIgnoredTurnMinValue(dao.getIgnoredTurnMinValue());
+            dto.setIgnoredTurnMaxValue(dao.getIgnoredTurnMaxValue());
+        }
+        return dto;
     }
 
     @Override
     public ZoneByTurnsConfig reverseMap(ZoneByTurnsConfigDto dto) {
-        return ZoneByTurnsConfig
+        ZoneByTurnsConfig dao = ZoneByTurnsConfig
                 .builder()
                 .configName(dto.getConfigName())
                 .minTurnInitiationAngle(dto.getMinTurnInitiationAngle())
-                .ignoredTurnMinValue(dto.getIgnoredTurnMinValue())
-                .ignoredTurnMaxValue(dto.getIgnoredTurnMaxValue())
+                .ignoreTurns(dto.isIgnoreTurns())
                 .minTurnsNumberInSeries(dto.getMinTurnsNumberInSeries())
                 .maxPausesNumberBetweenTurns(dto.getMaxPausesNumberBetweenTurns())
                 .singleTurnZoneFullTime(dto.isSingleTurnZoneFullTime())
@@ -50,5 +53,10 @@ public class ZoneByTurnsConfigMapper implements Mapper<ZoneByTurnsConfig,
                 .groupOfTurnsZoneBeginOffset(dto.getGroupOfTurnsZoneBeginOffset())
                 .groupOfTurnsZoneEndOffset(dto.getGroupOfTurnsZoneEndOffset())
                 .build();
+        if (dto.isIgnoreTurns()) {
+            dao.setIgnoredTurnMinValue(dto.getIgnoredTurnMinValue());
+            dao.setIgnoredTurnMaxValue(dto.getIgnoredTurnMaxValue());
+        }
+        return dao;
     }
 }

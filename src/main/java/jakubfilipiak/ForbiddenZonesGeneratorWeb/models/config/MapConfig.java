@@ -60,4 +60,20 @@ public class MapConfig {
 
     @OneToMany(mappedBy = "mapConfig", cascade = CascadeType.ALL)
     private List<Track> tracks;
+
+    public double getRelativeLongitudeZero(){
+        return bottomLeftCornerLongitude;
+    }
+
+    public double getRelativeLatitudeZero() {
+        return upperRightCornerLatitude;
+    }
+
+    public double getLongitudeResolution(){
+        return upperRightCornerLongitude - bottomLeftCornerLongitude;
+    }
+
+    public double getLatitudeResolution(){
+        return upperRightCornerLatitude - bottomLeftCornerLatitude;
+    }
 }

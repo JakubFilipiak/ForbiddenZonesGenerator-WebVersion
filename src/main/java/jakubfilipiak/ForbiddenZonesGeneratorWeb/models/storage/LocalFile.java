@@ -34,6 +34,9 @@ public class LocalFile {
     @OneToMany(mappedBy = "outputFile", cascade = CascadeType.ALL)
     private List<Track> outputFiles;
 
+    @OneToMany(mappedBy = "outputFileInDebugMode", cascade = CascadeType.ALL)
+    private List<Track> outputFilesInDebugMode;
+
     @OneToMany(mappedBy = "mapFile", cascade = CascadeType.ALL)
     private List<MapConfig> mapConfigs;
 }

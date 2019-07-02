@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ZoneByPointsConfigMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
@@ -49,8 +49,6 @@ public class ZoneByPointsConfigService {
                 .ifPresent(config -> {
                     config.setPointsMultiplication(
                             configDto.isPointsMultiplication());
-                    config.setPointsDivider(
-                            configDto.getPointsDivider());
                     config.setPointNeighborhoodVerification(
                             configDto.isPointNeighborhoodVerification());
                     config.setRadiusOfPixelsToBeVerified(

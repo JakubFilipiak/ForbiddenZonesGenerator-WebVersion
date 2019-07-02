@@ -14,14 +14,14 @@ public class TrackDto {
 
     private String trackName;
 
-    // ------- config -------
+    // ------- configServices -------
 
     private String mapConfigName;
     private String zoneByPointsConfigName;
     private String zoneByTurnsConfigName;
     private String processingConfigName;
 
-    // ---- end of config ----
+    // ---- end of configServices ----
 
     private String originalTrackFileName;
     private String uniqueTrackFileName;
@@ -35,4 +35,7 @@ public class TrackDto {
 
     private String originalOutputFileName;
     private String uniqueOutputFileName;
+
+    private String originalOutputDebugFileName;
+    private String uniqueOutputDebugFileName;
 }

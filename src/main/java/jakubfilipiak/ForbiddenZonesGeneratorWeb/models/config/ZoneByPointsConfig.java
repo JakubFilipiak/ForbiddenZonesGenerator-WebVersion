@@ -30,8 +30,6 @@ public class ZoneByPointsConfig {
 
     @Column(name = "points_multiplication", nullable = false)
     private boolean pointsMultiplication;
-    @Column(name = "points_divider")
-    private int pointsDivider;
 
     @Column(name = "point_neighborhood_verification", nullable = false)
     private boolean pointNeighborhoodVerification;

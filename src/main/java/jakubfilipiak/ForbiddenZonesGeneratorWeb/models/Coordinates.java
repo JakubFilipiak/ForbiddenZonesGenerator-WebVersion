@@ -1,5 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
+
 import java.util.Objects;
 
 /**

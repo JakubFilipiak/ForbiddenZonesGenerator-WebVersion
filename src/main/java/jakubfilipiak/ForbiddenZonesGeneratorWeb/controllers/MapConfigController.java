@@ -3,7 +3,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.LocalFileService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.config.MapConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.MapConfigService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
