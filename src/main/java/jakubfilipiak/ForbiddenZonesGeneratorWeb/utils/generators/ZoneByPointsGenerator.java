@@ -1,13 +1,13 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.generators;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.Coordinates;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.ColorChecker;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.ColorChecker;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.CoordinatesService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.PngReader;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io.PngReader;
 
 import java.awt.*;
 import java.util.List;

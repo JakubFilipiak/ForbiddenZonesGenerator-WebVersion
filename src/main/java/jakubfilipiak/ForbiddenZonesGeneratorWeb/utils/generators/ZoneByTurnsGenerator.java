@@ -1,9 +1,9 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.generators;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.TurnOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TurnOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.TurnService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.TurnAngleCalculator;
 
 import java.util.Optional;
 
@@ -126,7 +126,7 @@ public class ZoneByTurnsGenerator {
 
     private boolean isTotalTurnAngleForbidden() {
         if (ignoreTurns) {
-            double totalAngle = TurnService.calculateTurnAngle(
+            double totalAngle = TurnAngleCalculator.calculateTurnAngle(
                     entranceTurn.getAbsoluteEntranceAngle(),
                     departureTurn.getAbsoluteDepartureAngle());
             return totalAngle >= ignoredTurnMinValue

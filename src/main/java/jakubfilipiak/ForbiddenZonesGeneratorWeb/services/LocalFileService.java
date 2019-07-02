@@ -1,6 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.FileType;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.TypeOfFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.LocalFileRepository;
 import org.apache.commons.io.FileUtils;
@@ -103,15 +103,15 @@ public class LocalFileService {
     }
 
     private boolean isFileTypeAllowed(String uniqueFileName) {
-        FileType fileType = getFileType(uniqueFileName);
-        return fileType == FileType.PNG
-                || fileType == FileType.TRK
-                || fileType == FileType.TXT;
+        TypeOfFile typeOfFile = getFileType(uniqueFileName);
+        return typeOfFile == TypeOfFile.PNG
+                || typeOfFile == TypeOfFile.TRK
+                || typeOfFile == TypeOfFile.TXT;
     }
 
-    private FileType getFileType(String filename) {
+    private TypeOfFile getFileType(String filename) {
         String extension = filename.substring(filename.lastIndexOf("."));
-        return FileType.fromString(extension);
+        return TypeOfFile.fromString(extension);
     }
 
     private void saveMultipartFile(MultipartFile file, String pathName) throws IOException {
@@ -166,9 +166,9 @@ public class LocalFileService {
 
 
 
-    public boolean isFileTypeCorrect(String pathname, FileType expectedType) {
+    public boolean isFileTypeCorrect(String pathname, TypeOfFile expectedType) {
 
-        FileType type = getFileType(pathname);
+        TypeOfFile type = getFileType(pathname);
         boolean typeCorrect = type == expectedType;
         if (!typeCorrect)
             LOGGER.log(Level.WARNING, "Wrong file type");

@@ -3,7 +3,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage;
 /**
  * Created by Jakub Filipiak on 29.05.2019.
  */
-public enum FileType {
+public enum TypeOfFile {
 
     TRK(".trk"),
     PNG(".png"),
@@ -12,7 +12,7 @@ public enum FileType {
 
     private String type;
 
-    FileType(String type) {
+    TypeOfFile(String type) {
         this.type = type;
     }
 
@@ -21,11 +21,11 @@ public enum FileType {
         return type;
     }
 
-    public static FileType fromString(String type) {
+    public static TypeOfFile fromString(String type) {
 
-        for (FileType fileType : FileType.values()) {
-            if (fileType.toString().equals(type)) {
-                return fileType;
+        for (TypeOfFile typeOfFile : TypeOfFile.values()) {
+            if (typeOfFile.toString().equals(type)) {
+                return typeOfFile;
             }
         }
         return UNKNOWN;

@@ -1,13 +1,12 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.Coordinates;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

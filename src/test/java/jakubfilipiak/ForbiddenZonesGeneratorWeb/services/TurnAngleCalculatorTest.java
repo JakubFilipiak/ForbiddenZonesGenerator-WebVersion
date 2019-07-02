@@ -1,13 +1,14 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.TurnAngleCalculator;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Created by Jakub Filipiak on 08.06.2019.
  */
-public class TurnServiceTest {
+public class TurnAngleCalculatorTest {
 
     @Test
     public void shouldCorrectCalculateAbsoluteAngleOfLineWhenHorizontalRightDirection() {
@@ -24,7 +25,7 @@ public class TurnServiceTest {
 
         // when
         double resultAbsoluteAngle =
-                TurnService.calculateAbsoluteAngleOfLine(beginPoint, endPoint);
+                TurnAngleCalculator.calculateAbsoluteAngleOfLine(beginPoint, endPoint);
 
         // then
         Assert.assertEquals(expectedAbsoluteAngle, resultAbsoluteAngle, 0.001d);
@@ -45,7 +46,7 @@ public class TurnServiceTest {
 
         // when
         double resultAbsoluteAngle =
-                TurnService.calculateAbsoluteAngleOfLine(beginPoint, endPoint);
+                TurnAngleCalculator.calculateAbsoluteAngleOfLine(beginPoint, endPoint);
 
         // then
         Assert.assertEquals(expectedAbsoluteAngle, resultAbsoluteAngle, 0.001d);
@@ -66,7 +67,7 @@ public class TurnServiceTest {
 
         // when
         double resultAbsoluteAngle =
-                TurnService.calculateAbsoluteAngleOfLine(beginPoint, endPoint);
+                TurnAngleCalculator.calculateAbsoluteAngleOfLine(beginPoint, endPoint);
 
         // then
         Assert.assertEquals(expectedAbsoluteAngle, resultAbsoluteAngle, 0.001d);
@@ -87,7 +88,7 @@ public class TurnServiceTest {
 
         // when
         double resultAbsoluteAngle =
-                TurnService.calculateAbsoluteAngleOfLine(beginPoint, endPoint);
+                TurnAngleCalculator.calculateAbsoluteAngleOfLine(beginPoint, endPoint);
 
         // then
         Assert.assertEquals(expectedAbsoluteAngle, resultAbsoluteAngle, 0.001d);
@@ -102,7 +103,7 @@ public class TurnServiceTest {
 
         // when
         double resultCalculatedAngle =
-                TurnService.calculateTurnAngle(entranceAngle, departureAngle);
+                TurnAngleCalculator.calculateTurnAngle(entranceAngle, departureAngle);
 
         // then
         Assert.assertEquals(expectedCalculatedAngle, resultCalculatedAngle, 0.001d);
@@ -117,7 +118,7 @@ public class TurnServiceTest {
 
         // when
         double resultCalculatedAngle =
-                TurnService.calculateTurnAngle(entranceAngle, departureAngle);
+                TurnAngleCalculator.calculateTurnAngle(entranceAngle, departureAngle);
 
         // then
         Assert.assertEquals(expectedCalculatedAngle, resultCalculatedAngle, 0.001d);
@@ -132,7 +133,7 @@ public class TurnServiceTest {
 
         // when
         double resultCalculatedAngle =
-                TurnService.calculateTurnAngle(entranceAngle, departureAngle);
+                TurnAngleCalculator.calculateTurnAngle(entranceAngle, departureAngle);
 
         // then
         Assert.assertEquals(expectedCalculatedAngle, resultCalculatedAngle, 0.001d);
@@ -147,7 +148,7 @@ public class TurnServiceTest {
 
         // when
         double resultCalculatedAngle =
-                TurnService.calculateTurnAngle(entranceAngle, departureAngle);
+                TurnAngleCalculator.calculateTurnAngle(entranceAngle, departureAngle);
 
         // then
         Assert.assertEquals(expectedCalculatedAngle, resultCalculatedAngle, 0.001d);
@@ -162,7 +163,7 @@ public class TurnServiceTest {
 
         // when
         double resultCalculatedAngle =
-                TurnService.calculateTurnAngle(entranceAngle, departureAngle);
+                TurnAngleCalculator.calculateTurnAngle(entranceAngle, departureAngle);
 
         // then
         Assert.assertEquals(expectedCalculatedAngle, resultCalculatedAngle, 0.001d);

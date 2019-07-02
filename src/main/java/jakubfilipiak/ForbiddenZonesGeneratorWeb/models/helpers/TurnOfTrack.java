@@ -1,6 +1,6 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.models;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.TurnService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.TurnAngleCalculator;
 
 import java.time.LocalTime;
 
@@ -21,9 +21,9 @@ public class TurnOfTrack {
         this.middlePoint = turnOfTrackBuilder.middlePoint;
         this.departurePoint = turnOfTrackBuilder.departurePoint;
 
-        this.absoluteEntranceAngle = TurnService.calculateAbsoluteAngleOfLine(turnOfTrackBuilder.entrancePoint, turnOfTrackBuilder.middlePoint);
-        this.absoluteDepartureAngle = TurnService.calculateAbsoluteAngleOfLine(turnOfTrackBuilder.middlePoint, turnOfTrackBuilder.departurePoint);
-        this.angle = TurnService.calculateTurnAngle(this.absoluteEntranceAngle,
+        this.absoluteEntranceAngle = TurnAngleCalculator.calculateAbsoluteAngleOfLine(turnOfTrackBuilder.entrancePoint, turnOfTrackBuilder.middlePoint);
+        this.absoluteDepartureAngle = TurnAngleCalculator.calculateAbsoluteAngleOfLine(turnOfTrackBuilder.middlePoint, turnOfTrackBuilder.departurePoint);
+        this.angle = TurnAngleCalculator.calculateTurnAngle(this.absoluteEntranceAngle,
                 this.absoluteDepartureAngle);
     }
 

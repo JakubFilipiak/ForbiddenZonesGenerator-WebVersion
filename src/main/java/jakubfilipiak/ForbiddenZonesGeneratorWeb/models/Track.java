@@ -1,10 +1,11 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.TypeOfZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import lombok.*;
 

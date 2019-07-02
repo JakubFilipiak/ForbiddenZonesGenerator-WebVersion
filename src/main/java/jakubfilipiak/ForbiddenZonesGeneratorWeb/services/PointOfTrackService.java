@@ -1,10 +1,9 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

@@ -1,9 +1,9 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.fileServices;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.TypeOfZone;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.TxtWriter;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io.TxtWriter;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

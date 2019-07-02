@@ -1,7 +1,7 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.generators;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.TurnOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TurnOfTrack;
 
 import java.util.Optional;
 

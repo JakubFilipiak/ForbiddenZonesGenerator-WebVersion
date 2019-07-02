@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils;
 
 import java.awt.*;
 

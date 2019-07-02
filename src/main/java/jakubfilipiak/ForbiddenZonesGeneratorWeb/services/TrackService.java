@@ -1,8 +1,8 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.TypeOfZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.TrackMapper;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.dtos.TrackDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
@@ -12,7 +12,8 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.Processi
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByPointsConfigService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTurnsConfigService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.fileServices.TxtService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.generators.AllTypesOfZonesGenerator;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.generators.AllTypesOfZonesGenerator;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io.TrkReader;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

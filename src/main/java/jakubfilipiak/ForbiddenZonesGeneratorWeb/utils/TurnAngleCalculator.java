@@ -1,11 +1,11 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.PointOfTrack;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 
 /**
  * Created by Jakub Filipiak on 30.05.2019.
  */
-public class TurnService {
+public class TurnAngleCalculator {
 
     public static double calculateAbsoluteAngleOfLine(PointOfTrack beginPoint,
                                                   PointOfTrack endPoint) {

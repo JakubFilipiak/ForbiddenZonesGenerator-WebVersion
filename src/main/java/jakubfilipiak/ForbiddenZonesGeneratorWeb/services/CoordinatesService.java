@@ -1,6 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Coordinates;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;

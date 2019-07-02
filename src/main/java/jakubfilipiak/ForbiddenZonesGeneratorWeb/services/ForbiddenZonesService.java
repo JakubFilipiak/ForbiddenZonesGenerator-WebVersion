@@ -1,7 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.TypeOfZone;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.ForbiddenZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
