@@ -39,9 +39,11 @@ public class ZoneByPointsConfig {
     // zone forbidden by points
 
     @Column(name = "min_points_number_in_series", nullable = false)
-    private int minPointsNumberInSeries;
+    @Builder.Default
+    private int minPointsNumberInSeries = - 1;
     @Column(name = "max_pauses_number_between_points", nullable = false)
-    private int maxPausesNumberBetweenPoints;
+    @Builder.Default
+    private int maxPausesNumberBetweenPoints = - 1;
 
     @Column(name = "single_point_zone_begin_offset", nullable = false)
     private int singlePointZoneBeginOffset;

@@ -4,6 +4,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ZoneByPointsConfigMapper
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ZoneByPointsConfigRepository;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.ZoneByPointsConfigValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,19 @@ public class ZoneByPointsConfigService {
     public void addConfig(ZoneByPointsConfigDto configDto) {
         ZoneByPointsConfig config = configMapper.reverseMap(configDto);
         configRepository.save(config);
+    }
+
+    public void verifyConfig(String configName) {
+        configRepository
+                .findByConfigName(configName)
+                .ifPresent(config -> {
+                    ZoneByPointsConfigValidator validator =
+                            new ZoneByPointsConfigValidator(config);
+                    if (validator.isEachParamPresent()) {
+                        config.setVerified(true);
+                        configRepository.save(config);
+                    }
+                });
     }
 
     public List<ZoneByPointsConfigDto> getConfigsDto() {

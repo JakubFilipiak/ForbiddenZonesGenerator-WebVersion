@@ -25,6 +25,11 @@ public class ZoneByPointsConfigController {
         configService.addConfig(configDto);
     }
 
+    @GetMapping("/dto/zone-by-points-configs/verify")
+    public void verifyConfig(@RequestParam String configName) {
+        configService.verifyConfig(configName);
+    }
+
     @GetMapping("/dto/zone-by-points-configs")
     public List<ZoneByPointsConfigDto> getConfigsDto() {
         return configService.getConfigsDto();
