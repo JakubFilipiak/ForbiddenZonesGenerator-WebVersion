@@ -25,6 +25,11 @@ public class ZoneByTurnsConfigController {
         configService.addConfig(configDto);
     }
 
+    @GetMapping("/dto/zone-by-turns-configs/verify")
+    public void verifyConfig(@RequestParam String configName) {
+        configService.verifyConfig(configName);
+    }
+
     @GetMapping("/dto/zone-by-turns-configs")
     public List<ZoneByTurnsConfigDto> getConfigsDto() {
         return configService.getConfigsDto();

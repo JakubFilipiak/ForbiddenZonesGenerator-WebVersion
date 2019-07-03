@@ -37,13 +37,17 @@ public class MapConfig {
     private String forbiddenRGBColor;
 
     @Column(name = "bottom_left_corner_latitude", nullable = false)
+    @Builder.Default
     private double bottomLeftCornerLatitude = -1;
     @Column(name = "bottom_left_corner_longitude", nullable = false)
+    @Builder.Default
     private double bottomLeftCornerLongitude = -1;
 
     @Column(name = "upper_right_corner_latitude", nullable = false)
+    @Builder.Default
     private double upperRightCornerLatitude = -1;
     @Column(name = "upper_right_corner_longitude", nullable = false)
+    @Builder.Default
     private double upperRightCornerLongitude = -1;
 
     // properties

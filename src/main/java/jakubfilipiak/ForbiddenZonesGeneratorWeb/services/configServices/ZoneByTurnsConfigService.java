@@ -4,6 +4,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ZoneByTurnsConfigMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ZoneByTurnsConfigRepository;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.ZoneByTurnsConfigValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,19 @@ public class ZoneByTurnsConfigService {
     public void addConfig(ZoneByTurnsConfigDto configDto) {
         ZoneByTurnsConfig config = configMapper.reverseMap(configDto);
         configRepository.save(config);
+    }
+
+    public void verifyConfig(String configName) {
+        configRepository
+                .findByConfigName(configName)
+                .ifPresent(config -> {
+                    ZoneByTurnsConfigValidator validator =
+                            new ZoneByTurnsConfigValidator(config);
+                    if (validator.isEachParamPresent()) {
+                        config.setVerified(true);
+                        configRepository.save(config);
+                    }
+                });
     }
 
     public List<ZoneByTurnsConfigDto> getConfigsDto() {

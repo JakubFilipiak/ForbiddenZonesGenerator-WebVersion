@@ -29,32 +29,39 @@ public class ZoneByTurnsConfig {
     // turn
 
     @Column(name = "min_turn_initiation_angle", nullable = false)
-    private int minTurnInitiationAngle;
+    @Builder.Default
+    private int minTurnInitiationAngle = 0;
 
     @Column(name = "ignore_turns", nullable = false)
     private boolean ignoreTurns;
 
     @Column(name = "ignored_turn_min_value")
-    private int ignoredTurnMinValue;
+    @Builder.Default
+    private int ignoredTurnMinValue = 0;
     @Column(name = "ignored_turn_max_value")
-    private int ignoredTurnMaxValue;
+    @Builder.Default
+    private int ignoredTurnMaxValue = 0;
 
     // zone forbidden by turns
 
     @Column(name = "min_turns_number_in_series", nullable = false)
-    private int minTurnsNumberInSeries;
+    @Builder.Default
+    private int minTurnsNumberInSeries = - 1;
     @Column(name = "max_pauses_number_between_turns", nullable = false)
-    private int maxPausesNumberBetweenTurns;
+    @Builder.Default
+    private int maxPausesNumberBetweenTurns = - 1;
 
     @Column(name = "single_turn_zone_full_time", nullable = false)
-    private boolean singleTurnZoneFullTime;
+    @Builder.Default
+    private boolean singleTurnZoneFullTime = true;
     @Column(name = "single_turn_zone_begin_offset", nullable = false)
     private int singleTurnZoneBeginOffset;
     @Column(name = "single_turn_zone_end_offset", nullable = false)
     private int singleTurnZoneEndOffset;
 
     @Column(name = "group_of_turns_zone_full_time", nullable = false)
-    private boolean groupOfTurnsZoneFullTime;
+    @Builder.Default
+    private boolean groupOfTurnsZoneFullTime = true;
     @Column(name = "group_of_turns_zone_begin_offset", nullable = false)
     private int groupOfTurnsZoneBeginOffset;
     @Column(name = "group_of_turns_zone_end_offset", nullable = false)
