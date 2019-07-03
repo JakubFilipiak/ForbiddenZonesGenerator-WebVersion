@@ -5,6 +5,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.Coordinates;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io.PngReader;
 
 import java.awt.*;
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,23 @@ public class MapConfigValidator {
 
     public MapConfigValidator(MapConfig config) {
         this.config = config;
+    }
+
+    public boolean isEachParamPresent() {
+        boolean isMapFilePresent =
+                config.getMapFile() != null &&
+                new File(config.getMapFile().getPathName()).exists();
+        boolean isEachRgbColorPresent =
+                config.getAllowedRGBColor() != null &&
+                !config.getAllowedRGBColor().isEmpty() &&
+                config.getForbiddenRGBColor() != null &&
+                !config.getForbiddenRGBColor().isEmpty();
+        boolean isEachCoordinatePresent =
+                config.getBottomLeftCornerLatitude() != - 1 &&
+                config.getBottomLeftCornerLongitude() != - 1 &&
+                config.getUpperRightCornerLatitude() != - 1 &&
+                config.getUpperRightCornerLongitude() != - 1;
+        return isMapFilePresent && isEachRgbColorPresent && isEachCoordinatePresent;
     }
 
     public boolean isEachCoordinateCorrect() {
@@ -78,7 +96,7 @@ public class MapConfigValidator {
         return !allowedColor.equals(forbiddenColor);
     }
 
-    public Color createColorFromStringRGB(String rgb) {
+    private Color createColorFromStringRGB(String rgb) {
         String[] singleColors = rgb.split(",");
         final int rIndex = 0;
         final int gIndex = 1;

@@ -40,12 +40,13 @@ public class MapConfigService {
                 .findByConfigName(configName)
                 .ifPresent(config -> {
                     MapConfigValidator validator = new MapConfigValidator(config);
-                    if (validator.isEachCoordinateCorrect())
-                        if (validator.isColorsDefinitionCorrect())
-                            if (validator.isPNGMapCorrect()) {
-                                config.setVerified(true);
-                                configRepository.save(config);
-                            }
+                    if (validator.isEachParamPresent())
+                        if (validator.isEachCoordinateCorrect())
+                            if (validator.isColorsDefinitionCorrect())
+                                if (validator.isPNGMapCorrect()) {
+                                    config.setVerified(true);
+                                    configRepository.save(config);
+                                }
                 });
     }
 
