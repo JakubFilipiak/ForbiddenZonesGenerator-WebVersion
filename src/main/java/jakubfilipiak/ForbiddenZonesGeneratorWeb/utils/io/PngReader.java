@@ -21,7 +21,8 @@ public class PngReader {
     private FileInputStream mapStream;
     private BufferedImage mapImage;
 
-    public PngReader(MapConfig config) {
+    public
+    PngReader(MapConfig config) {
         this.config = config;
         createBufferedImage();
     }
@@ -34,6 +35,14 @@ public class PngReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getImageWidth() {
+        return mapImage.getWidth();
+    }
+
+    public int getImageHeight() {
+        return mapImage.getHeight();
     }
 
     public Color getPixelColor(Coordinates coordinates) {

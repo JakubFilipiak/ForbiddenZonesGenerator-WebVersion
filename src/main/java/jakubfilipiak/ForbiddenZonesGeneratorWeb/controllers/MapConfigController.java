@@ -51,6 +51,11 @@ public class MapConfigController {
                 .ifPresent(localFile -> configService.addConfig(configDto, localFile));
     }
 
+    @GetMapping("/dto/map-configs/verify")
+    public void verifyConfig(@RequestParam String configName) {
+        configService.verifyConfig(configName);
+    }
+
     @GetMapping("/dto/map-configs")
     public List<MapConfigDto> getConfigsDto() {
         return configService.getConfigsDto();

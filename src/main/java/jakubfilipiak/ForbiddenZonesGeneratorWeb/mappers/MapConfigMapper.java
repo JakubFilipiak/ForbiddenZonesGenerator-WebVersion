@@ -34,8 +34,8 @@ public class MapConfigMapper implements Mapper<MapConfig, MapConfigDto> {
         return MapConfig
                 .builder()
                 .configName(dto.getConfigName())
-                .allowedRGBColor(dto.getAllowedRGBColor())
-                .forbiddenRGBColor(dto.getForbiddenRGBColor())
+                .allowedRGBColor(dto.getAllowedRGBColor().trim())
+                .forbiddenRGBColor(dto.getForbiddenRGBColor().trim())
                 .bottomLeftCornerLatitude(dto.getBottomLeftCornerLatitude())
                 .bottomLeftCornerLongitude(dto.getBottomLeftCornerLongitude())
                 .upperRightCornerLatitude(dto.getUpperRightCornerLatitude())

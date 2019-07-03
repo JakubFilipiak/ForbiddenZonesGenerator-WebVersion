@@ -5,6 +5,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.MapConfigRepository;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.MapConfigValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,20 @@ public class MapConfigService {
         MapConfig config = configMapper.reverseMap(configDto);
         config.setMapFile(localFile);
         configRepository.save(config);
+    }
+
+    public void verifyConfig(String configName) {
+        configRepository
+                .findByConfigName(configName)
+                .ifPresent(config -> {
+                    MapConfigValidator validator = new MapConfigValidator(config);
+                    if (validator.isEachCoordinateCorrect())
+                        if (validator.isColorsDefinitionCorrect())
+                            if (validator.isPNGMapCorrect()) {
+                                config.setVerified(true);
+                                configRepository.save(config);
+                            }
+                });
     }
 
     public List<MapConfigDto> getConfigsDto() {
