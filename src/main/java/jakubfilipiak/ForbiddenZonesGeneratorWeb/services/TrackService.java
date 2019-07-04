@@ -14,6 +14,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTu
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.fileServices.TxtService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.generators.AllTypesOfZonesGenerator;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io.TrkReader;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.TrackValidator;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -80,6 +81,19 @@ public class TrackService {
                 .getConfigByConfigName(trackDto.getProcessingConfigName())
                 .ifPresent(track::setProcessingConfig);
         trackRepository.save(track);
+    }
+
+    public void verifyConfig(String trackName) {
+        trackRepository
+                .findByTrackName(trackName)
+                .ifPresent(track -> {
+                    TrackValidator validator = new TrackValidator(track);
+                    if (validator.isEachParamPresent())
+                        if (validator.isEachParamCorrect()) {
+                            track.setVerified(true);
+                            trackRepository.save(track);
+                        }
+                });
     }
 
     public List<TrackDto> getTracksDto() {

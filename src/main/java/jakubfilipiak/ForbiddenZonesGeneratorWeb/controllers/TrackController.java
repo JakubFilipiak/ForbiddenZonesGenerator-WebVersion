@@ -39,6 +39,11 @@ public class TrackController {
                         trackService.addTrack(trackDto, localFile));
     }
 
+    @GetMapping("/dto/tracks/verify")
+    public void verifyConfig(@RequestParam String trackName) {
+        trackService.verifyConfig(trackName);
+    }
+
     @PostMapping(value = "/dto/tracks/from-existing")
     public void addTrackFromExistingTrack(
             @RequestParam("existingUniqueFileName") String existingUniqueFileName,

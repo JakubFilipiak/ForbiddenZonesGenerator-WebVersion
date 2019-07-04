@@ -38,7 +38,8 @@ public class ProcessingConfig {
     // properties
 
     @Column(name = "verified", nullable = false)
-    private boolean verified;
+    @Builder.Default
+    private boolean verified = true;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
