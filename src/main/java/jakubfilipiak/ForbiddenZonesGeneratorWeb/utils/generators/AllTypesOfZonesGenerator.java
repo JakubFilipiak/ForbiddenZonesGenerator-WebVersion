@@ -4,6 +4,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.TurnAngleCalculator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,7 +115,7 @@ public class AllTypesOfZonesGenerator {
                 multipliedPointsGenerator = new MultipliedPointsGenerator();
         }
         if (isZoneByTurnsCreation) {
-            turnOfTrackGenerator = new TurnOfTrackGenerator();
+            turnOfTrackGenerator = new TurnOfTrackGenerator(new TurnAngleCalculator());
             zoneByTurnsGenerator =
                     new ZoneByTurnsGenerator(track.getZoneByTurnsConfig());
         }

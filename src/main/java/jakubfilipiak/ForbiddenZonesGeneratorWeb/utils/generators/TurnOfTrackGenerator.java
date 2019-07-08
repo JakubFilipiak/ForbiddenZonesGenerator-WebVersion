@@ -11,11 +11,15 @@ import java.util.Optional;
  */
 public class TurnOfTrackGenerator {
 
-    private TurnAngleCalculator turnAngleCalculator = new TurnAngleCalculator();
+    private TurnAngleCalculator turnAngleCalculator;
 
     private PointOfTrack entrancePoint;
     private PointOfTrack middlePoint;
     private PointOfTrack departurePoint;
+
+    public TurnOfTrackGenerator(TurnAngleCalculator turnAngleCalculator) {
+        this.turnAngleCalculator = turnAngleCalculator;
+    }
 
     public void updatePointsBuffer(PointOfTrack pointOfTrack) {
         entrancePoint = middlePoint;
