@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Created by Jakub Filipiak on 29.05.2019.
@@ -13,9 +14,9 @@ import java.time.format.DateTimeFormatter;
 public class ForbiddenZone implements Comparable<ForbiddenZone>{
 
     @Getter
-    private LocalTime entranceTime;
+    private final LocalTime entranceTime;
     @Getter
-    private LocalTime departureTime;
+    private final LocalTime departureTime;
     public static DateTimeFormatter formatter =
             DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -24,11 +25,19 @@ public class ForbiddenZone implements Comparable<ForbiddenZone>{
         this.departureTime = departureTime;
     }
 
+    public static ForbiddenZone fromTimestamps(LocalTime entranceTime, LocalTime departureTime) {
+        return new ForbiddenZone(entranceTime, departureTime);
+    }
+
     public static ForbiddenZone fromSingleTurn(TurnOfTrack turnOfTrack,
                                                ZoneByTurnsConfig config) {
         if (config.isSingleTurnZoneFullTime()) {
-            LocalTime entranceTime = turnOfTrack.getEntranceTime();
-            LocalTime departureTime = turnOfTrack.getDepartureTime();
+            LocalTime entranceTime = turnOfTrack
+                    .getEntranceTime()
+                    .minusSeconds(config.getSingleTurnZoneBeginOffset());
+            LocalTime departureTime = turnOfTrack
+                    .getDepartureTime()
+                    .plusSeconds(config.getSingleTurnZoneEndOffset());
             return new ForbiddenZone(entranceTime, departureTime);
         }
         LocalTime entranceTime = turnOfTrack
@@ -44,8 +53,12 @@ public class ForbiddenZone implements Comparable<ForbiddenZone>{
                                                  TurnOfTrack departureTurn,
                                                  ZoneByTurnsConfig config) {
         if (config.isGroupOfTurnsZoneFullTime()) {
-            LocalTime entranceTime = entranceTurn.getEntranceTime();
-            LocalTime departureTime = departureTurn.getDepartureTime();
+            LocalTime entranceTime = entranceTurn
+                    .getEntranceTime()
+                    .minusSeconds(config.getGroupOfTurnsZoneBeginOffset());
+            LocalTime departureTime = departureTurn
+                    .getDepartureTime()
+                    .plusSeconds(config.getGroupOfTurnsZoneEndOffset());
             return new ForbiddenZone(entranceTime, departureTime);
         }
         LocalTime entranceTime = entranceTurn
@@ -82,15 +95,25 @@ public class ForbiddenZone implements Comparable<ForbiddenZone>{
         return new ForbiddenZone(entranceTime, departureTime);
     }
 
-    public static ForbiddenZone fromTimestamps(LocalTime entranceTime, LocalTime departureTime) {
-        return new ForbiddenZone(entranceTime, departureTime);
-    }
-
     @Override
     public String toString() {
         String entranceTimeString = entranceTime.format(formatter);
         String departureTimeString = departureTime.format(formatter);
         return entranceTimeString + " " + departureTimeString;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ForbiddenZone that = (ForbiddenZone) o;
+        return entranceTime.equals(that.entranceTime) &&
+                departureTime.equals(that.departureTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(entranceTime, departureTime);
     }
 
     @Override
