@@ -117,7 +117,8 @@ public class AllTypesOfZonesGenerator {
         if (isZoneByTurnsCreation) {
             turnOfTrackGenerator = new TurnOfTrackGenerator(new TurnAngleCalculator());
             zoneByTurnsGenerator =
-                    new ZoneByTurnsGenerator(track.getZoneByTurnsConfig());
+                    new ZoneByTurnsGenerator(track.getZoneByTurnsConfig(),
+                            new TurnAngleCalculator());
         }
     }
 

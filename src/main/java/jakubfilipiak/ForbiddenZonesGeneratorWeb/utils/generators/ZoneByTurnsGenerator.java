@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public class ZoneByTurnsGenerator {
 
-    private TurnAngleCalculator turnAngleCalculator = new TurnAngleCalculator();
+    private TurnAngleCalculator turnAngleCalculator;
 
     private ZoneByTurnsConfig config;
 
@@ -28,8 +28,10 @@ public class ZoneByTurnsGenerator {
     private int turnsCounter = 0;
     private int pauseCounter = 0;
 
-    public ZoneByTurnsGenerator(ZoneByTurnsConfig config) {
+    public ZoneByTurnsGenerator(ZoneByTurnsConfig config,
+                                TurnAngleCalculator turnAngleCalculator) {
         this.config = config;
+        this.turnAngleCalculator = turnAngleCalculator;
         initConfig();
     }
 
