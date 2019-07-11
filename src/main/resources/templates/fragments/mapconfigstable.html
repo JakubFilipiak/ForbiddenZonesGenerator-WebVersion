@@ -1,0 +1,62 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="mapConfigsTable">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nazwa</th>
+                    <th scope="col">Plik</th>
+                    <th scope="col">Dozwolony kolor</th>
+                    <th scope="col">Zabroniony kolor</th>
+                    <th scope="col">Szer. geogr. LDR</th>
+                    <th scope="col">Dł. geogr. LDR</th>
+                    <th scope="col">Szer. geogr. PGR</th>
+                    <th scope="col">Dł. geogr. PGR</th>
+                    <th scope="col">Poprawne</th>
+                    <th scope="col">Zweryfikuj</th>
+                    <th scope="col">Usuń</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${mapConfigs}">
+                    <td th:text="${c.getConfigName()}"></td>
+                    <td th:text="${c.getOriginalFileName()}"></td>
+                    <td th:text="${c.getAllowedRGBColor()}"></td>
+                    <td th:text="${c.getForbiddenRGBColor()}"></td>
+                    <td th:text="${#numbers.formatDecimal(
+                            c.getBottomLeftCornerLatitude(), 1, 6, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(
+                    c.getBottomLeftCornerLongitude(), 1, 6, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(
+                    c.getUpperRightCornerLatitude(), 1, 6, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(
+                    c.getUpperRightCornerLongitude(), 1, 6, 'POINT')}"></td>
+                    <td th:text="${c.isVerified()}"></td>
+                    <td>
+                        <form action="/mapconfigs/verify" method="get">
+                            <input type="hidden"
+                                   th:value="${c.getConfigName()}"
+                                   name="configName">
+                            <button type="submit"
+                                    class="btn btn-outline-primary btn-sm"
+                                    th:disabled="${c.isVerified()}">Zweryfikuj
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/mapconfigs/delete" method="get">
+                            <input type="hidden"
+                                   th:value="${c.getConfigName()}"
+                                   name="configName">
+                            <button type="submit"
+                                    class="btn btn-outline-danger btn-sm">Usuń
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -32,6 +32,5 @@ HELP.md
 mvnw*
 database.mv.db
 database.trace.db
-/src/main/resources/
 /uploadedMapFiles/
 /uploadedFiles/
