@@ -1,8 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Created by Jakub Filipiak on 19.06.2019.
@@ -10,6 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ZoneByPointsConfigDto {
 
     private String configName;

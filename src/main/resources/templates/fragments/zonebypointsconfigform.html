@@ -1,0 +1,161 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="zoneByPointsConfigForm">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Dodaj nową konfigurację</h5>
+        </div>
+
+
+
+        <div class="col-md-12">
+            <p th:text="${message}" style="color: red"></p>
+            <form class="needs-validation" novalidate
+                  enctype="multipart/form-data"
+                  th:object="${configDto}"
+                  th:action="@{/zonebypointsconfigs}" th:method="post">
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="configName">Nazwa</label>
+                        <input type="text"
+                               name="configName"
+                               class="form-control"
+                               id="configName"
+                               placeholder="Twoja unikalna nazwa"
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getConfigName()} + ' - popraw nazwę' : ''">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div>
+                            <label for="multi">Zagęszcz. pkt.</label>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="checkbox"
+                                   name="pointsMultiplication"
+                                   class="form-check-input"
+                                   id="multi"
+                                   th:checked="${wrongConfig != null}? ${wrongConfig.isPointsMultiplication()}">
+                            <label class="form-check-label"
+                                   for="multi">Tak</label>
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div>
+                            <label for="neighbor">Spr. sąsiedztwa pkt.</label>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="checkbox"
+                                   name="pointNeighborhoodVerification"
+                                   class="form-check-input"
+                                   id="neighbor"
+                                   th:checked="${wrongConfig != null}? ${wrongConfig.isPointNeighborhoodVerification()}">
+                            <label class="form-check-label"
+                                   for="neighbor">Tak</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="radius">Promień do spr.</label>
+                        <input type="number"
+                               min="0"
+                               name="radiusOfPixelsToBeVerified"
+                               class="form-control"
+                               id="radius"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getRadiusOfPixelsToBeVerified()} : ''">
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label for="minPoints">Min. il. pkt. w strefie</label>
+                        <input type="number"
+                               name="minPointsNumberInSeries"
+                               class="form-control"
+                               id="minPoints"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getMinPointsNumberInSeries()} : ''">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="maxPauses">Max. il. pauz w strefie</label>
+                        <input type="number"
+                               name="maxPausesNumberBetweenPoints"
+                               class="form-control"
+                               id="maxPauses"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getMaxPausesNumberBetweenPoints()} : ''">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="SPBOffset">Offset pocz. poj. pkt.</label>
+                        <input type="number"
+                               name="singlePointZoneBeginOffset"
+                               class="form-control"
+                               id="SPBOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getSinglePointZoneBeginOffset()} : ''">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="SPEOffset">Offset końc. poj. pkt.</label>
+                        <input type="number"
+                               name="singlePointZoneEndOffset"
+                               class="form-control"
+                               id="SPEOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getSinglePointZoneEndOffset()} : ''">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="GPBOffset">Offset pocz. grupy pkt.</label>
+                        <input type="number"
+                               name="groupOfPointsZoneBeginOffset"
+                               class="form-control"
+                               id="GPBOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getGroupOfPointsZoneBeginOffset()} : ''">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="GPEOffset">Offset końc. grupy pkt.</label>
+                        <input type="number"
+                               name="groupOfPointsZoneEndOffset"
+                               class="form-control"
+                               id="GPEOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getGroupOfPointsZoneEndOffset()} : ''">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+
+            </form>
+            <script>
+            // Example starter JavaScript for disabling form submissions
+            //if there are invalid fields
+            (function() {
+                'use strict';
+            window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap
+            // validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+            }, false);
+            })();
+            </script>
+        </div>
+    </div>
+</div>
