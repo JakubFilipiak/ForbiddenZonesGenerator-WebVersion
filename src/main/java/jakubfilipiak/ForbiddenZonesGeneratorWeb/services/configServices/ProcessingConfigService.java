@@ -4,6 +4,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ProcessingConfigMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ProcessingConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ProcessingConfigRepository;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.ProcessingConfigValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,7 +34,16 @@ public class ProcessingConfigService {
     }
 
     public void verifyConfig(String configName) {
-
+        configRepository
+                .findByConfigName(configName)
+                .ifPresent(config -> {
+                    ProcessingConfigValidator validator =
+                            new ProcessingConfigValidator(config);
+                    if (validator.isAtLeastOneParamTrue()) {
+                        config.setVerified(true);
+                        configRepository.save(config);
+                    }
+                });
     }
 
     public List<ProcessingConfigDto> getConfigsDto() {
