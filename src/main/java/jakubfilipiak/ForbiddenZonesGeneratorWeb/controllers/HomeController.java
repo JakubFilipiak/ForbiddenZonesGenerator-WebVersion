@@ -2,17 +2,19 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsConfigDto;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.LocalFileService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.MapConfigService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByPointsConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTurnsConfigService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,11 +27,13 @@ public class HomeController {
     private MapConfigService mapConfigService;
     private LocalFileService localFileService;
     private ZoneByPointsConfigService zoneByPointsConfigService;
+    private ZoneByTurnsConfigService zoneByTurnsConfigService;
 
-    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService) {
+    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService, ZoneByTurnsConfigService zoneByTurnsConfigService) {
         this.mapConfigService = mapConfigService;
         this.localFileService = localFileService;
         this.zoneByPointsConfigService = zoneByPointsConfigService;
+        this.zoneByTurnsConfigService = zoneByTurnsConfigService;
     }
 
     @GetMapping("/mapconfigs")
@@ -109,5 +113,44 @@ public class HomeController {
     public String deleteZoneByPointsConfig(@RequestParam("configName") String configName) {
         zoneByPointsConfigService.setConfigAsDeleted(configName);
         return "redirect:/zonebypointsconfigs";
+    }
+
+    // ************************************************************************
+
+    @GetMapping("/zonebyturnsconfigs")
+    public String getZoneByTurnsConfigs(Model model) {
+        model.addAttribute("zoneByTurnsConfigs", zoneByTurnsConfigService.getConfigsDto());
+        return "zonebyturnsconfigs";
+    }
+
+    @PostMapping(value = "/zonebyturnsconfigs", consumes = "multipart/form-data")
+    public String addZoneByTurnsConfig(@ModelAttribute ZoneByTurnsConfigDto configDto,
+                                        Model model) {
+        List<String> existingConfigNames = zoneByTurnsConfigService.getConfigsDto()
+                .stream()
+                .map(ZoneByTurnsConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        if (existingConfigNames.contains(configDto.getConfigName())) {
+            model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
+            model.addAttribute("zoneByTurnsConfigs",
+                    zoneByTurnsConfigService.getConfigsDto());
+            model.addAttribute("wrongConfig", configDto);
+            return "zonebyturnsconfigs";
+        } else {
+            zoneByTurnsConfigService.addConfig(configDto);
+            return "redirect:/zonebyturnsconfigs";
+        }
+    }
+
+    @GetMapping("/zonebyturnsconfigs/verify")
+    public String verifyZoneBTurnsConfig(@RequestParam("configName") String configName) {
+        zoneByTurnsConfigService.verifyConfig(configName);
+        return "redirect:/zonebyturnsconfigs";
+    }
+
+    @GetMapping("/zonebyturnsconfigs/delete")
+    public String deleteZoneByTurnsConfig(@RequestParam("configName") String configName) {
+        zoneByTurnsConfigService.setConfigAsDeleted(configName);
+        return "redirect:/zonebyturnsconfigs";
     }
 }

@@ -1,0 +1,80 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="zoneByTurnsConfigsTable">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nazwa</th>
+
+                    <th scope="col">Min. kąt inicjacji zakrętu</th>
+
+                    <th scope="col">Ignoruj wybrane zakręty</th>
+                    <th scope="col">Min. kąt ignorowanego zakrętu</th>
+                    <th scope="col">Max. kąt ignorowanego zakrętu</th>
+
+                    <th scope="col">Min. il. zakrętów w strefie</th>
+                    <th scope="col">Max. il. pauz w strefie</th>
+
+                    <th scope="col">Pełny czas strefy z poj. zakr.</th>
+                    <th scope="col">Offset pocz. strefy z poj. zakr.</th>
+                    <th scope="col">Offset końc. strefy z poj. zakr.</th>
+
+                    <th scope="col">Pełny czas strefy z grupy zakr.</th>
+                    <th scope="col">Offset pocz. strefy z grupy zakr.</th>
+                    <th scope="col">Offset końc. strefy z grupy zakr.</th>
+
+                    <th scope="col">Poprawne</th>
+                    <th scope="col">Zweryfikuj</th>
+                    <th scope="col">Usuń</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${zoneByTurnsConfigs}">
+                    <td th:text="${c.getConfigName()}"></td>
+
+                    <td th:text="${c.getMinTurnInitiationAngle()}"></td>
+
+                    <td th:text="${c.isIgnoreTurns()}"></td>
+                    <td th:text="${c.getIgnoredTurnMinValue()}"></td>
+                    <td th:text="${c.getIgnoredTurnMaxValue()}"></td>
+
+                    <td th:text="${c.getMinTurnsNumberInSeries()}"></td>
+                    <td th:text="${c.getMaxPausesNumberBetweenTurns()}"></td>
+
+                    <td th:text="${c.isSingleTurnZoneFullTime()}"></td>
+                    <td th:text="${c.getSingleTurnZoneBeginOffset()}"></td>
+                    <td th:text="${c.getSingleTurnZoneEndOffset()}"></td>
+
+                    <td th:text="${c.isGroupOfTurnsZoneFullTime()}"></td>
+                    <td th:text="${c.getGroupOfTurnsZoneBeginOffset()}"></td>
+                    <td th:text="${c.getGroupOfTurnsZoneEndOffset()}"></td>
+
+                    <td th:text="${c.isVerified()}"></td>
+                    <td>
+                        <form action="/zonebyturnsconfigs/verify" method="get">
+                            <input type="hidden"
+                                   th:value="${c.getConfigName()}"
+                                   name="configName">
+                            <button type="submit"
+                                    class="btn btn-outline-primary btn-sm"
+                                    th:disabled="${c.isVerified()}">Zweryfikuj
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/zonebyturnsconfigs/delete" method="get">
+                            <input type="hidden"
+                                   th:value="${c.getConfigName()}"
+                                   name="configName">
+                            <button type="submit"
+                                    class="btn btn-outline-danger btn-sm">Usuń
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
