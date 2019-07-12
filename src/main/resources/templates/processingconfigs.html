@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+<div class="container">
+    <div class="row">
+        <div
+                th:replace="fragments/processingconfigstable :: processingConfigsTable"></div>
+    </div>
+    <div class="row">
+        <div
+                th:replace="fragments/processingconfigform :: processingConfigForm"></div>
+    </div>
+</div>
+</body>
+</html>

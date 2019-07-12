@@ -32,6 +32,10 @@ public class ProcessingConfigService {
         configRepository.save(config);
     }
 
+    public void verifyConfig(String configName) {
+
+    }
+
     public List<ProcessingConfigDto> getConfigsDto() {
         return configRepository
                 .findAllNotDeleted()

@@ -1,0 +1,51 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="processingConfigsTable">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nazwa</th>
+                    <th scope="col">Strefy z przedziału czasowego</th>
+                    <th scope="col">Strefy z punktów</th>
+                    <th scope="col">Strefy z zakrętów</th>
+                    <th scope="col">Poprawne</th>
+                    <th scope="col">Zweryfikuj</th>
+                    <th scope="col">Usuń</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${processingConfigs}">
+                    <td th:text="${c.getConfigName()}"></td>
+                    <td th:text="${c.isZoneByDropTimeCreation()}"></td>
+                    <td th:text="${c.isZoneByPointsCreation()}"></td>
+                    <td th:text="${c.isZoneByTurnsCreation()}"></td>
+
+                    <td th:text="${c.isVerified()}"></td>
+                    <td>
+                        <form action="/processingconfigs/verify" method="get">
+                            <input type="hidden"
+                                   th:value="${c.getConfigName()}"
+                                   name="configName">
+                            <button type="submit"
+                                    class="btn btn-outline-primary btn-sm"
+                                    th:disabled="${c.isVerified()}">Zweryfikuj
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/processingconfigs/delete" method="get">
+                            <input type="hidden"
+                                   th:value="${c.getConfigName()}"
+                                   name="configName">
+                            <button type="submit"
+                                    class="btn btn-outline-danger btn-sm">Usuń
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

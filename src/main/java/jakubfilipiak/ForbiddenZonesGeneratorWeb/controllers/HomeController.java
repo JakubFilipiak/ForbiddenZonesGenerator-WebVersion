@@ -1,10 +1,12 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ProcessingConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.LocalFileService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.MapConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ProcessingConfigService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByPointsConfigService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTurnsConfigService;
 import org.springframework.stereotype.Controller;
@@ -28,12 +30,14 @@ public class HomeController {
     private LocalFileService localFileService;
     private ZoneByPointsConfigService zoneByPointsConfigService;
     private ZoneByTurnsConfigService zoneByTurnsConfigService;
+    private ProcessingConfigService processingConfigService;
 
-    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService, ZoneByTurnsConfigService zoneByTurnsConfigService) {
+    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService, ZoneByTurnsConfigService zoneByTurnsConfigService, ProcessingConfigService processingConfigService) {
         this.mapConfigService = mapConfigService;
         this.localFileService = localFileService;
         this.zoneByPointsConfigService = zoneByPointsConfigService;
         this.zoneByTurnsConfigService = zoneByTurnsConfigService;
+        this.processingConfigService = processingConfigService;
     }
 
     @GetMapping("/mapconfigs")
@@ -152,5 +156,44 @@ public class HomeController {
     public String deleteZoneByTurnsConfig(@RequestParam("configName") String configName) {
         zoneByTurnsConfigService.setConfigAsDeleted(configName);
         return "redirect:/zonebyturnsconfigs";
+    }
+
+    // ************************************************************************
+
+    @GetMapping("/processingconfigs")
+    public String getProcessingConfigs(Model model) {
+        model.addAttribute("processingConfigs", processingConfigService.getConfigsDto());
+        return "processingconfigs";
+    }
+
+    @PostMapping(value = "/processingconfigs", consumes = "multipart/form-data")
+    public String addProcessingConfig(@ModelAttribute ProcessingConfigDto configDto,
+                                       Model model) {
+        List<String> existingConfigNames = processingConfigService.getConfigsDto()
+                .stream()
+                .map(ProcessingConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        if (existingConfigNames.contains(configDto.getConfigName())) {
+            model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
+            model.addAttribute("processingConfigs",
+                    processingConfigService.getConfigsDto());
+            model.addAttribute("wrongConfig", configDto);
+            return "processingconfigs";
+        } else {
+            processingConfigService.addConfig(configDto);
+            return "redirect:/processingconfigs";
+        }
+    }
+
+    @GetMapping("/processingconfigs/verify")
+    public String verifyProcessingConfig(@RequestParam("configName") String configName) {
+        processingConfigService.verifyConfig(configName);
+        return "redirect:/processingconfigs";
+    }
+
+    @GetMapping("/processingconfigs/delete")
+    public String deleteProcessingConfig(@RequestParam("configName") String configName) {
+        processingConfigService.setConfigAsDeleted(configName);
+        return "redirect:/processingconfigs";
     }
 }

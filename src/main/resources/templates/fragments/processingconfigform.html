@@ -1,0 +1,100 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="processingConfigForm">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Dodaj nową konfigurację</h5>
+        </div>
+
+
+
+        <div class="col-md-12">
+            <p th:text="${message}" style="color: red"></p>
+            <form class="needs-validation" novalidate
+                  enctype="multipart/form-data"
+                  th:object="${configDto}"
+                  th:action="@{/processingconfigs}" th:method="post">
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="configName">Nazwa</label>
+                        <input type="text"
+                               name="configName"
+                               class="form-control"
+                               id="configName"
+                               placeholder="Twoja unikalna nazwa"
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getConfigName()} + ' - popraw nazwę' : ''">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div>
+                            <label for="time">Czas zrzutu</label>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="checkbox"
+                                   name="zoneByDropTimeCreation"
+                                   class="form-check-input"
+                                   id="time"
+                                   th:checked="${wrongConfig != null}? ${wrongConfig.isZoneByDropTimeCreation()}">
+                            <label class="form-check-label"
+                                   for="time">Tak</label>
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div>
+                            <label for="points">Punkty</label>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="checkbox"
+                                   name="zoneByPointsCreation"
+                                   class="form-check-input"
+                                   id="points"
+                                   th:checked="${wrongConfig != null}? ${wrongConfig.isZoneByPointsCreation()}">
+                            <label class="form-check-label"
+                                   for="points">Tak</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div>
+                            <label for="turns">Zakręty</label>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="checkbox"
+                                   name="zoneByTurnsCreation"
+                                   class="form-check-input"
+                                   id="turns"
+                                   th:checked="${wrongConfig != null}? ${wrongConfig.isZoneByTurnsCreation()}">
+                            <label class="form-check-label"
+                                   for="turns">Tak</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+
+            </form>
+            <script>
+            // Example starter JavaScript for disabling form submissions
+            //if there are invalid fields
+            (function() {
+                'use strict';
+            window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap
+            // validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+            }, false);
+            })();
+            </script>
+        </div>
+    </div>
+</div>
