@@ -41,7 +41,7 @@ public class TrackController {
 
     @GetMapping("/dto/tracks/verify")
     public void verifyConfig(@RequestParam String trackName) {
-        trackService.verifyConfig(trackName);
+        trackService.verifyTrack(trackName);
     }
 
     @PostMapping(value = "/dto/tracks/from-existing")

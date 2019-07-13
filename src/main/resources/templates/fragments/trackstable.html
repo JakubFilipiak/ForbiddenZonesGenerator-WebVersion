@@ -1,0 +1,74 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="tracksTable">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nazwa</th>
+                    <th scope="col">Plik trasy</th>
+                    <th scope="col">Czas rozpoczęcia zrzutu</th>
+                    <th scope="col">Czas zakończenia zrzutu</th>
+                    <th scope="col">Konfiguracja mapy</th>
+                    <th scope="col">Konfiguracja strefy z punktów</th>
+                    <th scope="col">Konfiguracja strefy z zakrętów</th>
+                    <th scope="col">Konfiguracja przetwarzania</th>
+                    <th scope="col">Plik wyjściowy</th>
+                    <th scope="col">Plik wyjściowy DEBUG</th>
+                    <th scope="col">Poprawne</th>
+                    <th scope="col">Zweryfikuj</th>
+                    <th scope="col">Przetwarzaj</th>
+                    <th scope="col">Usuń</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t : ${tracks}">
+                    <td th:text="${t.getTrackName()}"></td>
+                    <td th:text="${t.getOriginalTrackFileName()}"></td>
+                    <td th:text="${t.getDropStartTime()}"></td>
+                    <td th:text="${t.getDropStopTime()}"></td>
+                    <td th:text="${t.getMapConfigName()}"></td>
+                    <td th:text="${t.getZoneByPointsConfigName()}"></td>
+                    <td th:text="${t.getZoneByTurnsConfigName()}"></td>
+                    <td th:text="${t.getProcessingConfigName()}"></td>
+                    <td th:text="${t.getOriginalOutputFileName()}"></td>
+                    <td th:text="${t.getOriginalOutputDebugFileName()}"></td>
+                    <td th:text="${t.isVerified()}"></td>
+                    <td>
+                        <form action="/tracks/verify" method="get">
+                            <input type="hidden"
+                                   th:value="${t.getTrackName()}"
+                                   name="trackName">
+                            <button type="submit"
+                                    class="btn btn-outline-primary btn-sm"
+                                    th:disabled="${t.isVerified()}">Zweryfikuj
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/tracks/process" method="get">
+                            <input type="hidden"
+                                   th:value="${t.getTrackName()}"
+                                   name="trackName">
+                            <button type="submit"
+                                    class="btn btn-outline-primary btn-sm"
+                                    th:disabled="${!t.isVerified() || !t.isProcessed()}">Przetwarzaj
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/tracks/delete" method="get">
+                            <input type="hidden"
+                                   th:value="${t.getTrackName()}"
+                                   name="trackName">
+                            <button type="submit"
+                                    class="btn btn-outline-danger btn-sm">Usuń
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

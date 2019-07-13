@@ -83,7 +83,7 @@ public class TrackService {
         trackRepository.save(track);
     }
 
-    public void verifyConfig(String trackName) {
+    public void verifyTrack(String trackName) {
         trackRepository
                 .findByTrackName(trackName)
                 .ifPresent(track -> {
@@ -178,6 +178,7 @@ public class TrackService {
                     File txtFile = new File(txtLocalFile.getPathName());
                     txtService.writeOnlyMergedZones(track, txtFile);
                     track.setOutputFile(txtLocalFile);
+                    track.setProcessed(true);
                     trackRepository.save(track);
                 });
         localFileService

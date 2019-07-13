@@ -5,6 +5,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ProcessingCon
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.LocalFileService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.TrackService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.MapConfigService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ProcessingConfigService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByPointsConfigService;
@@ -31,13 +32,15 @@ public class HomeController {
     private ZoneByPointsConfigService zoneByPointsConfigService;
     private ZoneByTurnsConfigService zoneByTurnsConfigService;
     private ProcessingConfigService processingConfigService;
+    private TrackService trackService;
 
-    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService, ZoneByTurnsConfigService zoneByTurnsConfigService, ProcessingConfigService processingConfigService) {
+    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService, ZoneByTurnsConfigService zoneByTurnsConfigService, ProcessingConfigService processingConfigService, TrackService trackService) {
         this.mapConfigService = mapConfigService;
         this.localFileService = localFileService;
         this.zoneByPointsConfigService = zoneByPointsConfigService;
         this.zoneByTurnsConfigService = zoneByTurnsConfigService;
         this.processingConfigService = processingConfigService;
+        this.trackService = trackService;
     }
 
     @GetMapping("/mapconfigs")
@@ -195,5 +198,31 @@ public class HomeController {
     public String deleteProcessingConfig(@RequestParam("configName") String configName) {
         processingConfigService.setConfigAsDeleted(configName);
         return "redirect:/processingconfigs";
+    }
+
+    // ************************************************************************
+
+    @GetMapping("/tracks")
+    public String getTracks(Model model) {
+        model.addAttribute("tracks", trackService.getTracksDto());
+        return "tracks";
+    }
+
+    @GetMapping("/tracks/verify")
+    public String verifyTrack(@RequestParam("trackName") String trackName) {
+        trackService.verifyTrack(trackName);
+        return "redirect:/tracks";
+    }
+
+    @GetMapping("/tracks/process")
+    public String processTrack(@RequestParam("trackName") String trackName) {
+        trackService.processTrack(trackName);
+        return "redirect:/tracks";
+    }
+
+    @GetMapping("/tracks/delete")
+    public String deleteTrack(@RequestParam("trackName") String trackName) {
+        trackService.setTrackAsDeleted(trackName);
+        return "redirect:/tracks";
     }
 }
