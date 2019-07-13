@@ -4,6 +4,9 @@
 <body>
 <div class="container">
     <div class="row">
+        <div th:replace="fragments/navbar :: navbar"></div>
+    </div>
+    <div class="row">
         <div th:replace="fragments/mapconfigstable :: mapConfigsTable"></div>
     </div>
     <div class="row">

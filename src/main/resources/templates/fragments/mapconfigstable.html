@@ -1,7 +1,10 @@
 <div class="container" xmlns:th="http://www.thymeleaf.org"
      th:fragment="mapConfigsTable">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <h5><br>Konfiguracje map</h5>
+            </div>
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
@@ -13,8 +16,7 @@
                     <th scope="col">Dł. geogr. LDR</th>
                     <th scope="col">Szer. geogr. PGR</th>
                     <th scope="col">Dł. geogr. PGR</th>
-                    <th scope="col">Poprawne</th>
-                    <th scope="col">Zweryfikuj</th>
+                    <th scope="col">Poprawność</th>
                     <th scope="col">Usuń</th>
                 </tr>
                 </thead>
@@ -32,17 +34,22 @@
                     c.getUpperRightCornerLatitude(), 1, 6, 'POINT')}"></td>
                     <td th:text="${#numbers.formatDecimal(
                     c.getUpperRightCornerLongitude(), 1, 6, 'POINT')}"></td>
-                    <td th:text="${c.isVerified()}"></td>
                     <td>
-                        <form action="/mapconfigs/verify" method="get">
-                            <input type="hidden"
-                                   th:value="${c.getConfigName()}"
-                                   name="configName">
-                            <button type="submit"
-                                    class="btn btn-outline-primary btn-sm"
-                                    th:disabled="${c.isVerified()}">Zweryfikuj
-                            </button>
-                        </form>
+                        <div th:if="${!c.isVerified()}">
+                            <form action="/mapconfigs/verify" method="get">
+                                <input type="hidden"
+                                       th:value="${c.getConfigName()}"
+                                       name="configName">
+                                <button type="submit"
+                                        class="btn btn-outline-primary btn-sm"
+                                        th:disabled="${c.isVerified()}">Zweryfikuj
+                                </button>
+                            </form>
+                        </div>
+                        <div th:if="${c.isVerified()}">
+                            <p>OK</p>
+                        </div>
+
                     </td>
                     <td>
                         <form action="/mapconfigs/delete" method="get">
