@@ -49,6 +49,10 @@ public class HomeController {
         this.trackService = trackService;
     }
 
+    // ************************************************************************
+    // MapConfigs
+    // ************************************************************************
+
     @GetMapping("/mapconfigs")
     public String getMapConfigs(Model model) {
         model.addAttribute("mapConfigs", mapConfigService.getConfigsDto());
@@ -91,6 +95,8 @@ public class HomeController {
     }
 
     // ************************************************************************
+    // ZoneByPointsConfigs
+    // ************************************************************************
 
     @GetMapping("/zonebypointsconfigs")
     public String getZoneByPointsConfigs(Model model) {
@@ -128,6 +134,8 @@ public class HomeController {
         return "redirect:/zonebypointsconfigs";
     }
 
+    // ************************************************************************
+    // ZoneByTurnsConfigs
     // ************************************************************************
 
     @GetMapping("/zonebyturnsconfigs")
@@ -168,6 +176,8 @@ public class HomeController {
     }
 
     // ************************************************************************
+    // ZoneByPointsTimeConfigs
+    // ************************************************************************
 
     @GetMapping("/zonebypointstimeconfigs")
     public String getZoneByPointsTimeConfigs(Model model) {
@@ -207,6 +217,8 @@ public class HomeController {
         return "redirect:/zonebypointstimeconfigs";
     }
 
+    // ************************************************************************
+    // ZoneByTurnsTimeConfigs
     // ************************************************************************
 
     @GetMapping("/zonebyturnstimeconfigs")
@@ -249,6 +261,8 @@ public class HomeController {
     }
 
     // ************************************************************************
+    // ProcessingConfigs
+    // ************************************************************************
 
     @GetMapping("/processingconfigs")
     public String getProcessingConfigs(Model model) {
@@ -287,6 +301,8 @@ public class HomeController {
         return "redirect:/processingconfigs";
     }
 
+    // ************************************************************************
+    // Tracks
     // ************************************************************************
 
     @GetMapping("/newtrack")
@@ -351,6 +367,8 @@ public class HomeController {
         return "redirect:/tracks";
     }
 
+    // ************************************************************************
+    // LocalFiles
     // ************************************************************************
 
     @GetMapping("/download/{uniqueFileName}")
