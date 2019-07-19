@@ -22,7 +22,8 @@ public class TrackController {
     private TrackService trackService;
     private ObjectMapper jsonMapper;
 
-    public TrackController(LocalFileService fileService, TrackService trackService) {
+    public TrackController(LocalFileService fileService,
+                           TrackService trackService) {
         this.fileService = fileService;
         this.trackService = trackService;
         jsonMapper = new ObjectMapper();
@@ -33,9 +34,7 @@ public class TrackController {
             @RequestParam("stringTrackDto") String jsonTrackDto,
             @RequestParam("file") MultipartFile file) throws IOException {
         TrackDto trackDto = jsonMapper.readValue(jsonTrackDto, TrackDto.class);
-        fileService
-                .uploadFile(file)
-                .ifPresent(localFile ->
+        fileService.uploadFile(file).ifPresent(localFile ->
                         trackService.addTrack(trackDto, localFile));
     }
 
@@ -49,9 +48,8 @@ public class TrackController {
             @RequestParam("existingUniqueFileName") String existingUniqueFileName,
             @RequestParam("stringTrackDto") String jsonTrackDto) throws IOException {
         TrackDto trackDto = jsonMapper.readValue(jsonTrackDto, TrackDto.class);
-        fileService
-                .getLocalFileByUniqueName(existingUniqueFileName)
-                .ifPresent(localFile -> trackService.addTrack(trackDto, localFile));
+        fileService.getLocalFileByUniqueName(existingUniqueFileName).ifPresent(localFile ->
+                trackService.addTrack(trackDto, localFile));
     }
 
     @GetMapping(value = "/dto/tracks")

@@ -22,7 +22,8 @@ public class MapConfigController {
     private LocalFileService fileService;
     private ObjectMapper jsonMapper;
 
-    public MapConfigController(MapConfigService configService, LocalFileService fileService) {
+    public MapConfigController(MapConfigService configService,
+                               LocalFileService fileService) {
         this.configService = configService;
         this.fileService = fileService;
         jsonMapper = new ObjectMapper();
@@ -34,10 +35,8 @@ public class MapConfigController {
             @RequestParam("file") MultipartFile file) throws IOException {
         MapConfigDto configDto =
                 jsonMapper.readValue(jsonConfigDto, MapConfigDto.class);
-        fileService
-                .uploadFile(file)
-                .ifPresent(uploadedFile ->
-                        configService.addConfig(configDto, uploadedFile));
+        fileService.uploadFile(file).ifPresent(uploadedFile ->
+                configService.addConfig(configDto, uploadedFile));
     }
 
     @PostMapping(value = "/dto/map-configs/from-existing")
@@ -46,9 +45,8 @@ public class MapConfigController {
             @RequestParam("stringConfigDto") String jsonConfigDto) throws IOException {
         MapConfigDto configDto =
                 jsonMapper.readValue(jsonConfigDto, MapConfigDto.class);
-        fileService
-                .getLocalFileByUniqueName(existingUniqueFileName)
-                .ifPresent(localFile -> configService.addConfig(configDto, localFile));
+        fileService.getLocalFileByUniqueName(existingUniqueFileName).ifPresent(localFile ->
+                configService.addConfig(configDto, localFile));
     }
 
     @GetMapping("/dto/map-configs/verify")
