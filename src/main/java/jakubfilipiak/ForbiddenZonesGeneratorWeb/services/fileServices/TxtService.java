@@ -29,11 +29,9 @@ public class TxtService {
     public void writeAllTypesOfZones(Track track, File txtFileInDebugMode) {
         TxtWriter txtWriter = new TxtWriter(txtFileInDebugMode);
         if (txtWriter.isReady()) {
-            Map<TypeOfZone, List<ForbiddenZone>> zonesMap = track.getZonesMap();
-            zonesMap.keySet().forEach(type -> {
-                txtWriter.writeLine(type.toString());
-                zonesMap.get(type).forEach(zone ->
-                        txtWriter.writeLine(zone.toString()));
+            track.getZonesMap().forEach((typeOfZone, forbiddenZones) -> {
+                txtWriter.writeLine(typeOfZone.toString());
+                forbiddenZones.forEach(zone -> txtWriter.writeLine(zone.toString()));
             });
             txtWriter.close();
         }
@@ -42,9 +40,9 @@ public class TxtService {
     public void writeOnlyMergedZones(Track track, File txtFile) {
         TxtWriter txtWriter = new TxtWriter(txtFile);
         if (txtWriter.isReady()) {
-            Map<TypeOfZone, List<ForbiddenZone>> zonesMap = track.getZonesMap();
-            zonesMap.get(TypeOfZone.ALL_MERGED).forEach(zone ->
-                    txtWriter.writeLine(zone.toString()));
+            track.getZonesMap()
+                    .get(TypeOfZone.ALL_MERGED)
+                    .forEach(zone -> txtWriter.writeLine(zone.toString()));
             txtWriter.close();
         }
     }

@@ -6,10 +6,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.TurnAngleCalculator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Jakub Filipiak on 26.06.2019.
@@ -34,7 +31,7 @@ public class AllTypesOfZonesGenerator {
     private List<ForbiddenZone> zonesByDropTime = new ArrayList<>();
     private List<ForbiddenZone> zonesByPoints = new ArrayList<>();
     private List<ForbiddenZone> zonesByTurns = new ArrayList<>();
-    private Map<TypeOfZone, List<ForbiddenZone>> zonesMap = new HashMap<>();
+    private Map<TypeOfZone, List<ForbiddenZone>> zonesMap = new LinkedHashMap<>();
 
     public AllTypesOfZonesGenerator(Track track) {
         this.track = track;
