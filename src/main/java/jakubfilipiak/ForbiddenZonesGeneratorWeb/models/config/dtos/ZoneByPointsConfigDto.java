@@ -26,12 +26,6 @@ public class ZoneByPointsConfigDto {
     private int minPointsNumberInSeries;
     private int maxPausesNumberBetweenPoints;
 
-    private int singlePointZoneBeginOffset;
-    private int singlePointZoneEndOffset;
-
-    private int groupOfPointsZoneBeginOffset;
-    private int groupOfPointsZoneEndOffset;
-
     // properties
 
     private boolean verified;

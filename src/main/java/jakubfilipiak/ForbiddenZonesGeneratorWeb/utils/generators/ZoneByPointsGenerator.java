@@ -1,5 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.generators;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsTimeConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.Coordinates;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class ZoneByPointsGenerator {
 
     private ZoneByPointsConfig config;
+    private ZoneByPointsTimeConfig timeConfig;
     private MapConfig mapConfig;
 
     private int minPointsNumberInSeries;
@@ -35,8 +37,11 @@ public class ZoneByPointsGenerator {
     private PngReader pngReader;
     private CoordinatesService coordinatesService;
 
-    public ZoneByPointsGenerator(ZoneByPointsConfig config, MapConfig mapConfig) {
+    public ZoneByPointsGenerator(ZoneByPointsConfig config,
+                                 ZoneByPointsTimeConfig timeConfig,
+                                 MapConfig mapConfig) {
         this.config = config;
+        this.timeConfig = timeConfig;
         this.mapConfig = mapConfig;
         initConfig();
     }
@@ -76,10 +81,10 @@ public class ZoneByPointsGenerator {
         if (isBufferReady()) {
             ForbiddenZone forbiddenZone;
             if (isOnlyOnePoint()) {
-                forbiddenZone = ForbiddenZone.fromSinglePoint(entrancePoint, config);
+                forbiddenZone = ForbiddenZone.fromSinglePoint(entrancePoint, timeConfig);
             } else {
                 forbiddenZone = ForbiddenZone.fromGroupOfPoints(entrancePoint,
-                        departurePoint, config);
+                        departurePoint, timeConfig);
             }
             cleanBuffer();
             return Optional.of(forbiddenZone);
@@ -94,10 +99,10 @@ public class ZoneByPointsGenerator {
         if (enoughPoints) {
             ForbiddenZone forbiddenZone;
             if (isOnlyOnePoint()) {
-                forbiddenZone = ForbiddenZone.fromSinglePoint(entrancePoint, config);
+                forbiddenZone = ForbiddenZone.fromSinglePoint(entrancePoint, timeConfig);
             } else {
                 forbiddenZone = ForbiddenZone.fromGroupOfPoints(entrancePoint,
-                        departurePoint, config);
+                        departurePoint, timeConfig);
             }
             cleanBuffer();
             return Optional.of(forbiddenZone);

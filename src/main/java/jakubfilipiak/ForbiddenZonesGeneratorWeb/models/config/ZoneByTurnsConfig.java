@@ -51,22 +51,6 @@ public class ZoneByTurnsConfig {
     @Builder.Default
     private int maxPausesNumberBetweenTurns = - 1;
 
-    @Column(name = "single_turn_zone_full_time", nullable = false)
-    @Builder.Default
-    private boolean singleTurnZoneFullTime = true;
-    @Column(name = "single_turn_zone_begin_offset", nullable = false)
-    private int singleTurnZoneBeginOffset;
-    @Column(name = "single_turn_zone_end_offset", nullable = false)
-    private int singleTurnZoneEndOffset;
-
-    @Column(name = "group_of_turns_zone_full_time", nullable = false)
-    @Builder.Default
-    private boolean groupOfTurnsZoneFullTime = true;
-    @Column(name = "group_of_turns_zone_begin_offset", nullable = false)
-    private int groupOfTurnsZoneBeginOffset;
-    @Column(name = "group_of_turns_zone_end_offset", nullable = false)
-    private int groupOfTurnsZoneEndOffset;
-
     // properties
 
     @Column(name = "verified", nullable = false)

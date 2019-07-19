@@ -71,14 +71,6 @@ public class ZoneByPointsConfigService {
                             configDto.getMinPointsNumberInSeries());
                     config.setMaxPausesNumberBetweenPoints(
                             configDto.getMaxPausesNumberBetweenPoints());
-                    config.setSinglePointZoneBeginOffset(
-                            configDto.getSinglePointZoneBeginOffset());
-                    config.setSinglePointZoneEndOffset(
-                            configDto.getSinglePointZoneEndOffset());
-                    config.setGroupOfPointsZoneBeginOffset(
-                            configDto.getGroupOfPointsZoneBeginOffset());
-                    config.setGroupOfPointsZoneEndOffset(
-                            configDto.getGroupOfPointsZoneEndOffset());
                     config.setVerified(false);
                     configRepository.save(config);
                 });
@@ -100,5 +92,13 @@ public class ZoneByPointsConfigService {
         String localTimeNow = LocalDateTime.now().format(formatter);
         String prefix = "DEPRECATED-from-";
         return prefix + localTimeNow + configName;
+    }
+
+    public List<String> getVerifiedConfigsNames() {
+        return configRepository
+                .findAllNotDeletedAndVerified()
+                .stream()
+                .map(ZoneByPointsConfig::getConfigName)
+                .collect(Collectors.toList());
     }
 }

@@ -1,10 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.*;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import lombok.*;
@@ -34,7 +31,7 @@ public class Track {
     @Column(name = "track_name", nullable = false, unique = true)
     private String trackName;
 
-    // ------- configServices -------
+    // ------- configs -------
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_map_config")
@@ -49,10 +46,18 @@ public class Track {
     private ZoneByTurnsConfig zoneByTurnsConfig;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_zone_by_points_time_config")
+    private ZoneByPointsTimeConfig zoneByPointsTimeConfig;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_zone_by_turns_time_config")
+    private ZoneByTurnsTimeConfig zoneByTurnsTimeConfig;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_processing_config", nullable = false)
     private ProcessingConfig processingConfig;
 
-    // ---- end of configServices ----
+    // ---- end of configs ----
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_track_file", nullable = false)
@@ -62,6 +67,17 @@ public class Track {
     private LocalTime dropStartTime;
     @Column(name = "drop_stop_time")
     private LocalTime dropStopTime;
+
+    @Transient
+    private Map<TypeOfZone, List<ForbiddenZone>> zonesMap;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_output_file")
+    private LocalFile outputFile;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_output_debug_file")
+    private LocalFile outputFileInDebugMode;
 
     @Column(name = "verified", nullable = false)
     @Builder.Default
@@ -74,15 +90,4 @@ public class Track {
     @Column(name = "processed", nullable = false)
     @Builder.Default
     private boolean processed = false;
-
-    @Transient
-    private Map<TypeOfZone, List<ForbiddenZone>> zonesMap;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_output_file")
-    private LocalFile outputFile;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_output_debug_file")
-    private LocalFile outputFileInDebugMode;
 }

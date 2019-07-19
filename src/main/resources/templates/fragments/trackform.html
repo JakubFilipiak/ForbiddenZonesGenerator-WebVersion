@@ -1,0 +1,206 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="trackForm">
+    <div class="row">
+        <div class="col-md-12">
+            <h5><br>Dodaj nową trasę</h5>
+        </div>
+        <div class="col-md-12">
+            <div>
+                <p th:text="${message}" style="color: red"></p>
+                <form class="needs-validation" novalidate
+                      enctype="multipart/form-data"
+                      th:object="${trackDto}"
+                      th:action="@{/tracks}" th:method="post">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="trackName">Nazwa</label>
+                            <input type="text"
+                                   name="trackName"
+                                   class="form-control"
+                                   id="trackName"
+                                   placeholder="Twoja unikalna nazwa"
+                                   required
+                                   th:value="${wrongTrack != null}? ${wrongTrack.getTrackName()} + ' - popraw nazwę' : ''">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="trackFile">Plik trasy</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file"
+                                           accept=".trk"
+                                           name="file"
+                                           class="custom-file-input"
+                                           id="trackFile"
+                                           aria-describedby="trackFile"
+                                           required
+                                           th:value="${mapFile != null}? ${mapFile} : ''">
+                                    <label class="custom-file-label"
+                                           for="trackFile"
+                                           data-browse="Przeglądaj"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="startTime">Czas rozp. zrzutu</label>
+                            <input type="text"
+                                   name="dropStartTime"
+                                   class="form-control"
+                                   id="startTime"
+                                   placeholder="hh:mm:ss"
+                                   th:value="${wrongTrack != null}? ${wrongTrack.getDropStartTime()} : ''">
+                            <div class="invalid-feedback">
+                                Wymagany format: hh:mm:ss
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="stopTime">Czas zakończ. zrzutu</label>
+                            <input type="text"
+                                   name="dropStopTime"
+                                   class="form-control"
+                                   id="stopTime"
+                                   placeholder="hh:mm:ss"
+                                   th:value="${wrongTrack != null}? ${wrongTrack.getDropStopTime()} : ''">
+                            <div class="invalid-feedback">
+                                Wymagany format: hh:mm:ss
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="my-1 mr-2"
+                                   for="maps">Konfiguracja
+                                mapy
+                            </label>
+                            <select class="custom-select my-1 mr-sm-2"
+                                    id="maps"
+                                    name="mapConfigName"
+                                    required>
+                                <option disabled selected value> -- Wybierz --
+                                </option>
+                                <option th:each="m : ${mapConfigsNames}"
+                                        th:value="${m}" th:text="${m}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="my-1 mr-2"
+                                   for="processingConfigs">Konfiguracja
+                                przetwarzania
+                            </label>
+                            <select class="custom-select my-1 mr-sm-2"
+                                    id="processingConfigs"
+                                    name="processingConfigName"
+                                    required>
+                                <option disabled selected value> -- Wybierz --
+                                </option>
+                                <option th:each="n : ${processingConfigsNames}"
+                                        th:value="${n}" th:text="${n}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="my-1 mr-2"
+                                   for="points">Konfiguracja
+                                stref z punktów
+                            </label>
+                            <select class="custom-select my-1 mr-sm-2"
+                                    id="points"
+                                    name="zoneByPointsConfigName"
+                                    required>
+                                <option disabled selected value> -- Wybierz --
+                                </option>
+                                <option th:each="z : ${zoneByPointsConfigsNames}"
+                                        th:value="${z}" th:text="${z}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="my-1 mr-2"
+                                   for="turns">Konfiguracja
+                                stref z zakrętów
+                            </label>
+                            <select class="custom-select my-1 mr-sm-2"
+                                    id="turns"
+                                    name="zoneByTurnsConfigName"
+                                    required>
+                                <option disabled selected value> -- Wybierz --
+                                </option>
+                                <option th:each="z : ${zoneByTurnsConfigsNames}"
+                                        th:value="${z}" th:text="${z}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="my-1 mr-2"
+                                   for="pointsOffsets">Konfiguracja offsetów dla
+                                stref z punktów
+                            </label>
+                            <select class="custom-select my-1 mr-sm-2"
+                                    id="pointsOffsets"
+                                    name="zoneByPointsTimeConfigName"
+                                    required>
+                                <option disabled selected value> -- Wybierz --
+                                </option>
+                                <option th:each="z : ${zoneByPointsTimeConfigsNames}"
+                                        th:value="${z}" th:text="${z}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="my-1 mr-2"
+                                   for="turnsOffsets">Konfiguracja offsetów dla
+                                stref z zakrętów
+                            </label>
+                            <select class="custom-select my-1 mr-sm-2"
+                                    id="turnsOffsets"
+                                    name="zoneByTurnsTimeConfigName"
+                                    required>
+                                <option disabled selected value> -- Wybierz --
+                                </option>
+                                <option th:each="z : ${zoneByTurnsTimeConfigsNames}"
+                                        th:value="${z}" th:text="${z}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Zapisz</button>
+
+                </form>
+                <script>
+            // Example starter JavaScript for disabling form submissions
+            //if there are invalid fields
+            (function() {
+                'use strict';
+            window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap
+            // validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+            }, false);
+            })();
+            </script>
+            </div>
+        </div>
+
+    </div>
+</div>

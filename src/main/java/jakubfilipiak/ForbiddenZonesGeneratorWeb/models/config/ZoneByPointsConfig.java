@@ -45,16 +45,6 @@ public class ZoneByPointsConfig {
     @Builder.Default
     private int maxPausesNumberBetweenPoints = - 1;
 
-    @Column(name = "single_point_zone_begin_offset", nullable = false)
-    private int singlePointZoneBeginOffset;
-    @Column(name = "single_point_zone_end_offset", nullable = false)
-    private int singlePointZoneEndOffset;
-
-    @Column(name = "group_of_points_zone_begin_offset", nullable = false)
-    private int groupOfPointsZoneBeginOffset;
-    @Column(name = "group_of_points_zone_end_offset", nullable = false)
-    private int groupOfPointsZoneEndOffset;
-
     // properties
 
     @Column(name = "verified", nullable = false)

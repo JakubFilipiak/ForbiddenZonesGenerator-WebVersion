@@ -1,6 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.generators;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsTimeConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TurnOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.TurnAngleCalculator;
@@ -15,6 +16,7 @@ public class ZoneByTurnsGenerator {
     private TurnAngleCalculator turnAngleCalculator;
 
     private ZoneByTurnsConfig config;
+    private ZoneByTurnsTimeConfig timeConfig;
 
     private int minTurnsNumberInSeries;
     private int minTurnInitiationAngle;
@@ -29,8 +31,10 @@ public class ZoneByTurnsGenerator {
     private int pauseCounter = 0;
 
     public ZoneByTurnsGenerator(ZoneByTurnsConfig config,
+                                ZoneByTurnsTimeConfig timeConfig,
                                 TurnAngleCalculator turnAngleCalculator) {
         this.config = config;
+        this.timeConfig = timeConfig;
         this.turnAngleCalculator = turnAngleCalculator;
         initConfig();
     }
@@ -65,10 +69,10 @@ public class ZoneByTurnsGenerator {
         if (isBufferReady()) {
             ForbiddenZone forbiddenZone;
             if (isOnlyOneTurn()) {
-                forbiddenZone = ForbiddenZone.fromSingleTurn(entranceTurn, config);
+                forbiddenZone = ForbiddenZone.fromSingleTurn(entranceTurn, timeConfig);
             } else {
                 forbiddenZone = ForbiddenZone.fromGroupOfTurns(entranceTurn,
-                        departureTurn, config);
+                        departureTurn, timeConfig);
             }
             cleanBuffer();
             return Optional.of(forbiddenZone);
@@ -81,10 +85,10 @@ public class ZoneByTurnsGenerator {
         if (enoughTurns) {
             ForbiddenZone forbiddenZone;
             if (isOnlyOneTurn()) {
-                forbiddenZone = ForbiddenZone.fromSingleTurn(entranceTurn, config);
+                forbiddenZone = ForbiddenZone.fromSingleTurn(entranceTurn, timeConfig);
             } else {
                 forbiddenZone = ForbiddenZone.fromGroupOfTurns(entranceTurn,
-                        departureTurn, config);
+                        departureTurn, timeConfig);
             }
             cleanBuffer();
             return Optional.of(forbiddenZone);

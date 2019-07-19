@@ -18,6 +18,10 @@ public interface ZoneByTurnsConfigRepository extends JpaRepository<ZoneByTurnsCo
     @Query("select z from ZoneByTurnsConfig z where z.deleted = false")
     List<ZoneByTurnsConfig> findAllNotDeleted();
 
+    @Query("select z from ZoneByTurnsConfig z where z.deleted = false and z" +
+            ".verified = true")
+    List<ZoneByTurnsConfig> findAllNotDeletedAndVerified();
+
     @Query("select z from ZoneByTurnsConfig z where z.configName = ?1")
     Optional<ZoneByTurnsConfig> findByConfigName(String configName);
 }

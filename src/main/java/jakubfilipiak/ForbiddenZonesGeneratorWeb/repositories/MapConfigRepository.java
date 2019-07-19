@@ -17,6 +17,9 @@ public interface MapConfigRepository extends JpaRepository<MapConfig, Long> {
     @Query("select m from MapConfig m where m.deleted = false")
     List<MapConfig> findAllNotDeleted();
 
+    @Query("select m from MapConfig m where m.deleted = false and m.verified = true")
+    List<MapConfig> findAllNotDeletedAndVerified();
+
     @Query("select m from MapConfig m where m.configName = ?1")
     Optional<MapConfig> findByConfigName(String configName);
 }

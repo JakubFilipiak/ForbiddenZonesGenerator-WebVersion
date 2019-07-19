@@ -22,17 +22,27 @@ public class TrackMapper implements Mapper<Track, TrackDto> {
                 .processingConfigName(dao.getProcessingConfig().getConfigName())
                 .originalTrackFileName(dao.getTrackFile().getOriginalName())
                 .uniqueTrackFileName(dao.getTrackFile().getUniqueName())
-                .dropStartTime(dao.getDropStartTime().toString())
-                .dropStopTime(dao.getDropStopTime().toString())
                 .verified(dao.isVerified())
                 .deleted(dao.isDeleted())
                 .processed(dao.isProcessed())
                 .build();
+        if (dao.getDropStartTime() != null) {
+            dto.setDropStartTime(dao.getDropStartTime().toString());
+        }
+        if (dao.getDropStopTime() != null) {
+            dto.setDropStopTime(dao.getDropStopTime().toString());
+        }
         if (dao.getZoneByPointsConfig() != null) {
             dto.setZoneByPointsConfigName(dao.getZoneByPointsConfig().getConfigName());
         }
         if (dao.getZoneByTurnsConfig() != null) {
             dto.setZoneByTurnsConfigName(dao.getZoneByTurnsConfig().getConfigName());
+        }
+        if (dao.getZoneByPointsTimeConfig() != null) {
+            dto.setZoneByPointsTimeConfigName(dao.getZoneByPointsTimeConfig().getConfigName());
+        }
+        if (dao.getZoneByTurnsTimeConfig() != null) {
+            dto.setZoneByTurnsTimeConfigName(dao.getZoneByTurnsTimeConfig().getConfigName());
         }
         if (dao.getOutputFile() != null) {
             dto.setOriginalOutputFileName(dao.getOutputFile().getOriginalName());

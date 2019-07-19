@@ -110,6 +110,7 @@ public class AllTypesOfZonesGenerator {
             zoneByPointsGenerator =
                     new ZoneByPointsGenerator(
                             track.getZoneByPointsConfig(),
+                            track.getZoneByPointsTimeConfig(),
                             track.getMapConfig());
             if (isPointsMultiplication)
                 multipliedPointsGenerator = new MultipliedPointsGenerator();
@@ -118,6 +119,7 @@ public class AllTypesOfZonesGenerator {
             turnOfTrackGenerator = new TurnOfTrackGenerator(new TurnAngleCalculator());
             zoneByTurnsGenerator =
                     new ZoneByTurnsGenerator(track.getZoneByTurnsConfig(),
+                            track.getZoneByTurnsTimeConfig(),
                             new TurnAngleCalculator());
         }
     }

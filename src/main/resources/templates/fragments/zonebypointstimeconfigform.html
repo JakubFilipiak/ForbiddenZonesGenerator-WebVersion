@@ -1,5 +1,5 @@
 <div class="container" xmlns:th="http://www.thymeleaf.org"
-     th:fragment="processingConfigForm">
+     th:fragment="zoneByPointsTimeConfigForm">
     <div class="row">
         <div class="col-md-12">
             <h5><br>Dodaj nową konfigurację</h5>
@@ -9,7 +9,7 @@
             <form class="needs-validation" novalidate
                   enctype="multipart/form-data"
                   th:object="${configDto}"
-                  th:action="@{/processingconfigs}" th:method="post">
+                  th:action="@{/zonebypointstimeconfigs}" th:method="post">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="configName">Nazwa</label>
@@ -24,46 +24,44 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <div>
-                            <label for="time">Czas zrzutu</label>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <input type="checkbox"
-                                   name="zoneByDropTimeCreation"
-                                   class="form-check-input"
-                                   id="time"
-                                   th:checked="${wrongConfig != null}? ${wrongConfig.isZoneByDropTimeCreation()}">
-                            <label class="form-check-label"
-                                   for="time">Tak</label>
-                        </div>
+                        <label for="SPBOffset">Offset pocz. poj. pkt.</label>
+                        <input type="number"
+                               name="singlePointZoneBeginOffset"
+                               class="form-control"
+                               id="SPBOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getSinglePointZoneBeginOffset()} : '1'">
                     </div>
                     <div class="form-group col-md-2">
-                        <div>
-                            <label for="points">Punkty</label>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <input type="checkbox"
-                                   name="zoneByPointsCreation"
-                                   class="form-check-input"
-                                   id="points"
-                                   th:checked="${wrongConfig != null}? ${wrongConfig.isZoneByPointsCreation()}">
-                            <label class="form-check-label"
-                                   for="points">Tak</label>
-                        </div>
+                        <label for="SPEOffset">Offset końc. poj. pkt.</label>
+                        <input type="number"
+                               name="singlePointZoneEndOffset"
+                               class="form-control"
+                               id="SPEOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getSinglePointZoneEndOffset()} : '1'">
                     </div>
                     <div class="form-group col-md-2">
-                        <div>
-                            <label for="turns">Zakręty</label>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <input type="checkbox"
-                                   name="zoneByTurnsCreation"
-                                   class="form-check-input"
-                                   id="turns"
-                                   th:checked="${wrongConfig != null}? ${wrongConfig.isZoneByTurnsCreation()}">
-                            <label class="form-check-label"
-                                   for="turns">Tak</label>
-                        </div>
+                        <label for="GPBOffset">Offset pocz. grupy pkt.</label>
+                        <input type="number"
+                               name="groupOfPointsZoneBeginOffset"
+                               class="form-control"
+                               id="GPBOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getGroupOfPointsZoneBeginOffset()} : '1'">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="GPEOffset">Offset końc. grupy pkt.</label>
+                        <input type="number"
+                               name="groupOfPointsZoneEndOffset"
+                               class="form-control"
+                               id="GPEOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getGroupOfPointsZoneEndOffset()} : '1'">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Zapisz</button>

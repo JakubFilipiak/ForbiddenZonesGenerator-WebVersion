@@ -1,23 +1,25 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ProcessingConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.*;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.dtos.TrackDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.LocalFileService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.TrackService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.MapConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ProcessingConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByPointsConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTurnsConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.*;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,14 +33,18 @@ public class HomeController {
     private LocalFileService localFileService;
     private ZoneByPointsConfigService zoneByPointsConfigService;
     private ZoneByTurnsConfigService zoneByTurnsConfigService;
+    private ZoneByPointsTimeConfigService zoneByPointsTimeConfigService;
+    private ZoneByTurnsTimeConfigService zoneByTurnsTimeConfigService;
     private ProcessingConfigService processingConfigService;
     private TrackService trackService;
 
-    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService, ZoneByTurnsConfigService zoneByTurnsConfigService, ProcessingConfigService processingConfigService, TrackService trackService) {
+    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService, ZoneByTurnsConfigService zoneByTurnsConfigService, ZoneByPointsTimeConfigService zoneByPointsTimeConfigService, ZoneByTurnsTimeConfigService zoneByTurnsTimeConfigService, ProcessingConfigService processingConfigService, TrackService trackService) {
         this.mapConfigService = mapConfigService;
         this.localFileService = localFileService;
         this.zoneByPointsConfigService = zoneByPointsConfigService;
         this.zoneByTurnsConfigService = zoneByTurnsConfigService;
+        this.zoneByPointsTimeConfigService = zoneByPointsTimeConfigService;
+        this.zoneByTurnsTimeConfigService = zoneByTurnsTimeConfigService;
         this.processingConfigService = processingConfigService;
         this.trackService = trackService;
     }
@@ -163,6 +169,87 @@ public class HomeController {
 
     // ************************************************************************
 
+    @GetMapping("/zonebypointstimeconfigs")
+    public String getZoneByPointsTimeConfigs(Model model) {
+        model.addAttribute("zoneByPointsTimeConfigs",
+                zoneByPointsTimeConfigService.getConfigsDto());
+        return "zonebypointstimeconfigs";
+    }
+
+    @PostMapping(value = "/zonebypointstimeconfigs", consumes = "multipart/form-data")
+    public String addZoneByPointsTimeConfig(@ModelAttribute ZoneByPointsTimeConfigDto configDto,
+                                        Model model) {
+        List<String> existingConfigNames = zoneByPointsTimeConfigService.getConfigsDto()
+                .stream()
+                .map(ZoneByPointsTimeConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        if (existingConfigNames.contains(configDto.getConfigName())) {
+            model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
+            model.addAttribute("zoneByPointsTimeConfigs",
+                    zoneByPointsTimeConfigService.getConfigsDto());
+            model.addAttribute("wrongConfig", configDto);
+            return "zonebypointstimeconfigs";
+        } else {
+            zoneByPointsTimeConfigService.addConfig(configDto);
+            return "redirect:/zonebypointstimeconfigs";
+        }
+    }
+
+    @GetMapping("/zonebypointstimeconfigs/verify")
+    public String verifyZoneByPointsTimeConfig(@RequestParam("configName") String configName) {
+        zoneByPointsTimeConfigService.verifyConfig(configName);
+        return "redirect:/zonebypointstimeconfigs";
+    }
+
+    @GetMapping("/zonebypointstimeconfigs/delete")
+    public String deleteZoneByPointsTimeConfig(@RequestParam("configName") String configName) {
+        zoneByPointsTimeConfigService.setConfigAsDeleted(configName);
+        return "redirect:/zonebypointstimeconfigs";
+    }
+
+    // ************************************************************************
+
+    @GetMapping("/zonebyturnstimeconfigs")
+    public String getZoneByTurnsTimeConfigs(Model model) {
+        model.addAttribute("zoneByTurnsTimeConfigs",
+                zoneByTurnsTimeConfigService.getConfigsDto());
+        return "zonebyturnstimeconfigs";
+    }
+
+    @PostMapping(value = "/zonebyturnstimeconfigs", consumes = "multipart/form-data")
+    public String addZoneByTurnsTimeConfig(@ModelAttribute ZoneByTurnsTimeConfigDto configDto,
+                                       Model model) {
+        List<String> existingConfigNames =
+                zoneByTurnsTimeConfigService.getConfigsDto()
+                .stream()
+                .map(ZoneByTurnsTimeConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        if (existingConfigNames.contains(configDto.getConfigName())) {
+            model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
+            model.addAttribute("zoneByTurnsTimeConfigs",
+                    zoneByTurnsTimeConfigService.getConfigsDto());
+            model.addAttribute("wrongConfig", configDto);
+            return "zonebyturnstimeconfigs";
+        } else {
+            zoneByTurnsTimeConfigService.addConfig(configDto);
+            return "redirect:/zonebyturnstimeconfigs";
+        }
+    }
+
+    @GetMapping("/zonebyturnstimeconfigs/verify")
+    public String verifyZoneBTurnsTimeConfig(@RequestParam("configName") String configName) {
+        zoneByTurnsTimeConfigService.verifyConfig(configName);
+        return "redirect:/zonebyturnstimeconfigs";
+    }
+
+    @GetMapping("/zonebyturnstimeconfigs/delete")
+    public String deleteZoneByTurnsTimeConfig(@RequestParam("configName") String configName) {
+        zoneByTurnsTimeConfigService.setConfigAsDeleted(configName);
+        return "redirect:/zonebyturnstimeconfigs";
+    }
+
+    // ************************************************************************
+
     @GetMapping("/processingconfigs")
     public String getProcessingConfigs(Model model) {
         model.addAttribute("processingConfigs", processingConfigService.getConfigsDto());
@@ -202,10 +289,48 @@ public class HomeController {
 
     // ************************************************************************
 
+    @GetMapping("/newtrack")
+    public String getTrackForm(Model model) {
+        model.addAttribute("processingConfigsNames",
+                processingConfigService.getVerifiedConfigsNames());
+        model.addAttribute("mapConfigsNames",
+                mapConfigService.getVerifiedConfigsNames());
+        model.addAttribute("zoneByPointsConfigsNames", zoneByPointsConfigService.getVerifiedConfigsNames());
+        model.addAttribute("zoneByTurnsConfigsNames",
+                zoneByTurnsConfigService.getVerifiedConfigsNames());
+        model.addAttribute("zoneByPointsTimeConfigsNames",
+                zoneByPointsTimeConfigService.getVerifiedConfigsNames());
+        model.addAttribute("zoneByTurnsTimeConfigsNames",
+                zoneByTurnsTimeConfigService.getVerifiedConfigsNames());
+        return "newtrack";
+    }
+
     @GetMapping("/tracks")
     public String getTracks(Model model) {
         model.addAttribute("tracks", trackService.getTracksDto());
         return "tracks";
+    }
+
+    @PostMapping(value = "/tracks", consumes = "multipart/form-data")
+    public String addTrack(@RequestParam("file") MultipartFile file,
+                               @ModelAttribute TrackDto trackDto,
+                               Model model) {
+        List<String> existingTrackNames = trackService.getTracksDto()
+                .stream()
+                .map(TrackDto::getTrackName)
+                .collect(Collectors.toList());
+        if (existingTrackNames.contains(trackDto.getTrackName())) {
+            model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
+            model.addAttribute("tracks", trackService.getTracksDto());
+            model.addAttribute("wrongTrack", trackDto);
+            return "tracks";
+        } else {
+            localFileService
+                    .uploadFile(file)
+                    .ifPresent(uploadedFile ->
+                            trackService.addTrack(trackDto, uploadedFile));
+            return "redirect:/tracks";
+        }
     }
 
     @GetMapping("/tracks/verify")
@@ -224,5 +349,32 @@ public class HomeController {
     public String deleteTrack(@RequestParam("trackName") String trackName) {
         trackService.setTrackAsDeleted(trackName);
         return "redirect:/tracks";
+    }
+
+    // ************************************************************************
+
+    @GetMapping("/download/{uniqueFileName}")
+    public ResponseEntity<?> downloadFile(@PathVariable String uniqueFileName) throws IOException {
+        File file = localFileService.downloadFile(uniqueFileName);
+        Path path = Paths.get(localFileService.getStoragePath() + uniqueFileName);
+        Resource resource = new UrlResource(path.toUri());
+        String contentType = Files.probeContentType(file.toPath());
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .contentLength(file.length())
+                .body(resource);
+    }
+
+    @GetMapping("/openinbrowser/{uniqueFileName}")
+    public ResponseEntity<?> openFileInBrowser(@PathVariable String uniqueFileName) throws IOException {
+        File file = localFileService.downloadFile(uniqueFileName);
+        Path path = Paths.get(localFileService.getStoragePath() + uniqueFileName);
+        Resource resource = new UrlResource(path.toUri());
+        String contentType = Files.probeContentType(file.toPath());
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .contentLength(file.length())
+                .body(resource);
     }
 }

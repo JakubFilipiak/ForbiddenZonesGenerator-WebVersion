@@ -1,7 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsTimeConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsTimeConfig;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,11 +21,11 @@ public class ForbiddenZoneTest {
     private final int ZONE_SAME = 0;
     private final int ZONE_BIGGER = 1;
 
-    private ZoneByTurnsConfig zoneByTurnsConfig;
+    private ZoneByTurnsTimeConfig zoneByTurnsTimeConfig;
     private TurnOfTrack entranceTurn;
     private TurnOfTrack departureTurn;
 
-    private ZoneByPointsConfig zoneByPointsConfig;
+    private ZoneByPointsTimeConfig zoneByPointsTimeConfig;
     private PointOfTrack entrancePoint;
     private PointOfTrack departurePoint;
 
@@ -46,7 +46,7 @@ public class ForbiddenZoneTest {
         LocalTime middleTimeOfDepartureTurn = LocalTime.of(8, 1, 5);
         LocalTime departureTimeOfDepartureTurn = LocalTime.of(8, 1, 10);
 
-        zoneByTurnsConfig = mock(ZoneByTurnsConfig.class);
+        zoneByTurnsTimeConfig = mock(ZoneByTurnsTimeConfig.class);
 
         entranceTurn = TurnOfTrack.builder()
                 .entrancePoint(PointOfTrack.builder()
@@ -74,7 +74,7 @@ public class ForbiddenZoneTest {
         LocalTime timeOfEntrancePoint = LocalTime.of(12, 0, 0);
         LocalTime timeOfDeparturePoint = LocalTime.of(12, 20, 0);
 
-        zoneByPointsConfig = mock(ZoneByPointsConfig.class);
+        zoneByPointsTimeConfig = mock(ZoneByPointsTimeConfig.class);
 
         entrancePoint = PointOfTrack.builder()
                 .time(timeOfEntrancePoint)
@@ -124,16 +124,16 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = 0;
         int endOffset = 0;
-        when(zoneByTurnsConfig.isSingleTurnZoneFullTime()).thenReturn(true);
-        when(zoneByTurnsConfig.getSingleTurnZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByTurnsConfig.getSingleTurnZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByTurnsTimeConfig.isSingleTurnZoneFullTime()).thenReturn(true);
+        when(zoneByTurnsTimeConfig.getSingleTurnZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByTurnsTimeConfig.getSingleTurnZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entranceTurn.getEntranceTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
                 entranceTurn.getDepartureTime().plusSeconds(endOffset);
 
         // when
-        ForbiddenZone resultZone = ForbiddenZone.fromSingleTurn(entranceTurn, zoneByTurnsConfig);
+        ForbiddenZone resultZone = ForbiddenZone.fromSingleTurn(entranceTurn, zoneByTurnsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -146,16 +146,16 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = -1;
         int endOffset = 2;
-        when(zoneByTurnsConfig.isSingleTurnZoneFullTime()).thenReturn(true);
-        when(zoneByTurnsConfig.getSingleTurnZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByTurnsConfig.getSingleTurnZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByTurnsTimeConfig.isSingleTurnZoneFullTime()).thenReturn(true);
+        when(zoneByTurnsTimeConfig.getSingleTurnZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByTurnsTimeConfig.getSingleTurnZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entranceTurn.getEntranceTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
                 entranceTurn.getDepartureTime().plusSeconds(endOffset);
 
         // when
-        ForbiddenZone resultZone = ForbiddenZone.fromSingleTurn(entranceTurn, zoneByTurnsConfig);
+        ForbiddenZone resultZone = ForbiddenZone.fromSingleTurn(entranceTurn, zoneByTurnsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -168,16 +168,16 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = 0;
         int endOffset = 0;
-        when(zoneByTurnsConfig.isSingleTurnZoneFullTime()).thenReturn(false);
-        when(zoneByTurnsConfig.getSingleTurnZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByTurnsConfig.getSingleTurnZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByTurnsTimeConfig.isSingleTurnZoneFullTime()).thenReturn(false);
+        when(zoneByTurnsTimeConfig.getSingleTurnZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByTurnsTimeConfig.getSingleTurnZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entranceTurn.getMiddleTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
                 entranceTurn.getMiddleTime().plusSeconds(endOffset);
 
         // when
-        ForbiddenZone resultZone = ForbiddenZone.fromSingleTurn(entranceTurn, zoneByTurnsConfig);
+        ForbiddenZone resultZone = ForbiddenZone.fromSingleTurn(entranceTurn, zoneByTurnsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -190,16 +190,16 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = -1;
         int endOffset = 2;
-        when(zoneByTurnsConfig.isSingleTurnZoneFullTime()).thenReturn(false);
-        when(zoneByTurnsConfig.getSingleTurnZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByTurnsConfig.getSingleTurnZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByTurnsTimeConfig.isSingleTurnZoneFullTime()).thenReturn(false);
+        when(zoneByTurnsTimeConfig.getSingleTurnZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByTurnsTimeConfig.getSingleTurnZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entranceTurn.getMiddleTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
                 entranceTurn.getMiddleTime().plusSeconds(endOffset);
 
         // when
-        ForbiddenZone resultZone = ForbiddenZone.fromSingleTurn(entranceTurn, zoneByTurnsConfig);
+        ForbiddenZone resultZone = ForbiddenZone.fromSingleTurn(entranceTurn, zoneByTurnsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -212,9 +212,9 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = 0;
         int endOffset = 0;
-        when(zoneByTurnsConfig.isGroupOfTurnsZoneFullTime()).thenReturn(true);
-        when(zoneByTurnsConfig.getGroupOfTurnsZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByTurnsConfig.getGroupOfTurnsZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByTurnsTimeConfig.isGroupOfTurnsZoneFullTime()).thenReturn(true);
+        when(zoneByTurnsTimeConfig.getGroupOfTurnsZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByTurnsTimeConfig.getGroupOfTurnsZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entranceTurn.getEntranceTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
@@ -222,7 +222,7 @@ public class ForbiddenZoneTest {
 
         // when
         ForbiddenZone resultZone = ForbiddenZone.fromGroupOfTurns(entranceTurn,
-                departureTurn, zoneByTurnsConfig);
+                departureTurn, zoneByTurnsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -235,9 +235,9 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = -1;
         int endOffset = 2;
-        when(zoneByTurnsConfig.isGroupOfTurnsZoneFullTime()).thenReturn(true);
-        when(zoneByTurnsConfig.getGroupOfTurnsZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByTurnsConfig.getGroupOfTurnsZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByTurnsTimeConfig.isGroupOfTurnsZoneFullTime()).thenReturn(true);
+        when(zoneByTurnsTimeConfig.getGroupOfTurnsZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByTurnsTimeConfig.getGroupOfTurnsZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entranceTurn.getEntranceTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
@@ -245,7 +245,7 @@ public class ForbiddenZoneTest {
 
         // when
         ForbiddenZone resultZone = ForbiddenZone.fromGroupOfTurns(entranceTurn,
-                departureTurn, zoneByTurnsConfig);
+                departureTurn, zoneByTurnsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -258,8 +258,8 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = 0;
         int endOffset = 0;
-        when(zoneByPointsConfig.getSinglePointZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByPointsConfig.getSinglePointZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByPointsTimeConfig.getSinglePointZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByPointsTimeConfig.getSinglePointZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entrancePoint.getTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
@@ -267,7 +267,7 @@ public class ForbiddenZoneTest {
 
         // when
         ForbiddenZone resultZone = ForbiddenZone.fromSinglePoint(entrancePoint,
-                zoneByPointsConfig);
+                zoneByPointsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -280,8 +280,8 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = -1;
         int endOffset = 2;
-        when(zoneByPointsConfig.getSinglePointZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByPointsConfig.getSinglePointZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByPointsTimeConfig.getSinglePointZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByPointsTimeConfig.getSinglePointZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entrancePoint.getTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
@@ -289,7 +289,7 @@ public class ForbiddenZoneTest {
 
         // when
         ForbiddenZone resultZone = ForbiddenZone.fromSinglePoint(entrancePoint,
-                zoneByPointsConfig);
+                zoneByPointsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -302,8 +302,8 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = 0;
         int endOffset = 0;
-        when(zoneByPointsConfig.getGroupOfPointsZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByPointsConfig.getGroupOfPointsZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByPointsTimeConfig.getGroupOfPointsZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByPointsTimeConfig.getGroupOfPointsZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entrancePoint.getTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
@@ -311,7 +311,7 @@ public class ForbiddenZoneTest {
 
         // when
         ForbiddenZone resultZone = ForbiddenZone.fromGroupOfPoints(entrancePoint,
-                departurePoint, zoneByPointsConfig);
+                departurePoint, zoneByPointsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();
@@ -324,8 +324,8 @@ public class ForbiddenZoneTest {
         // given
         int beginOffset = -1;
         int endOffset = 2;
-        when(zoneByPointsConfig.getGroupOfPointsZoneBeginOffset()).thenReturn(beginOffset);
-        when(zoneByPointsConfig.getGroupOfPointsZoneEndOffset()).thenReturn(endOffset);
+        when(zoneByPointsTimeConfig.getGroupOfPointsZoneBeginOffset()).thenReturn(beginOffset);
+        when(zoneByPointsTimeConfig.getGroupOfPointsZoneEndOffset()).thenReturn(endOffset);
         LocalTime entranceTimeOfResultZone =
                 entrancePoint.getTime().minusSeconds(beginOffset);
         LocalTime departureTimeOfResultZone =
@@ -333,7 +333,7 @@ public class ForbiddenZoneTest {
 
         // when
         ForbiddenZone resultZone = ForbiddenZone.fromGroupOfPoints(entrancePoint,
-                departurePoint, zoneByPointsConfig);
+                departurePoint, zoneByPointsTimeConfig);
 
         // then
         assertThat(resultZone).isNotNull();

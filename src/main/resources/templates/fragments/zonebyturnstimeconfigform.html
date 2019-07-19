@@ -1,5 +1,5 @@
 <div class="container" xmlns:th="http://www.thymeleaf.org"
-     th:fragment="zoneByTurnsConfigForm">
+     th:fragment="zoneByTurnsTimeConfigForm">
     <div class="row">
         <div class="col-md-12">
             <h5><br>Dodaj nową konfigurację</h5>
@@ -9,7 +9,7 @@
             <form class="needs-validation" novalidate
                   enctype="multipart/form-data"
                   th:object="${configDto}"
-                  th:action="@{/zonebyturnsconfigs}" th:method="post">
+                  th:action="@{/zonebyturnstimeconfigs}" th:method="post">
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -25,73 +25,72 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <label for="minAngle">Min. kąt inicjacji zakrętu</label>
-                        <input type="number"
-                               min="1"
-                               name="minTurnInitiationAngle"
-                               class="form-control"
-                               id="minAngle"
-                               placeholder=""
-                               required
-                               th:value="${wrongConfig != null}? ${wrongConfig.getMinTurnInitiationAngle()} : '10'">
-                    </div>
-                    <div class="ignoreAngles col-md-2">
                         <div>
-                            <label for="ignoreAngles">Ignoruj wybrane zakręty</label>
+                            <label for="STfull">Pełny czas strefy z poj. zakr.</label>
                         </div>
                         <div class="form-group col-md-2">
                             <input type="checkbox"
-                                   name="ignoreTurns"
+                                   name="singleTurnZoneFullTime"
                                    class="form-check-input"
-                                   id="ignoreAngles"
-                                   th:checked="${wrongConfig != null}? ${wrongConfig.isIgnoreTurns()}">
+                                   id="STfull"
+                                   th:checked="${wrongConfig != null}? ${wrongConfig.isSingleTurnZoneFullTime()}">
                             <label class="form-check-label"
-                                   for="ignoreAngles">Tak</label>
+                                   for="STfull">Tak</label>
                         </div>
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="minIgnore">Min. kąt ignor. zakr.</label>
+                        <label for="STBOffset">Offset pocz. strefy z poj. zakr.</label>
                         <input type="number"
-                               min="0"
-                               name="ignoredTurnMinValue"
+                               name="singleTurnZoneBeginOffset"
                                class="form-control"
-                               id="minIgnore"
+                               id="STBOffset"
                                placeholder=""
                                required
-                               th:value="${wrongConfig != null}? ${wrongConfig.getIgnoredTurnMinValue()} : '60'">
+                               th:value="${wrongConfig != null}? ${wrongConfig.getSingleTurnZoneBeginOffset()} : '1'">
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="maxIgnore">Max. kąt ignor. zakr.</label>
+                        <label for="STEOffset">Offset końc. strefy z poj. zakr.</label>
                         <input type="number"
-                               min="0"
-                               name="ignoredTurnMaxValue"
+                               name="singleTurnZoneEndOffset"
                                class="form-control"
-                               id="maxIgnore"
+                               id="STEOffset"
                                placeholder=""
                                required
-                               th:value="${wrongConfig != null}? ${wrongConfig.getIgnoredTurnMaxValue()} : '120'">
+                               th:value="${wrongConfig != null}? ${wrongConfig.getSingleTurnZoneEndOffset()} : '1'">
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="minTurns">Min. il. zakr. w strefie</label>
-                        <input type="number"
-                               min="1"
-                               name="minTurnsNumberInSeries"
-                               class="form-control"
-                               id="minTurns"
-                               placeholder=""
-                               required
-                               th:value="${wrongConfig != null}? ${wrongConfig.getMinTurnsNumberInSeries()} : '1'">
+                        <div>
+                            <label for="GTfull">Pełny czas strefy z grupy zakr.</label>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="checkbox"
+                                   name="groupOfTurnsZoneFullTime"
+                                   class="form-check-input"
+                                   id="GTfull"
+                                   th:checked="${wrongConfig != null}? ${wrongConfig.isGroupOfTurnsZoneFullTime()}">
+                            <label class="form-check-label"
+                                   for="GTfull">Tak</label>
+                        </div>
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="minPauses">Max. il. pauz w strefie</label>
+                        <label for="GTBOffset">Offset pocz. strefy z grupy zakr.</label>
                         <input type="number"
-                               min="0"
-                               name="maxPausesNumberBetweenTurns"
+                               name="groupOfTurnsZoneBeginOffset"
                                class="form-control"
-                               id="minPauses"
+                               id="GTBOffset"
                                placeholder=""
                                required
-                               th:value="${wrongConfig != null}? ${wrongConfig.getMaxPausesNumberBetweenTurns()} : '0'">
+                               th:value="${wrongConfig != null}? ${wrongConfig.getGroupOfTurnsZoneBeginOffset()} : '1'">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="GTEOffset">Offset końc. strefy z grupy zakr.</label>
+                        <input type="number"
+                               name="groupOfTurnsZoneEndOffset"
+                               class="form-control"
+                               id="GTEOffset"
+                               placeholder=""
+                               required
+                               th:value="${wrongConfig != null}? ${wrongConfig.getGroupOfTurnsZoneEndOffset()} : '1'">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Zapisz</button>

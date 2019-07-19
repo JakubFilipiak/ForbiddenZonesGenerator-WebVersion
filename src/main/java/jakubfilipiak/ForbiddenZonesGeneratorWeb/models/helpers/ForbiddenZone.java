@@ -1,7 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsTimeConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsTimeConfig;
 import lombok.Getter;
 
 import java.time.LocalTime;
@@ -30,67 +30,67 @@ public class ForbiddenZone implements Comparable<ForbiddenZone>{
     }
 
     public static ForbiddenZone fromSingleTurn(TurnOfTrack turnOfTrack,
-                                               ZoneByTurnsConfig config) {
-        if (config.isSingleTurnZoneFullTime()) {
+                                               ZoneByTurnsTimeConfig timeConfig) {
+        if (timeConfig.isSingleTurnZoneFullTime()) {
             LocalTime entranceTime = turnOfTrack
                     .getEntranceTime()
-                    .minusSeconds(config.getSingleTurnZoneBeginOffset());
+                    .minusSeconds(timeConfig.getSingleTurnZoneBeginOffset());
             LocalTime departureTime = turnOfTrack
                     .getDepartureTime()
-                    .plusSeconds(config.getSingleTurnZoneEndOffset());
+                    .plusSeconds(timeConfig.getSingleTurnZoneEndOffset());
             return new ForbiddenZone(entranceTime, departureTime);
         }
         LocalTime entranceTime = turnOfTrack
                         .getMiddleTime()
-                        .minusSeconds(config.getSingleTurnZoneBeginOffset());
+                        .minusSeconds(timeConfig.getSingleTurnZoneBeginOffset());
         LocalTime departureTime = turnOfTrack
                         .getMiddleTime()
-                        .plusSeconds(config.getSingleTurnZoneEndOffset());
+                        .plusSeconds(timeConfig.getSingleTurnZoneEndOffset());
         return new ForbiddenZone(entranceTime, departureTime);
     }
 
     public static ForbiddenZone fromGroupOfTurns(TurnOfTrack entranceTurn,
                                                  TurnOfTrack departureTurn,
-                                                 ZoneByTurnsConfig config) {
-        if (config.isGroupOfTurnsZoneFullTime()) {
+                                                 ZoneByTurnsTimeConfig timeConfig) {
+        if (timeConfig.isGroupOfTurnsZoneFullTime()) {
             LocalTime entranceTime = entranceTurn
                     .getEntranceTime()
-                    .minusSeconds(config.getGroupOfTurnsZoneBeginOffset());
+                    .minusSeconds(timeConfig.getGroupOfTurnsZoneBeginOffset());
             LocalTime departureTime = departureTurn
                     .getDepartureTime()
-                    .plusSeconds(config.getGroupOfTurnsZoneEndOffset());
+                    .plusSeconds(timeConfig.getGroupOfTurnsZoneEndOffset());
             return new ForbiddenZone(entranceTime, departureTime);
         }
         LocalTime entranceTime = entranceTurn
                 .getMiddleTime()
-                .minusSeconds(config.getGroupOfTurnsZoneBeginOffset());
+                .minusSeconds(timeConfig.getGroupOfTurnsZoneBeginOffset());
         LocalTime departureTime = departureTurn
                 .getMiddleTime()
-                .plusSeconds(config.getGroupOfTurnsZoneEndOffset());
+                .plusSeconds(timeConfig.getGroupOfTurnsZoneEndOffset());
         return new ForbiddenZone(entranceTime, departureTime);
     }
 
     public static ForbiddenZone fromSinglePoint(PointOfTrack pointOfTrack,
-                                                ZoneByPointsConfig config) {
+                                                ZoneByPointsTimeConfig timeConfig) {
         LocalTime entranceTime = pointOfTrack
                 .getTime()
-                .minusSeconds(config.getSinglePointZoneBeginOffset());
+                .minusSeconds(timeConfig.getSinglePointZoneBeginOffset());
         LocalTime departureTime = pointOfTrack
                 .getTime()
-                .plusSeconds(config.getSinglePointZoneEndOffset());
+                .plusSeconds(timeConfig.getSinglePointZoneEndOffset());
 
         return new ForbiddenZone(entranceTime, departureTime);
     }
 
     public static ForbiddenZone fromGroupOfPoints(PointOfTrack entrancePoint,
                                                   PointOfTrack departurePoint,
-                                                  ZoneByPointsConfig config) {
+                                                  ZoneByPointsTimeConfig timeConfig) {
         LocalTime entranceTime = entrancePoint
                 .getTime()
-                .minusSeconds(config.getGroupOfPointsZoneBeginOffset());
+                .minusSeconds(timeConfig.getGroupOfPointsZoneBeginOffset());
         LocalTime departureTime = departurePoint
                 .getTime()
-                .plusSeconds(config.getGroupOfPointsZoneEndOffset());
+                .plusSeconds(timeConfig.getGroupOfPointsZoneEndOffset());
 
         return new ForbiddenZone(entranceTime, departureTime);
     }

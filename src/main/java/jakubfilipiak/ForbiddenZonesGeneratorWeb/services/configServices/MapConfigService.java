@@ -100,4 +100,12 @@ public class MapConfigService {
         String prefix = "DEPRECATED-from-";
         return prefix + localTimeNow + configName;
     }
+
+    public List<String> getVerifiedConfigsNames() {
+        return configRepository
+                .findAllNotDeletedAndVerified()
+                .stream()
+                .map(MapConfig::getConfigName)
+                .collect(Collectors.toList());
+    }
 }

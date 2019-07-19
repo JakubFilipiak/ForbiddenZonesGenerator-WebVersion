@@ -7,10 +7,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.dtos.TrackDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.TrackRepository;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.MapConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ProcessingConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByPointsConfigService;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTurnsConfigService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.*;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.fileServices.TxtService;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.generators.AllTypesOfZonesGenerator;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io.TrkReader;
@@ -35,6 +32,8 @@ public class TrackService {
     private MapConfigService mapConfigService;
     private ZoneByPointsConfigService zoneByPointsConfigService;
     private ZoneByTurnsConfigService zoneByTurnsConfigService;
+    private ZoneByPointsTimeConfigService zoneByPointsTimeConfigService;
+    private ZoneByTurnsTimeConfigService zoneByTurnsTimeConfigService;
     private ProcessingConfigService processingConfigService;
     private LocalFileService localFileService;
     private PointOfTrackService pointOfTrackService;
@@ -47,6 +46,8 @@ public class TrackService {
             MapConfigService mapConfigService,
             ZoneByPointsConfigService zoneByPointsConfigService,
             ZoneByTurnsConfigService zoneByTurnsConfigService,
+            ZoneByPointsTimeConfigService zoneByPointsTimeConfigService,
+            ZoneByTurnsTimeConfigService zoneByTurnsTimeConfigService,
             ProcessingConfigService processingConfigService,
             LocalFileService localFileService,
             PointOfTrackService pointOfTrackService,
@@ -57,6 +58,8 @@ public class TrackService {
         this.mapConfigService = mapConfigService;
         this.zoneByPointsConfigService = zoneByPointsConfigService;
         this.zoneByTurnsConfigService = zoneByTurnsConfigService;
+        this.zoneByPointsTimeConfigService = zoneByPointsTimeConfigService;
+        this.zoneByTurnsTimeConfigService = zoneByTurnsTimeConfigService;
         this.processingConfigService = processingConfigService;
         this.localFileService = localFileService;
         this.pointOfTrackService = pointOfTrackService;
@@ -77,6 +80,12 @@ public class TrackService {
         zoneByTurnsConfigService
                 .getConfigByConfigName(trackDto.getZoneByTurnsConfigName())
                 .ifPresent(track::setZoneByTurnsConfig);
+        zoneByPointsTimeConfigService
+                .getConfigByConfigName(trackDto.getZoneByPointsTimeConfigName())
+                .ifPresent(track::setZoneByPointsTimeConfig);
+        zoneByTurnsTimeConfigService
+                .getConfigByConfigName(trackDto.getZoneByTurnsTimeConfigName())
+                .ifPresent(track::setZoneByTurnsTimeConfig);
         processingConfigService
                 .getConfigByConfigName(trackDto.getProcessingConfigName())
                 .ifPresent(track::setProcessingConfig);

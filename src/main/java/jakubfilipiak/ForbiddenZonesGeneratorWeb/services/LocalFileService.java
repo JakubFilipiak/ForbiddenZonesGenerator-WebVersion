@@ -128,6 +128,10 @@ public class LocalFileService {
         return fileRepository.findByUniquePathname(uniquePathname);
     }
 
+    public String getStoragePath() {
+        return storagePath;
+    }
+
     public File downloadFile(String uniqueFileName) {
         return new File(storagePath + uniqueFileName);
     }

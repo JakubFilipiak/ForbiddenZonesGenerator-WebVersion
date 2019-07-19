@@ -1,10 +1,10 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ZoneByTurnsConfigMapper;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByTurnsConfig;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ZoneByTurnsConfigRepository;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.ZoneByTurnsConfigValidator;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ZoneByPointsTimeConfigMapper;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsTimeConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsTimeConfigDto;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ZoneByPointsTimeConfigRepository;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.ZoneByPointsTimeConfigValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,21 +14,21 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Created by Jakub Filipiak on 20.06.2019.
+ * Created by Jakub Filipiak on 14.07.2019.
  */
 @Service
-public class ZoneByTurnsConfigService {
+public class ZoneByPointsTimeConfigService {
 
-    private ZoneByTurnsConfigMapper configMapper;
-    private ZoneByTurnsConfigRepository configRepository;
+    private ZoneByPointsTimeConfigMapper configMapper;
+    private ZoneByPointsTimeConfigRepository configRepository;
 
-    public ZoneByTurnsConfigService(ZoneByTurnsConfigMapper configMapper, ZoneByTurnsConfigRepository configRepository) {
+    public ZoneByPointsTimeConfigService(ZoneByPointsTimeConfigMapper configMapper, ZoneByPointsTimeConfigRepository configRepository) {
         this.configMapper = configMapper;
         this.configRepository = configRepository;
     }
 
-    public void addConfig(ZoneByTurnsConfigDto configDto) {
-        ZoneByTurnsConfig config = configMapper.reverseMap(configDto);
+    public void addConfig(ZoneByPointsTimeConfigDto configDto) {
+        ZoneByPointsTimeConfig config = configMapper.reverseMap(configDto);
         configRepository.save(config);
     }
 
@@ -36,16 +36,16 @@ public class ZoneByTurnsConfigService {
         configRepository
                 .findByConfigName(configName)
                 .ifPresent(config -> {
-                    ZoneByTurnsConfigValidator validator =
-                            new ZoneByTurnsConfigValidator(config);
-                    if (validator.isEachParamPresent()) {
+                    ZoneByPointsTimeConfigValidator validator =
+                            new ZoneByPointsTimeConfigValidator(config);
+                    if (validator.isCorrect()) {
                         config.setVerified(true);
                         configRepository.save(config);
                     }
                 });
     }
 
-    public List<ZoneByTurnsConfigDto> getConfigsDto() {
+    public List<ZoneByPointsTimeConfigDto> getConfigsDto() {
         return configRepository
                 .findAllNotDeleted()
                 .stream()
@@ -53,24 +53,22 @@ public class ZoneByTurnsConfigService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<ZoneByTurnsConfig> getConfigByConfigName(String configName) {
+    public Optional<ZoneByPointsTimeConfig> getConfigByConfigName(String configName) {
         return configRepository.findByConfigName(configName);
     }
 
-    public void updateConfig(ZoneByTurnsConfigDto configDto) {
+    public void updateConfig(ZoneByPointsTimeConfigDto configDto) {
         configRepository
                 .findByConfigName(configDto.getConfigName())
                 .ifPresent(config -> {
-                    config.setMinTurnInitiationAngle(
-                            configDto.getMinTurnInitiationAngle());
-                    config.setIgnoredTurnMinValue(
-                            configDto.getIgnoredTurnMinValue());
-                    config.setIgnoredTurnMaxValue(
-                            configDto.getIgnoredTurnMaxValue());
-                    config.setMinTurnsNumberInSeries(
-                            configDto.getMinTurnsNumberInSeries());
-                    config.setMaxPausesNumberBetweenTurns
-                            (configDto.getMaxPausesNumberBetweenTurns());
+                    config.setSinglePointZoneBeginOffset(
+                            configDto.getSinglePointZoneBeginOffset());
+                    config.setSinglePointZoneEndOffset(
+                            configDto.getSinglePointZoneEndOffset());
+                    config.setGroupOfPointsZoneBeginOffset(
+                            configDto.getGroupOfPointsZoneBeginOffset());
+                    config.setGroupOfPointsZoneEndOffset(
+                            configDto.getGroupOfPointsZoneEndOffset());
                     config.setVerified(false);
                     configRepository.save(config);
                 });
@@ -98,7 +96,7 @@ public class ZoneByTurnsConfigService {
         return configRepository
                 .findAllNotDeletedAndVerified()
                 .stream()
-                .map(ZoneByTurnsConfig::getConfigName)
+                .map(ZoneByPointsTimeConfig::getConfigName)
                 .collect(Collectors.toList());
     }
 }

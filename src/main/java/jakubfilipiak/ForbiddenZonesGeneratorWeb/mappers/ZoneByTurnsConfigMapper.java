@@ -21,12 +21,6 @@ public class ZoneByTurnsConfigMapper implements Mapper<ZoneByTurnsConfig,
                 .ignoreTurns(dao.isIgnoreTurns())
                 .minTurnsNumberInSeries(dao.getMinTurnsNumberInSeries())
                 .maxPausesNumberBetweenTurns(dao.getMaxPausesNumberBetweenTurns())
-                .singleTurnZoneFullTime(dao.isSingleTurnZoneFullTime())
-                .singleTurnZoneBeginOffset(dao.getSingleTurnZoneBeginOffset())
-                .singleTurnZoneEndOffset(dao.getSingleTurnZoneEndOffset())
-                .groupOfTurnsZoneFullTime(dao.isGroupOfTurnsZoneFullTime())
-                .groupOfTurnsZoneBeginOffset(dao.getGroupOfTurnsZoneBeginOffset())
-                .groupOfTurnsZoneEndOffset(dao.getGroupOfTurnsZoneEndOffset())
                 .verified(dao.isVerified())
                 .deleted(dao.isDeleted())
                 .build();
@@ -46,12 +40,6 @@ public class ZoneByTurnsConfigMapper implements Mapper<ZoneByTurnsConfig,
                 .ignoreTurns(dto.isIgnoreTurns())
                 .minTurnsNumberInSeries(dto.getMinTurnsNumberInSeries())
                 .maxPausesNumberBetweenTurns(dto.getMaxPausesNumberBetweenTurns())
-                .singleTurnZoneFullTime(dto.isSingleTurnZoneFullTime())
-                .singleTurnZoneBeginOffset(dto.getSingleTurnZoneBeginOffset())
-                .singleTurnZoneEndOffset(dto.getSingleTurnZoneEndOffset())
-                .groupOfTurnsZoneFullTime(dto.isGroupOfTurnsZoneFullTime())
-                .groupOfTurnsZoneBeginOffset(dto.getGroupOfTurnsZoneBeginOffset())
-                .groupOfTurnsZoneEndOffset(dto.getGroupOfTurnsZoneEndOffset())
                 .build();
         if (dto.isIgnoreTurns()) {
             dao.setIgnoredTurnMinValue(dto.getIgnoredTurnMinValue());

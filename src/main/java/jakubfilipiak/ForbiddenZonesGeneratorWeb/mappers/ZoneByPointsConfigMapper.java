@@ -21,10 +21,6 @@ public class ZoneByPointsConfigMapper implements Mapper<ZoneByPointsConfig,
                 .pointNeighborhoodVerification(dao.isPointNeighborhoodVerification())
                 .minPointsNumberInSeries(dao.getMinPointsNumberInSeries())
                 .maxPausesNumberBetweenPoints(dao.getMaxPausesNumberBetweenPoints())
-                .singlePointZoneBeginOffset(dao.getSinglePointZoneBeginOffset())
-                .singlePointZoneEndOffset(dao.getSinglePointZoneEndOffset())
-                .groupOfPointsZoneBeginOffset(dao.getGroupOfPointsZoneBeginOffset())
-                .groupOfPointsZoneEndOffset(dao.getGroupOfPointsZoneEndOffset())
                 .verified(dao.isVerified())
                 .deleted(dao.isDeleted())
                 .build();
@@ -43,10 +39,6 @@ public class ZoneByPointsConfigMapper implements Mapper<ZoneByPointsConfig,
                 .pointNeighborhoodVerification(dto.isPointNeighborhoodVerification())
                 .minPointsNumberInSeries(dto.getMinPointsNumberInSeries())
                 .maxPausesNumberBetweenPoints(dto.getMaxPausesNumberBetweenPoints())
-                .singlePointZoneBeginOffset(dto.getSinglePointZoneBeginOffset())
-                .singlePointZoneEndOffset(dto.getSinglePointZoneEndOffset())
-                .groupOfPointsZoneBeginOffset(dto.getGroupOfPointsZoneBeginOffset())
-                .groupOfPointsZoneEndOffset(dto.getGroupOfPointsZoneEndOffset())
                 .build();
         if (dto.isPointNeighborhoodVerification()) {
             dao.setRadiusOfPixelsToBeVerified(dto.getRadiusOfPixelsToBeVerified());

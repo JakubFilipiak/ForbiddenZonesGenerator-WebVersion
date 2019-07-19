@@ -1,30 +1,36 @@
 <div class="container" xmlns:th="http://www.thymeleaf.org"
-     th:fragment="processingConfigsTable">
+           th:fragment="zoneByTurnsTimeConfigsTable">
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
-                <h5><br>Konfiguracje przetwarzania</h5>
+                <h5><br>Konfiguracje offsetów czasowych dla stref z zakrętów</h5>
             </div>
-            <table class="table table-sm">
+            <table class="table">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">Nazwa</th>
-                    <th scope="col">Strefy z przedziału czasowego</th>
-                    <th scope="col">Strefy z punktów</th>
-                    <th scope="col">Strefy z zakrętów</th>
+                    <th scope="col">Pełny czas strefy z poj. zakr.</th>
+                    <th scope="col">Offset pocz. strefy z poj. zakr.</th>
+                    <th scope="col">Offset końc. strefy z poj. zakr.</th>
+                    <th scope="col">Pełny czas strefy z grupy zakr.</th>
+                    <th scope="col">Offset pocz. strefy z grupy zakr.</th>
+                    <th scope="col">Offset końc. strefy z grupy zakr.</th>
                     <th scope="col">Poprawność</th>
                     <th scope="col">Usuń</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="c : ${processingConfigs}">
+                <tr th:each="c : ${zoneByTurnsTimeConfigs}">
                     <td th:text="${c.getConfigName()}"></td>
-                    <td th:text="${c.isZoneByDropTimeCreation()}"></td>
-                    <td th:text="${c.isZoneByPointsCreation()}"></td>
-                    <td th:text="${c.isZoneByTurnsCreation()}"></td>
+                    <td th:text="${c.isSingleTurnZoneFullTime()}"></td>
+                    <td th:text="${c.getSingleTurnZoneBeginOffset()}"></td>
+                    <td th:text="${c.getSingleTurnZoneEndOffset()}"></td>
+                    <td th:text="${c.isGroupOfTurnsZoneFullTime()}"></td>
+                    <td th:text="${c.getGroupOfTurnsZoneBeginOffset()}"></td>
+                    <td th:text="${c.getGroupOfTurnsZoneEndOffset()}"></td>
                     <td>
                         <div th:if="${!c.isVerified()}">
-                            <form action="/processingconfigs/verify"
+                            <form action="/zonebyturnstimeconfigs/verify"
                                   method="get">
                                 <input type="hidden"
                                        th:value="${c.getConfigName()}"
@@ -40,7 +46,7 @@
                         </div>
                     </td>
                     <td>
-                        <form action="/processingconfigs/delete" method="get">
+                        <form action="/zonebyturnstimeconfigs/delete" method="get">
                             <input type="hidden"
                                    th:value="${c.getConfigName()}"
                                    name="configName">

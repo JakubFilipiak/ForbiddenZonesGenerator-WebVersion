@@ -18,6 +18,10 @@ public interface ZoneByPointsConfigRepository extends JpaRepository<ZoneByPoints
     @Query("select z from ZoneByPointsConfig z where z.deleted = false")
     List<ZoneByPointsConfig> findAllNotDeleted();
 
+    @Query("select z from ZoneByPointsConfig z where z.deleted = false and z" +
+            ".verified = true")
+    List<ZoneByPointsConfig> findAllNotDeletedAndVerified();
+
     @Query("select z from ZoneByPointsConfig z where z.configName = ?1")
     Optional<ZoneByPointsConfig> findByConfigName(String configName);
 }

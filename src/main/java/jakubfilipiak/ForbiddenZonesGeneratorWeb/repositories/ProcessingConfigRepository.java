@@ -18,6 +18,10 @@ public interface ProcessingConfigRepository extends JpaRepository<ProcessingConf
     @Query("select p from ProcessingConfig p where p.deleted = false")
     List<ProcessingConfig> findAllNotDeleted();
 
+    @Query("select p from ProcessingConfig p where p.deleted = false and p" +
+            ".verified = true")
+    List<ProcessingConfig> findAllNotDeletedAndVerified();
+
     @Query("select p from ProcessingConfig p where p.configName = ?1")
     Optional<ProcessingConfig> findByConfigName(String configName);
 }

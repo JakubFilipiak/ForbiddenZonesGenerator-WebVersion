@@ -1,8 +1,11 @@
 <div class="container" xmlns:th="http://www.thymeleaf.org"
      th:fragment="zoneByPointsConfigsTable">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <h5><br>Konfiguracje stref z punktów</h5>
+            </div>
+            <table class="table table-sm">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">Nazwa</th>
@@ -11,12 +14,7 @@
                     <th scope="col">Promień do spr.</th>
                     <th scope="col">Min. il. pkt. w strefie</th>
                     <th scope="col">Max. il. pauz w strefie</th>
-                    <th scope="col">Offset pocz. strefy z poj. pkt.</th>
-                    <th scope="col">Offset końc. strefy z poj. pkt.</th>
-                    <th scope="col">Offset pocz. strefy z grupy pkt.</th>
-                    <th scope="col">Offset końc. strefy z grupy pkt.</th>
-                    <th scope="col">Poprawne</th>
-                    <th scope="col">Zweryfikuj</th>
+                    <th scope="col">Poprawność</th>
                     <th scope="col">Usuń</th>
                 </tr>
                 </thead>
@@ -25,27 +23,25 @@
                     <td th:text="${c.getConfigName()}"></td>
                     <td th:text="${c.isPointsMultiplication()}"></td>
                     <td th:text="${c.isPointNeighborhoodVerification()}"></td>
-
                     <td th:text="${c.getRadiusOfPixelsToBeVerified()}"></td>
-
                     <td th:text="${c.getMinPointsNumberInSeries()}"></td>
                     <td th:text="${c.getMaxPausesNumberBetweenPoints()}"></td>
-                    <td th:text="${c.getSinglePointZoneBeginOffset()}"></td>
-                    <td th:text="${c.getSinglePointZoneEndOffset()}"></td>
-                    <td th:text="${c.getGroupOfPointsZoneBeginOffset()}"></td>
-                    <td th:text="${c.getGroupOfPointsZoneEndOffset()}"></td>
-
-                    <td th:text="${c.isVerified()}"></td>
                     <td>
-                        <form action="/zonebypointsconfigs/verify" method="get">
-                            <input type="hidden"
-                                   th:value="${c.getConfigName()}"
-                                   name="configName">
-                            <button type="submit"
-                                    class="btn btn-outline-primary btn-sm"
-                                    th:disabled="${c.isVerified()}">Zweryfikuj
-                            </button>
-                        </form>
+                        <div th:if="${!c.isVerified()}">
+                            <form action="/zonebypointsconfigs/verify"
+                                  method="get">
+                                <input type="hidden"
+                                       th:value="${c.getConfigName()}"
+                                       name="configName">
+                                <button type="submit"
+                                        class="btn btn-outline-primary btn-sm"
+                                        th:disabled="${c.isVerified()}">Zweryfikuj
+                                </button>
+                            </form>
+                        </div>
+                        <div th:if="${c.isVerified()}">
+                            <p>OK</p>
+                        </div>
                     </td>
                     <td>
                         <form action="/zonebypointsconfigs/delete" method="get">

@@ -1,0 +1,30 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+.mytable {
+    overflow-x: scroll;
+    margin-right: 310px;
+    margin-left: 170px;
+}
+.firstfromleft {
+    position: absolute;
+    max-width: 150px;
+    word-wrap: break-word;
+    left: 0;
+}
+.firstfromright {
+    position: absolute;
+    right: 0;
+}
+
+.secondfromright {
+    position: absolute;
+    right: 70px;
+}
+
+.thirdfromright {
+    position: absolute;
+    right: 190px;
+}

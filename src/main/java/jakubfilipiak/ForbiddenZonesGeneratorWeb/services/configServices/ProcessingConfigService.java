@@ -90,4 +90,12 @@ public class ProcessingConfigService {
         String prefix = "DEPRECATED-from-";
         return prefix + localTimeNow + configName;
     }
+
+    public List<String> getVerifiedConfigsNames() {
+        return configRepository
+                .findAllNotDeletedAndVerified()
+                .stream()
+                .map(ProcessingConfig::getConfigName)
+                .collect(Collectors.toList());
+    }
 }

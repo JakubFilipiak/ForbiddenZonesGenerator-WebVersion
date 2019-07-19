@@ -28,14 +28,6 @@ public class ZoneByTurnsConfigDto {
     private int minTurnsNumberInSeries;
     private int maxPausesNumberBetweenTurns;
 
-    private boolean singleTurnZoneFullTime;
-    private int singleTurnZoneBeginOffset;
-    private int singleTurnZoneEndOffset;
-
-    private boolean groupOfTurnsZoneFullTime;
-    private int groupOfTurnsZoneBeginOffset;
-    private int groupOfTurnsZoneEndOffset;
-
     // properties
 
     private boolean verified;

@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <h5><br>Konfiguracje map</h5>
             </div>
-            <table class="table">
+            <table class="table table-sm">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">Nazwa</th>
@@ -49,7 +49,6 @@
                         <div th:if="${c.isVerified()}">
                             <p>OK</p>
                         </div>
-
                     </td>
                     <td>
                         <form action="/mapconfigs/delete" method="get">
