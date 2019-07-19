@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers.REST;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.dtos.TrackDto;

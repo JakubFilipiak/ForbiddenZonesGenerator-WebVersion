@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.controllers.REST;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsTimeConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.ZoneByTurnsTimeConfigService;
