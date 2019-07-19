@@ -320,8 +320,7 @@ public class HomeController {
             model.addAttribute("wrongTrack", trackDto);
             return "newtrack";
         } else {
-            localFileService.uploadFile(file)
-                    .ifPresent(uploadedFile ->
+            localFileService.uploadFile(file).ifPresent(uploadedFile ->
                             trackService.addTrack(trackDto, uploadedFile));
             return "redirect:/tracks";
         }
