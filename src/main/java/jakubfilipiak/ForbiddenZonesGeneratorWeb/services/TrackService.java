@@ -1,11 +1,10 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.TrackMapper;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.Track;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.dtos.TrackDto;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.TrackRepository;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices.*;
@@ -69,6 +68,20 @@ public class TrackService {
         this.trackRepository = trackRepository;
     }
 
+    public List<TrackDto> getTracksDto() {
+        return trackRepository.findAllNotDeleted()
+                .stream()
+                .map(trackMapper::map)
+                .collect(Collectors.toList());
+    }
+
+    public boolean isTrackNameAlreadyInUse(String trackName) {
+        List<String> existingNames = getTracksDto().stream()
+                .map(TrackDto::getTrackName)
+                .collect(Collectors.toList());
+        return existingNames.contains(trackName);
+    }
+
     public void addTrack(TrackDto trackDto, LocalFile trackFile) {
         Track track = trackMapper.reverseMap(trackDto);
         track.setTrackFile(trackFile);
@@ -94,34 +107,22 @@ public class TrackService {
     }
 
     public void verifyTrack(String trackName) {
-        trackRepository
-                .findByTrackName(trackName)
-                .ifPresent(track -> {
-                    TrackValidator validator = new TrackValidator(track);
-                    if (validator.isEachParamPresent())
-                        if (validator.isEachParamCorrect()) {
-                            track.setVerified(true);
-                            trackRepository.save(track);
-                        }
-                });
-    }
-
-    public List<TrackDto> getTracksDto() {
-        return trackRepository
-                .findAllNotDeleted()
-                .stream()
-                .map(trackMapper::map)
-                .collect(Collectors.toList());
+        trackRepository.findByTrackName(trackName).ifPresent(track -> {
+            TrackValidator validator = new TrackValidator(track);
+            if (validator.isEachParamPresent())
+                if (validator.isEachParamCorrect()) {
+                    track.setVerified(true);
+                    trackRepository.save(track);
+                }
+        });
     }
 
     public void setTrackAsDeleted(String trackName) {
-        trackRepository
-                .findByTrackName(trackName)
-                .ifPresent(track -> {
-                    track.setDeleted(true);
-                    track.setTrackName(createDeprecatedName(trackName));
-                    trackRepository.save(track);
-                });
+        trackRepository.findByTrackName(trackName).ifPresent(track -> {
+            track.setDeleted(true);
+            track.setTrackName(createDeprecatedName(trackName));
+            trackRepository.save(track);
+        });
     }
 
     private String createDeprecatedName(String configName) {
@@ -132,29 +133,17 @@ public class TrackService {
         return prefix + localTimeNow + configName;
     }
 
-    public boolean isTrackNameAlreadyInUse(String trackName) {
-        List<String> existingNames = getTracksDto().stream()
-                .map(TrackDto::getTrackName)
-                .collect(Collectors.toList());
-        return existingNames.contains(trackName);
-    }
-
-
     public void processTrack(String trackName) {
-        trackRepository
-                .findByTrackName(trackName)
-                .ifPresent(track -> {
-                    createForbiddenZones(track);
-                    if (isZonesCreationCompletedSuccessfully(track))
-                        writeZonesIntoNewFileAndUpdateTrack(track);
-                });
+        trackRepository.findByTrackName(trackName).ifPresent(track -> {
+            createForbiddenZones(track);
+            if (isZonesCreationCompletedSuccessfully(track))
+                writeZonesIntoNewFileAndUpdateTrack(track);
+        });
     }
 
     private void createForbiddenZones(Track track) {
-        AllTypesOfZonesGenerator zonesGenerator =
-                new AllTypesOfZonesGenerator(track);
-        TrkReader trkReader =
-                new TrkReader(track.getTrackFile().getPathName());
+        AllTypesOfZonesGenerator zonesGenerator = new AllTypesOfZonesGenerator(track);
+        TrkReader trkReader = new TrkReader(track.getTrackFile().getPathName());
 
         if (trkReader.isReady()) {
             Optional<String> optRawDataLine;
@@ -164,8 +153,7 @@ public class TrackService {
                 if (optRawDataLine.isPresent()) {
                     rawDataLine = optRawDataLine.get();
                     if (trkReader.isLineCorrect(rawDataLine)) {
-                        pointOfTrackService
-                                .createPointFromLine(rawDataLine)
+                        pointOfTrackService.createPointFromLine(rawDataLine)
                                 .ifPresent(zonesGenerator::updateBuffer);
                     }
                 } else {
@@ -189,8 +177,7 @@ public class TrackService {
     }
 
     private void writeZonesIntoNewFileAndUpdateTrack(Track track) {
-        localFileService
-                .createFileInStorageDir(txtService.createFileNameFromTrack(track))
+        localFileService.createFileInStorageDir(txtService.createFileNameFromTrack(track))
                 .ifPresent(txtLocalFile -> {
                     File txtFile = new File(txtLocalFile.getPathName());
                     txtService.writeOnlyMergedZones(track, txtFile);
@@ -198,8 +185,7 @@ public class TrackService {
                     track.setProcessed(true);
                     trackRepository.save(track);
                 });
-        localFileService
-                .createFileInStorageDir(txtService.createDebugFileNameFromTrack(track))
+        localFileService.createFileInStorageDir(txtService.createDebugFileNameFromTrack(track))
                 .ifPresent(txtLocalFile -> {
                     File txtFileInDebugMode = new File(txtLocalFile.getPathName());
                     txtService.writeAllTypesOfZones(track, txtFileInDebugMode);
@@ -208,10 +194,8 @@ public class TrackService {
                 });
     }
 
-    private void assignZonesToTrack(
-            Map<TypeOfZone, List<ForbiddenZone>> zonesToBeAssigned, Track track) {
-        zonesToBeAssigned.put(
-                TypeOfZone.ALL_MERGED,
+    private void assignZonesToTrack(Map<TypeOfZone, List<ForbiddenZone>> zonesToBeAssigned, Track track) {
+        zonesToBeAssigned.put(TypeOfZone.ALL_MERGED,
                 forbiddenZonesService.sortAndMergeZones(zonesToBeAssigned));
         track.setZonesMap(zonesToBeAssigned);
     }

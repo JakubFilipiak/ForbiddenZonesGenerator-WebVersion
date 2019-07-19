@@ -22,7 +22,6 @@ public class PointOfTrackService {
     private static final int LONGITUDE_OFFSET = 2;
 
     public Optional<PointOfTrack> createPointFromLine(String line) {
-
         PointOfTrack point = null;
 
         String[] rawData = createRawDataTableFromLine(line);
@@ -32,8 +31,7 @@ public class PointOfTrackService {
         Optional<LocalTime> optTime = extractTimeFromRawDataTable(rawData);
 
         if (isEachParamPresent(Arrays.asList(optLatitude, optLongitude, optTime))) {
-            point = PointOfTrack
-                    .builder()
+            point = PointOfTrack.builder()
                     .latitude(optLatitude.get())
                     .longitude(optLongitude.get())
                     .time(optTime.get())

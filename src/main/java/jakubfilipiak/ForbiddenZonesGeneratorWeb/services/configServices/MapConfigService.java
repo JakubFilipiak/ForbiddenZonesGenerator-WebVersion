@@ -29,30 +29,8 @@ public class MapConfigService {
         this.configRepository = configRepository;
     }
 
-    public void addConfig(MapConfigDto configDto, LocalFile localFile) {
-        MapConfig config = configMapper.reverseMap(configDto);
-        config.setMapFile(localFile);
-        configRepository.save(config);
-    }
-
-    public void verifyConfig(String configName) {
-        configRepository
-                .findByConfigName(configName)
-                .ifPresent(config -> {
-                    MapConfigValidator validator = new MapConfigValidator(config);
-                    if (validator.isEachParamPresent())
-                        if (validator.isEachCoordinateCorrect())
-                            if (validator.isColorsDefinitionCorrect())
-                                if (validator.isPNGMapCorrect()) {
-                                    config.setVerified(true);
-                                    configRepository.save(config);
-                                }
-                });
-    }
-
     public List<MapConfigDto> getConfigsDto() {
-        return configRepository
-                .findAllNotDeleted()
+        return configRepository.findAllNotDeleted()
                 .stream()
                 .map(configMapper::map)
                 .collect(Collectors.toList());
@@ -62,35 +40,64 @@ public class MapConfigService {
         return configRepository.findByConfigName(configName);
     }
 
+    public List<String> getVerifiedConfigsNames() {
+        return configRepository.findAllNotDeletedAndVerified()
+                .stream()
+                .map(MapConfig::getConfigName)
+                .collect(Collectors.toList());
+    }
+
+    public boolean isConfigNameAlreadyInUse(String configName) {
+        List<String> existingNames = getConfigsDto().stream()
+                .map(MapConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        return existingNames.contains(configName);
+    }
+
+    public void addConfig(MapConfigDto configDto, LocalFile localFile) {
+        MapConfig config = configMapper.reverseMap(configDto);
+        config.setMapFile(localFile);
+        configRepository.save(config);
+    }
+
+    public void verifyConfig(String configName) {
+        configRepository.findByConfigName(configName).ifPresent(config -> {
+            MapConfigValidator validator = new MapConfigValidator(config);
+            if (validator.isEachParamPresent())
+                if (validator.isEachCoordinateCorrect())
+                    if (validator.isColorsDefinitionCorrect())
+                        if (validator.isPNGMapCorrect()) {
+                            config.setVerified(true);
+                            configRepository.save(config);
+                        }
+        });
+    }
+
     public void updateConfig(MapConfigDto configDto) {
-        configRepository
-                .findByConfigName(configDto.getConfigName())
-                .ifPresent(config -> {
-                    config.setAllowedRGBColor(
-                            configDto.getAllowedRGBColor());
-                    config.setForbiddenRGBColor(
-                            configDto.getForbiddenRGBColor());
-                    config.setBottomLeftCornerLatitude(
-                            configDto.getBottomLeftCornerLatitude());
-                    config.setBottomLeftCornerLongitude(
-                            configDto.getBottomLeftCornerLongitude());
-                    config.setUpperRightCornerLatitude(
-                            configDto.getUpperRightCornerLatitude());
-                    config.setUpperRightCornerLongitude(
-                            configDto.getUpperRightCornerLongitude());
-                    config.setVerified(false);
-                    configRepository.save(config);
-                });
+        configRepository.findByConfigName(configDto.getConfigName()).ifPresent(config -> {
+            config.setAllowedRGBColor(
+                    configDto.getAllowedRGBColor());
+            config.setForbiddenRGBColor(
+                    configDto.getForbiddenRGBColor());
+            config.setBottomLeftCornerLatitude(
+                    configDto.getBottomLeftCornerLatitude());
+            config.setBottomLeftCornerLongitude(
+                    configDto.getBottomLeftCornerLongitude());
+            config.setUpperRightCornerLatitude(
+                    configDto.getUpperRightCornerLatitude());
+            config.setUpperRightCornerLongitude(
+                    configDto.getUpperRightCornerLongitude());
+            config.setVerified(false);
+            configRepository.save(config);
+        });
     }
 
     public void setConfigAsDeleted(String configName) {
-        configRepository
-                .findByConfigName(configName)
-                .ifPresent(config -> {
-                    config.setDeleted(true);
-                    config.setConfigName(createDeprecatedName(config.getConfigName()));
-                    configRepository.save(config);
-                });
+        configRepository.findByConfigName(configName).ifPresent(config -> {
+            config.setDeleted(true);
+            config.setConfigName(createDeprecatedName(config.getConfigName()));
+            configRepository.save(config);
+        });
     }
 
     private String createDeprecatedName(String configName) {
@@ -99,21 +106,5 @@ public class MapConfigService {
         String localTimeNow = LocalDateTime.now().format(formatter);
         String prefix = "DEPRECATED-from-";
         return prefix + localTimeNow + configName;
-    }
-
-    public List<String> getVerifiedConfigsNames() {
-        return configRepository
-                .findAllNotDeletedAndVerified()
-                .stream()
-                .map(MapConfig::getConfigName)
-                .collect(Collectors.toList());
-    }
-
-
-    public boolean isConfigNameAlreadyInUse(String configName) {
-        List<String> existingNames = getConfigsDto().stream()
-                .map(MapConfigDto::getConfigName)
-                .collect(Collectors.toList());
-        return existingNames.contains(configName);
     }
 }

@@ -23,32 +23,14 @@ public class ZoneByPointsConfigService {
     private ZoneByPointsConfigMapper configMapper;
     private ZoneByPointsConfigRepository configRepository;
 
-    public ZoneByPointsConfigService(ZoneByPointsConfigMapper configMapper, ZoneByPointsConfigRepository configRepository) {
+    public ZoneByPointsConfigService(ZoneByPointsConfigMapper configMapper,
+                                     ZoneByPointsConfigRepository configRepository) {
         this.configMapper = configMapper;
         this.configRepository = configRepository;
     }
 
-    public void addConfig(ZoneByPointsConfigDto configDto) {
-        ZoneByPointsConfig config = configMapper.reverseMap(configDto);
-        configRepository.save(config);
-    }
-
-    public void verifyConfig(String configName) {
-        configRepository
-                .findByConfigName(configName)
-                .ifPresent(config -> {
-                    ZoneByPointsConfigValidator validator =
-                            new ZoneByPointsConfigValidator(config);
-                    if (validator.isEachParamPresent()) {
-                        config.setVerified(true);
-                        configRepository.save(config);
-                    }
-                });
-    }
-
     public List<ZoneByPointsConfigDto> getConfigsDto() {
-        return configRepository
-                .findAllNotDeleted()
+        return configRepository.findAllNotDeleted()
                 .stream()
                 .map(configMapper::map)
                 .collect(Collectors.toList());
@@ -58,46 +40,8 @@ public class ZoneByPointsConfigService {
         return configRepository.findByConfigName(configName);
     }
 
-    public void updateConfig(ZoneByPointsConfigDto configDto) {
-        configRepository
-                .findByConfigName(configDto.getConfigName())
-                .ifPresent(config -> {
-                    config.setPointsMultiplication(
-                            configDto.isPointsMultiplication());
-                    config.setPointNeighborhoodVerification(
-                            configDto.isPointNeighborhoodVerification());
-                    config.setRadiusOfPixelsToBeVerified(
-                            configDto.getRadiusOfPixelsToBeVerified());
-                    config.setMinPointsNumberInSeries(
-                            configDto.getMinPointsNumberInSeries());
-                    config.setMaxPausesNumberBetweenPoints(
-                            configDto.getMaxPausesNumberBetweenPoints());
-                    config.setVerified(false);
-                    configRepository.save(config);
-                });
-    }
-
-    public void setConfigAsDeleted(String configName) {
-        configRepository
-                .findByConfigName(configName)
-                .ifPresent(config -> {
-                    config.setDeleted(true);
-                    config.setConfigName(createDeprecatedName(configName));
-                    configRepository.save(config);
-                });
-    }
-
-    private String createDeprecatedName(String configName) {
-        final String DATE_FORMAT = "yyyy-MM-dd---HH-mm-ss-";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
-        String localTimeNow = LocalDateTime.now().format(formatter);
-        String prefix = "DEPRECATED-from-";
-        return prefix + localTimeNow + configName;
-    }
-
     public List<String> getVerifiedConfigsNames() {
-        return configRepository
-                .findAllNotDeletedAndVerified()
+        return configRepository.findAllNotDeletedAndVerified()
                 .stream()
                 .map(ZoneByPointsConfig::getConfigName)
                 .collect(Collectors.toList());
@@ -108,5 +52,54 @@ public class ZoneByPointsConfigService {
                 .map(ZoneByPointsConfigDto::getConfigName)
                 .collect(Collectors.toList());
         return existingNames.contains(configName);
+    }
+
+    public void addConfig(ZoneByPointsConfigDto configDto) {
+        ZoneByPointsConfig config = configMapper.reverseMap(configDto);
+        configRepository.save(config);
+    }
+
+    public void verifyConfig(String configName) {
+        configRepository.findByConfigName(configName).ifPresent(config -> {
+            ZoneByPointsConfigValidator validator =
+                    new ZoneByPointsConfigValidator(config);
+            if (validator.isEachParamPresent()) {
+                config.setVerified(true);
+                configRepository.save(config);
+            }
+        });
+    }
+
+    public void updateConfig(ZoneByPointsConfigDto configDto) {
+        configRepository.findByConfigName(configDto.getConfigName()).ifPresent(config -> {
+            config.setPointsMultiplication(
+                    configDto.isPointsMultiplication());
+            config.setPointNeighborhoodVerification(
+                    configDto.isPointNeighborhoodVerification());
+            config.setRadiusOfPixelsToBeVerified(
+                    configDto.getRadiusOfPixelsToBeVerified());
+            config.setMinPointsNumberInSeries(
+                    configDto.getMinPointsNumberInSeries());
+            config.setMaxPausesNumberBetweenPoints(
+                    configDto.getMaxPausesNumberBetweenPoints());
+            config.setVerified(false);
+            configRepository.save(config);
+        });
+    }
+
+    public void setConfigAsDeleted(String configName) {
+        configRepository.findByConfigName(configName).ifPresent(config -> {
+            config.setDeleted(true);
+            config.setConfigName(createDeprecatedName(configName));
+            configRepository.save(config);
+        });
+    }
+
+    private String createDeprecatedName(String configName) {
+        final String DATE_FORMAT = "yyyy-MM-dd---HH-mm-ss-";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        String localTimeNow = LocalDateTime.now().format(formatter);
+        String prefix = "DEPRECATED-from-";
+        return prefix + localTimeNow + configName;
     }
 }

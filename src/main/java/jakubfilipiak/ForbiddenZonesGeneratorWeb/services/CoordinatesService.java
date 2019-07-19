@@ -10,7 +10,8 @@ import java.util.List;
  */
 public class CoordinatesService {
 
-    public List<Coordinates> getPixelNeighbors(Coordinates pixelCoordinates, int RadiusOfPixelsToBeVerified) {
+    public List<Coordinates> getPixelNeighbors(Coordinates pixelCoordinates,
+                                               int RadiusOfPixelsToBeVerified) {
         int sideOfNeighborsSquare = RadiusOfPixelsToBeVerified * 2 + 1;
         int startPixelX = pixelCoordinates.getPixelX() - RadiusOfPixelsToBeVerified;
         int startPixelY = pixelCoordinates.getPixelY() - RadiusOfPixelsToBeVerified;
@@ -20,12 +21,12 @@ public class CoordinatesService {
             int actualPixelY = startPixelY + rows;
             for (int columns = 0; columns < sideOfNeighborsSquare; columns++) {
                 int actualPixelX = startPixelX + columns;
-                Coordinates neighborCoordinates = new Coordinates(actualPixelX, actualPixelY);
+                Coordinates neighborCoordinates =
+                        new Coordinates(actualPixelX, actualPixelY);
                 if (!pixelCoordinates.equals(neighborCoordinates))
                     neighbors.add(neighborCoordinates);
             }
         }
-
         return neighbors;
     }
 }

@@ -60,8 +60,7 @@ public class LocalFileService {
         if (pathName.isPresent()) {
             try {
                 saveMultipartFile(file, pathName.get());
-                return Optional.of(LocalFile
-                        .builder()
+                return Optional.of(LocalFile.builder()
                         .originalName(originalFileName)
                         .uniqueName(uniqueFileName)
                         .pathName(pathName.get())
@@ -79,8 +78,7 @@ public class LocalFileService {
         Optional<String> pathName = createPathname(uniqueFileName);
         if (pathName.isPresent()) {
             new File(pathName.get());
-            return Optional.of(LocalFile
-                    .builder()
+            return Optional.of(LocalFile.builder()
                     .originalName(fileName)
                     .uniqueName(uniqueFileName)
                     .pathName(pathName.get())
@@ -142,59 +140,4 @@ public class LocalFileService {
             return file.delete();
         return false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public boolean fileExists(String pathname) {
-
-        boolean exists = new File(pathname).exists();
-        if (!exists) {
-            LOGGER.log(Level.WARNING, "File does not exist");
-        }
-        return exists;
-    }
-
-
-
-    public boolean isFileTypeCorrect(String pathname, TypeOfFile expectedType) {
-
-        TypeOfFile type = getFileType(pathname);
-        boolean typeCorrect = type == expectedType;
-        if (!typeCorrect)
-            LOGGER.log(Level.WARNING, "Wrong file type");
-        return true;
-    }
-
-    private BufferedInputStream createBufferedInputStream(String pathname) throws FileNotFoundException {
-
-        return new BufferedInputStream(new FileInputStream(new File(pathname)));
-    }
-
-    public BufferedReader createBufferedReader(String pathname) throws FileNotFoundException {
-
-        return new BufferedReader(
-                new InputStreamReader(createBufferedInputStream(pathname)));
-    }
-
-    public BufferedImage createBufferedImage(String pathname) throws IOException {
-
-        return ImageIO.read(createBufferedInputStream(pathname));
-    }
-
-
-
 }
