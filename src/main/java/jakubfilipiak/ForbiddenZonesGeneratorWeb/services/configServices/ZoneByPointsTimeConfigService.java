@@ -3,6 +3,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ZoneByPointsTimeConfigMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsTimeConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsTimeConfigDto;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ZoneByPointsTimeConfigRepository;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.ZoneByPointsTimeConfigValidator;
 import org.springframework.stereotype.Service;
@@ -98,5 +99,12 @@ public class ZoneByPointsTimeConfigService {
                 .stream()
                 .map(ZoneByPointsTimeConfig::getConfigName)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isConfigNameAlreadyInUse(String configName) {
+        List<String> existingNames = getConfigsDto().stream()
+                .map(ZoneByPointsTimeConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        return existingNames.contains(configName);
     }
 }

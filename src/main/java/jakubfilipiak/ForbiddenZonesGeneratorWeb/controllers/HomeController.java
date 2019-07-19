@@ -38,7 +38,14 @@ public class HomeController {
     private ProcessingConfigService processingConfigService;
     private TrackService trackService;
 
-    public HomeController(MapConfigService mapConfigService, LocalFileService localFileService, ZoneByPointsConfigService zoneByPointsConfigService, ZoneByTurnsConfigService zoneByTurnsConfigService, ZoneByPointsTimeConfigService zoneByPointsTimeConfigService, ZoneByTurnsTimeConfigService zoneByTurnsTimeConfigService, ProcessingConfigService processingConfigService, TrackService trackService) {
+    public HomeController(MapConfigService mapConfigService,
+                          LocalFileService localFileService,
+                          ZoneByPointsConfigService zoneByPointsConfigService,
+                          ZoneByTurnsConfigService zoneByTurnsConfigService,
+                          ZoneByPointsTimeConfigService zoneByPointsTimeConfigService,
+                          ZoneByTurnsTimeConfigService zoneByTurnsTimeConfigService,
+                          ProcessingConfigService processingConfigService,
+                          TrackService trackService) {
         this.mapConfigService = mapConfigService;
         this.localFileService = localFileService;
         this.zoneByPointsConfigService = zoneByPointsConfigService;
@@ -63,20 +70,13 @@ public class HomeController {
     public String addMapConfig(@RequestParam("file") MultipartFile file,
                                @ModelAttribute MapConfigDto configDto,
                                Model model) {
-        List<String> existingConfigNames = mapConfigService.getConfigsDto()
-                        .stream()
-                        .map(MapConfigDto::getConfigName)
-                        .collect(Collectors.toList());
-        if (existingConfigNames.contains(configDto.getConfigName())) {
+        if (mapConfigService.isConfigNameAlreadyInUse(configDto.getConfigName())) {
             model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
             model.addAttribute("mapConfigs", mapConfigService.getConfigsDto());
             model.addAttribute("wrongConfig", configDto);
-            model.addAttribute("mapFile", file);
             return "mapconfigs";
         } else {
-            localFileService
-                    .uploadFile(file)
-                    .ifPresent(uploadedFile ->
+            localFileService.uploadFile(file).ifPresent(uploadedFile ->
                             mapConfigService.addConfig(configDto, uploadedFile));
             return "redirect:/mapconfigs";
         }
@@ -107,11 +107,7 @@ public class HomeController {
     @PostMapping(value = "/zonebypointsconfigs", consumes = "multipart/form-data")
     public String addZoneByPointsConfig(@ModelAttribute ZoneByPointsConfigDto configDto,
                                         Model model) {
-        List<String> existingConfigNames = zoneByPointsConfigService.getConfigsDto()
-                .stream()
-                .map(ZoneByPointsConfigDto::getConfigName)
-                .collect(Collectors.toList());
-        if (existingConfigNames.contains(configDto.getConfigName())) {
+        if (zoneByPointsConfigService.isConfigNameAlreadyInUse(configDto.getConfigName())) {
             model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
             model.addAttribute("zoneByPointsConfigs", zoneByPointsConfigService.getConfigsDto());
             model.addAttribute("wrongConfig", configDto);
@@ -147,14 +143,9 @@ public class HomeController {
     @PostMapping(value = "/zonebyturnsconfigs", consumes = "multipart/form-data")
     public String addZoneByTurnsConfig(@ModelAttribute ZoneByTurnsConfigDto configDto,
                                         Model model) {
-        List<String> existingConfigNames = zoneByTurnsConfigService.getConfigsDto()
-                .stream()
-                .map(ZoneByTurnsConfigDto::getConfigName)
-                .collect(Collectors.toList());
-        if (existingConfigNames.contains(configDto.getConfigName())) {
+        if (zoneByTurnsConfigService.isConfigNameAlreadyInUse(configDto.getConfigName())) {
             model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
-            model.addAttribute("zoneByTurnsConfigs",
-                    zoneByTurnsConfigService.getConfigsDto());
+            model.addAttribute("zoneByTurnsConfigs", zoneByTurnsConfigService.getConfigsDto());
             model.addAttribute("wrongConfig", configDto);
             return "zonebyturnsconfigs";
         } else {
@@ -181,22 +172,16 @@ public class HomeController {
 
     @GetMapping("/zonebypointstimeconfigs")
     public String getZoneByPointsTimeConfigs(Model model) {
-        model.addAttribute("zoneByPointsTimeConfigs",
-                zoneByPointsTimeConfigService.getConfigsDto());
+        model.addAttribute("zoneByPointsTimeConfigs", zoneByPointsTimeConfigService.getConfigsDto());
         return "zonebypointstimeconfigs";
     }
 
     @PostMapping(value = "/zonebypointstimeconfigs", consumes = "multipart/form-data")
     public String addZoneByPointsTimeConfig(@ModelAttribute ZoneByPointsTimeConfigDto configDto,
                                         Model model) {
-        List<String> existingConfigNames = zoneByPointsTimeConfigService.getConfigsDto()
-                .stream()
-                .map(ZoneByPointsTimeConfigDto::getConfigName)
-                .collect(Collectors.toList());
-        if (existingConfigNames.contains(configDto.getConfigName())) {
+        if (zoneByPointsTimeConfigService.isConfigNameAlreadyInUse(configDto.getConfigName())) {
             model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
-            model.addAttribute("zoneByPointsTimeConfigs",
-                    zoneByPointsTimeConfigService.getConfigsDto());
+            model.addAttribute("zoneByPointsTimeConfigs", zoneByPointsTimeConfigService.getConfigsDto());
             model.addAttribute("wrongConfig", configDto);
             return "zonebypointstimeconfigs";
         } else {
@@ -223,23 +208,16 @@ public class HomeController {
 
     @GetMapping("/zonebyturnstimeconfigs")
     public String getZoneByTurnsTimeConfigs(Model model) {
-        model.addAttribute("zoneByTurnsTimeConfigs",
-                zoneByTurnsTimeConfigService.getConfigsDto());
+        model.addAttribute("zoneByTurnsTimeConfigs", zoneByTurnsTimeConfigService.getConfigsDto());
         return "zonebyturnstimeconfigs";
     }
 
     @PostMapping(value = "/zonebyturnstimeconfigs", consumes = "multipart/form-data")
     public String addZoneByTurnsTimeConfig(@ModelAttribute ZoneByTurnsTimeConfigDto configDto,
                                        Model model) {
-        List<String> existingConfigNames =
-                zoneByTurnsTimeConfigService.getConfigsDto()
-                .stream()
-                .map(ZoneByTurnsTimeConfigDto::getConfigName)
-                .collect(Collectors.toList());
-        if (existingConfigNames.contains(configDto.getConfigName())) {
+        if (zoneByTurnsTimeConfigService.isConfigNameAlreadyInUse(configDto.getConfigName())) {
             model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
-            model.addAttribute("zoneByTurnsTimeConfigs",
-                    zoneByTurnsTimeConfigService.getConfigsDto());
+            model.addAttribute("zoneByTurnsTimeConfigs", zoneByTurnsTimeConfigService.getConfigsDto());
             model.addAttribute("wrongConfig", configDto);
             return "zonebyturnstimeconfigs";
         } else {
@@ -273,14 +251,9 @@ public class HomeController {
     @PostMapping(value = "/processingconfigs", consumes = "multipart/form-data")
     public String addProcessingConfig(@ModelAttribute ProcessingConfigDto configDto,
                                        Model model) {
-        List<String> existingConfigNames = processingConfigService.getConfigsDto()
-                .stream()
-                .map(ProcessingConfigDto::getConfigName)
-                .collect(Collectors.toList());
-        if (existingConfigNames.contains(configDto.getConfigName())) {
+        if (processingConfigService.isConfigNameAlreadyInUse(configDto.getConfigName())) {
             model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
-            model.addAttribute("processingConfigs",
-                    processingConfigService.getConfigsDto());
+            model.addAttribute("processingConfigs", processingConfigService.getConfigsDto());
             model.addAttribute("wrongConfig", configDto);
             return "processingconfigs";
         } else {
@@ -306,7 +279,7 @@ public class HomeController {
     // ************************************************************************
 
     @GetMapping("/newtrack")
-    public String getTrackForm(Model model) {
+    public String getNewTrackForm(Model model) {
         model.addAttribute("processingConfigsNames",
                 processingConfigService.getVerifiedConfigsNames());
         model.addAttribute("mapConfigsNames",
@@ -331,15 +304,21 @@ public class HomeController {
     public String addTrack(@RequestParam("file") MultipartFile file,
                                @ModelAttribute TrackDto trackDto,
                                Model model) {
-        List<String> existingTrackNames = trackService.getTracksDto()
-                .stream()
-                .map(TrackDto::getTrackName)
-                .collect(Collectors.toList());
-        if (existingTrackNames.contains(trackDto.getTrackName())) {
+        if (trackService.isTrackNameAlreadyInUse(trackDto.getTrackName())) {
+            model.addAttribute("processingConfigsNames",
+                    processingConfigService.getVerifiedConfigsNames());
+            model.addAttribute("mapConfigsNames",
+                    mapConfigService.getVerifiedConfigsNames());
+            model.addAttribute("zoneByPointsConfigsNames", zoneByPointsConfigService.getVerifiedConfigsNames());
+            model.addAttribute("zoneByTurnsConfigsNames",
+                    zoneByTurnsConfigService.getVerifiedConfigsNames());
+            model.addAttribute("zoneByPointsTimeConfigsNames",
+                    zoneByPointsTimeConfigService.getVerifiedConfigsNames());
+            model.addAttribute("zoneByTurnsTimeConfigsNames",
+                    zoneByTurnsTimeConfigService.getVerifiedConfigsNames());
             model.addAttribute("message", "Błąd! Nazwa jest już w użyciu!");
-            model.addAttribute("tracks", trackService.getTracksDto());
             model.addAttribute("wrongTrack", trackDto);
-            return "tracks";
+            return "newtrack";
         } else {
             localFileService
                     .uploadFile(file)

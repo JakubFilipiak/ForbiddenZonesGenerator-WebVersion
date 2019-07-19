@@ -3,6 +3,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ProcessingConfigMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ProcessingConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ProcessingConfigDto;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByTurnsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ProcessingConfigRepository;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.ProcessingConfigValidator;
 import org.springframework.stereotype.Service;
@@ -97,5 +98,12 @@ public class ProcessingConfigService {
                 .stream()
                 .map(ProcessingConfig::getConfigName)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isConfigNameAlreadyInUse(String configName) {
+        List<String> existingNames = getConfigsDto().stream()
+                .map(ProcessingConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        return existingNames.contains(configName);
     }
 }

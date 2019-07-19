@@ -1,5 +1,6 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.TypeOfZone;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.TrackMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.ForbiddenZone;
@@ -129,6 +130,13 @@ public class TrackService {
         String localTimeNow = LocalDateTime.now().format(formatter);
         String prefix = "DEPRECATED-from-";
         return prefix + localTimeNow + configName;
+    }
+
+    public boolean isTrackNameAlreadyInUse(String trackName) {
+        List<String> existingNames = getTracksDto().stream()
+                .map(TrackDto::getTrackName)
+                .collect(Collectors.toList());
+        return existingNames.contains(trackName);
     }
 
 

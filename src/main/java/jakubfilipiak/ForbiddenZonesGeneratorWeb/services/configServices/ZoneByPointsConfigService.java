@@ -2,6 +2,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.services.configServices;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.mappers.ZoneByPointsConfigMapper;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.MapConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.dtos.ZoneByPointsConfigDto;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.ZoneByPointsConfigRepository;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.validators.ZoneByPointsConfigValidator;
@@ -100,5 +101,12 @@ public class ZoneByPointsConfigService {
                 .stream()
                 .map(ZoneByPointsConfig::getConfigName)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isConfigNameAlreadyInUse(String configName) {
+        List<String> existingNames = getConfigsDto().stream()
+                .map(ZoneByPointsConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        return existingNames.contains(configName);
     }
 }

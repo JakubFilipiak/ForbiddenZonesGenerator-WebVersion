@@ -5,7 +5,6 @@
             <h5><br>Dodaj nową trasę</h5>
         </div>
         <div class="col-md-12">
-            <div>
                 <p th:text="${message}" style="color: red"></p>
                 <form class="needs-validation" novalidate
                       enctype="multipart/form-data"
@@ -51,7 +50,8 @@
                                    class="form-control"
                                    id="startTime"
                                    placeholder="hh:mm:ss"
-                                   th:value="${wrongTrack != null}? ${wrongTrack.getDropStartTime()} : ''">
+                                   th:value="${wrongTrack != null && wrongTrack.getDropStartTime() != null}? ${wrongTrack.getDropStartTime()} : ''"
+                                    pattern="([0-1][0-9]|2[0-3])(:)([0-5][0-9])(:)([0-5][0-9])">
                             <div class="invalid-feedback">
                                 Wymagany format: hh:mm:ss
                             </div>
@@ -63,7 +63,8 @@
                                    class="form-control"
                                    id="stopTime"
                                    placeholder="hh:mm:ss"
-                                   th:value="${wrongTrack != null}? ${wrongTrack.getDropStopTime()} : ''">
+                                   th:value="${wrongTrack != null && wrongTrack.getDropStopTime() != null}? ${wrongTrack.getDropStopTime()} : ''"
+                                   pattern="([0-1][0-9]|2[0-3])(:)([0-5][0-9])(:)([0-5][0-9])">
                             <div class="invalid-feedback">
                                 Wymagany format: hh:mm:ss
                             </div>
@@ -84,7 +85,8 @@
                                 <option disabled selected value> -- Wybierz --
                                 </option>
                                 <option th:each="m : ${mapConfigsNames}"
-                                        th:value="${m}" th:text="${m}">
+                                        th:value="${m}" th:text="${m}"
+                                        th:selected="${wrongTrack != null && wrongTrack.getMapConfigName() != null}? ${wrongTrack.getMapConfigName() == m} : 'false'">
                                 </option>
                             </select>
                         </div>
@@ -100,7 +102,8 @@
                                 <option disabled selected value> -- Wybierz --
                                 </option>
                                 <option th:each="n : ${processingConfigsNames}"
-                                        th:value="${n}" th:text="${n}">
+                                        th:value="${n}" th:text="${n}"
+                                        th:selected="${wrongTrack != null && wrongTrack.getProcessingConfigName() != null}? ${wrongTrack.getProcessingConfigName() == n} : 'false'">
                                 </option>
                             </select>
                         </div>
@@ -118,7 +121,8 @@
                                 <option disabled selected value> -- Wybierz --
                                 </option>
                                 <option th:each="z : ${zoneByPointsConfigsNames}"
-                                        th:value="${z}" th:text="${z}">
+                                        th:value="${z}" th:text="${z}"
+                                        th:selected="${wrongTrack != null && wrongTrack.getZoneByPointsConfigName() != null}? ${wrongTrack.getZoneByPointsConfigName() == z} : 'false'">
                                 </option>
                             </select>
                         </div>
@@ -134,7 +138,8 @@
                                 <option disabled selected value> -- Wybierz --
                                 </option>
                                 <option th:each="z : ${zoneByTurnsConfigsNames}"
-                                        th:value="${z}" th:text="${z}">
+                                        th:value="${z}" th:text="${z}"
+                                        th:selected="${wrongTrack != null && wrongTrack.getZoneByTurnsConfigName() != null}? ${wrongTrack.getZoneByTurnsConfigName() == z} : 'false'">
                                 </option>
                             </select>
                         </div>
@@ -152,7 +157,8 @@
                                 <option disabled selected value> -- Wybierz --
                                 </option>
                                 <option th:each="z : ${zoneByPointsTimeConfigsNames}"
-                                        th:value="${z}" th:text="${z}">
+                                        th:value="${z}" th:text="${z}"
+                                        th:selected="${wrongTrack != null && wrongTrack.getZoneByPointsTimeConfigName() != null}? ${wrongTrack.getZoneByPointsTimeConfigName() == z} : 'false'">
                                 </option>
                             </select>
                         </div>
@@ -168,7 +174,8 @@
                                 <option disabled selected value> -- Wybierz --
                                 </option>
                                 <option th:each="z : ${zoneByTurnsTimeConfigsNames}"
-                                        th:value="${z}" th:text="${z}">
+                                        th:value="${z}" th:text="${z}"
+                                        th:selected="${wrongTrack != null && wrongTrack.getZoneByTurnsTimeConfigName() != null}? ${wrongTrack.getZoneByTurnsTimeConfigName() == z} : 'false'">
                                 </option>
                             </select>
                         </div>
@@ -199,8 +206,6 @@
             }, false);
             })();
             </script>
-            </div>
         </div>
-
     </div>
 </div>

@@ -108,4 +108,12 @@ public class MapConfigService {
                 .map(MapConfig::getConfigName)
                 .collect(Collectors.toList());
     }
+
+
+    public boolean isConfigNameAlreadyInUse(String configName) {
+        List<String> existingNames = getConfigsDto().stream()
+                .map(MapConfigDto::getConfigName)
+                .collect(Collectors.toList());
+        return existingNames.contains(configName);
+    }
 }
