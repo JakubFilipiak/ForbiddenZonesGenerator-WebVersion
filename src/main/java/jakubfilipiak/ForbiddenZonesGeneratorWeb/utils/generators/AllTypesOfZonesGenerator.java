@@ -52,24 +52,21 @@ public class AllTypesOfZonesGenerator {
 
     public void closeOpenedZones() {
         if (isZoneByDropTimeCreation){
-            zoneByDropTimeGenerator
-                    .createPossibleZoneFromRemainingData()
+            zoneByDropTimeGenerator.createPossibleZoneFromRemainingData()
                     .ifPresent(zone -> {
                         zonesByDropTime.add(zone);
                         System.out.println("LAST by time: " + zone);
                     });
         }
         if (isZoneByPointsCreation) {
-            zoneByPointsGenerator
-                    .createPossibleZoneFromRemainingData()
+            zoneByPointsGenerator.createPossibleZoneFromRemainingData()
                     .ifPresent(zone -> {
                         zonesByPoints.add(zone);
                         System.out.println("LAST by point: " + zone);
                     });
         }
         if (isZoneByTurnsCreation) {
-            zoneByTurnsGenerator
-                    .createPossibleZoneFromRemainingData()
+            zoneByTurnsGenerator.createPossibleZoneFromRemainingData()
                     .ifPresent(zone -> {
                         zonesByTurns.add(zone);
                         System.out.println("LAST by turn: " + zone);
@@ -78,7 +75,6 @@ public class AllTypesOfZonesGenerator {
     }
 
     public Map<TypeOfZone, List<ForbiddenZone>> getMapOfZonesCreatedFromBuffer() {
-        System.out.println(zonesMap);
         return zonesMap;
     }
 
@@ -129,8 +125,7 @@ public class AllTypesOfZonesGenerator {
 
     private void createZonesByDropTime(PointOfTrack pointOfTrack) {
         zoneByDropTimeGenerator.updatePointsBuffer(pointOfTrack);
-        zoneByDropTimeGenerator
-                .createZoneFromBuffer()
+        zoneByDropTimeGenerator.createZoneFromBuffer()
                 .ifPresent(zone -> {
                     zonesByDropTime.add(zone);
                     System.out.println("by time: " + zone);
@@ -140,12 +135,10 @@ public class AllTypesOfZonesGenerator {
     private void createZonesByPoints(PointOfTrack pointOfTrack) {
         if (isPointsMultiplication) {
             multipliedPointsGenerator.updateBuffer(pointOfTrack);
-            multipliedPointsGenerator
-                    .getMultipliedPoints()
+            multipliedPointsGenerator.getMultipliedPoints()
                     .forEach(point -> {
                         zoneByPointsGenerator.updatePointsBuffer(point);
-                        zoneByPointsGenerator
-                                .createZoneFromBuffer()
+                        zoneByPointsGenerator.createZoneFromBuffer()
                                 .ifPresent(zone -> {
                                     zonesByPoints.add(zone);
                                     System.out.println("by point " + zone);
@@ -153,8 +146,7 @@ public class AllTypesOfZonesGenerator {
                     });
         } else {
             zoneByPointsGenerator.updatePointsBuffer(pointOfTrack);
-            zoneByPointsGenerator
-                    .createZoneFromBuffer()
+            zoneByPointsGenerator.createZoneFromBuffer()
                     .ifPresent(zone -> {
                         zonesByPoints.add(zone);
                         System.out.println("by point " + zone);
@@ -164,12 +156,10 @@ public class AllTypesOfZonesGenerator {
 
     private void createZonesByTurns(PointOfTrack pointOfTrack) {
         turnOfTrackGenerator.updatePointsBuffer(pointOfTrack);
-        turnOfTrackGenerator
-                .createTurnFromBuffer()
+        turnOfTrackGenerator.createTurnFromBuffer()
                 .ifPresent(turn -> {
                     zoneByTurnsGenerator.updateTurnsBuffer(turn);
-                    zoneByTurnsGenerator
-                            .createZoneFromBuffer()
+                    zoneByTurnsGenerator.createZoneFromBuffer()
                             .ifPresent(zone -> {
                                 zonesByTurns.add(zone);
                                 System.out.println("by turn " + zone);

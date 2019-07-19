@@ -97,8 +97,7 @@ public class MultipliedPointsGenerator {
             LocalTime tmpTime =
                     previousPoint.getTime().plusSeconds(i * targetPointsPeriod);
 
-            sectionMultipliedPoints.add(PointOfTrack
-                    .builder()
+            sectionMultipliedPoints.add(PointOfTrack.builder()
                     .latitude(tmpLatitude)
                     .longitude(tmpLongitude)
                     .time(tmpTime)

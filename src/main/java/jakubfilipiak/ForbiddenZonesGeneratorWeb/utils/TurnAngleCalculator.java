@@ -8,7 +8,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 public class TurnAngleCalculator {
 
     public double calculateAbsoluteAngleOfLine(PointOfTrack beginPoint,
-                                                  PointOfTrack endPoint) {
+                                               PointOfTrack endPoint) {
         double x1 = beginPoint.getLongitude();
         double y1 = beginPoint.getLatitude();
         double x2 = endPoint.getLongitude();
@@ -19,8 +19,7 @@ public class TurnAngleCalculator {
     }
 
     public double calculateTurnAngle(double entranceAngle,
-                                            double departureAngle) {
-
+                                     double departureAngle) {
         boolean anglesTheSame = entranceAngle == departureAngle;
         boolean positiveEntranceAngle = entranceAngle >= 0;
         boolean positiveDepartureAngle = departureAngle >= 0;

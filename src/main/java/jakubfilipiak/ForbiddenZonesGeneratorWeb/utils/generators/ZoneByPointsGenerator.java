@@ -112,7 +112,6 @@ public class ZoneByPointsGenerator {
     }
 
     private boolean isBufferReady() {
-
         boolean enoughPoints =
                 pointsCounter >= minPointsNumberInSeries;
         boolean tooManyPauses =
@@ -131,7 +130,6 @@ public class ZoneByPointsGenerator {
     }
 
     private boolean isPointForbidden(PointOfTrack pointOfTrack) {
-
         Coordinates pixelCoordinates = pngReader.getPixelCoordinates(pointOfTrack);
         Color pixelColor = pngReader.getPixelColor(pixelCoordinates);
         boolean pixelForbidden = colorChecker.isColorForbidden(pixelColor);
