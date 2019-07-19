@@ -50,8 +50,6 @@ public class MapConfig {
     @Builder.Default
     private double upperRightCornerLongitude = -1;
 
-    // properties
-
     @Column(name = "verified", nullable = false)
     @Builder.Default
     private boolean verified = false;
@@ -59,8 +57,6 @@ public class MapConfig {
     @Column(name = "deleted", nullable = false)
     @Builder.Default
     private boolean deleted = false;
-
-    // relation
 
     @OneToMany(mappedBy = "mapConfig", cascade = CascadeType.ALL)
     private List<Track> tracks;

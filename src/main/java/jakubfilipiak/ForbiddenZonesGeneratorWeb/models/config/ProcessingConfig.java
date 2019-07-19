@@ -26,8 +26,6 @@ public class ProcessingConfig {
     @Column(name = "config_name", nullable = false, unique = true)
     private String configName;
 
-    // types of zones to be created
-
     @Column(name = "zone_by_drop_time_creation", nullable = false)
     private boolean zoneByDropTimeCreation;
     @Column(name = "zone_by_points_creation", nullable = false)
@@ -35,15 +33,11 @@ public class ProcessingConfig {
     @Column(name = "zone_by_turns_creation", nullable = false)
     private boolean zoneByTurnsCreation;
 
-    // properties
-
     @Column(name = "verified", nullable = false)
     private boolean verified;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
-
-    // relation
 
     @OneToMany(mappedBy = "processingConfig", cascade = CascadeType.ALL)
     private List<Track> tracks;

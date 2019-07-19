@@ -14,13 +14,9 @@ public class ProcessingConfigDto {
 
     private String configName;
 
-    // types of zones to be created
-
     private boolean zoneByDropTimeCreation;
     private boolean zoneByPointsCreation;
     private boolean zoneByTurnsCreation;
-
-    // properties
 
     private boolean verified;
     private boolean deleted;

@@ -26,8 +26,6 @@ public class MapConfigDto {
     private double upperRightCornerLatitude;
     private double upperRightCornerLongitude;
 
-    // properties
-
     private boolean verified;
     private boolean deleted;
 }

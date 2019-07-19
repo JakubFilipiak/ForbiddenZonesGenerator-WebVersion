@@ -14,19 +14,13 @@ public class ZoneByPointsConfigDto {
 
     private String configName;
 
-    // point
-
     private boolean pointsMultiplication;
 
     private boolean pointNeighborhoodVerification;
     private int radiusOfPixelsToBeVerified;
 
-    // zone forbidden by points
-
     private int minPointsNumberInSeries;
     private int maxPausesNumberBetweenPoints;
-
-    // properties
 
     private boolean verified;
     private boolean deleted;

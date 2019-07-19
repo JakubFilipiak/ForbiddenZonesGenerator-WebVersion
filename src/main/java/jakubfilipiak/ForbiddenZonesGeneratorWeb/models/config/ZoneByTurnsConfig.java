@@ -26,23 +26,18 @@ public class ZoneByTurnsConfig {
     @Column(name = "config_name", nullable = false, unique = true)
     private String configName;
 
-    // turn
-
     @Column(name = "min_turn_initiation_angle", nullable = false)
     @Builder.Default
     private int minTurnInitiationAngle = 0;
 
     @Column(name = "ignore_turns", nullable = false)
     private boolean ignoreTurns;
-
     @Column(name = "ignored_turn_min_value")
     @Builder.Default
     private int ignoredTurnMinValue = 0;
     @Column(name = "ignored_turn_max_value")
     @Builder.Default
     private int ignoredTurnMaxValue = 0;
-
-    // zone forbidden by turns
 
     @Column(name = "min_turns_number_in_series", nullable = false)
     @Builder.Default
@@ -51,15 +46,11 @@ public class ZoneByTurnsConfig {
     @Builder.Default
     private int maxPausesNumberBetweenTurns = - 1;
 
-    // properties
-
     @Column(name = "verified", nullable = false)
     private boolean verified;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
-
-    // relation
 
     @OneToMany(mappedBy = "zoneByTurnsConfig", cascade = CascadeType.ALL)
     private List<Track> tracks;

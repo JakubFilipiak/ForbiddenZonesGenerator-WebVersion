@@ -26,8 +26,6 @@ public class ZoneByPointsConfig {
     @Column(name = "config_name", nullable = false, unique = true)
     private String configName;
 
-    // point
-
     @Column(name = "points_multiplication", nullable = false)
     private boolean pointsMultiplication;
 
@@ -36,8 +34,6 @@ public class ZoneByPointsConfig {
     @Column(name = "radius_of_pixels_to_be_verified")
     private int radiusOfPixelsToBeVerified;
 
-    // zone forbidden by points
-
     @Column(name = "min_points_number_in_series", nullable = false)
     @Builder.Default
     private int minPointsNumberInSeries = - 1;
@@ -45,15 +41,11 @@ public class ZoneByPointsConfig {
     @Builder.Default
     private int maxPausesNumberBetweenPoints = - 1;
 
-    // properties
-
     @Column(name = "verified", nullable = false)
     private boolean verified;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
-
-    // relation
 
     @OneToMany(mappedBy = "zoneByPointsConfig", cascade = CascadeType.ALL)
     private List<Track> tracks;

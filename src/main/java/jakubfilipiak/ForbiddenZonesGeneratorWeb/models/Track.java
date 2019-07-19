@@ -31,8 +31,6 @@ public class Track {
     @Column(name = "track_name", nullable = false, unique = true)
     private String trackName;
 
-    // ------- configs -------
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_map_config")
     private MapConfig mapConfig;
@@ -56,8 +54,6 @@ public class Track {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_processing_config", nullable = false)
     private ProcessingConfig processingConfig;
-
-    // ---- end of configs ----
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_track_file", nullable = false)

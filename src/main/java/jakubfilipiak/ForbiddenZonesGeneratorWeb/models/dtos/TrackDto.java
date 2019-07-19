@@ -14,16 +14,12 @@ public class TrackDto {
 
     private String trackName;
 
-    // ------- configs -------
-
     private String mapConfigName;
     private String zoneByPointsConfigName;
     private String zoneByTurnsConfigName;
     private String zoneByPointsTimeConfigName;
     private String zoneByTurnsTimeConfigName;
     private String processingConfigName;
-
-    // ---- end of configs ----
 
     private String originalTrackFileName;
     private String uniqueTrackFileName;
