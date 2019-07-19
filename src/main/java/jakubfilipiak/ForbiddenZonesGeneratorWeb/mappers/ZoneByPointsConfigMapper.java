@@ -14,8 +14,7 @@ public class ZoneByPointsConfigMapper implements Mapper<ZoneByPointsConfig,
 
     @Override
     public ZoneByPointsConfigDto map(ZoneByPointsConfig dao) {
-        ZoneByPointsConfigDto dto = ZoneByPointsConfigDto
-                .builder()
+        ZoneByPointsConfigDto dto = ZoneByPointsConfigDto.builder()
                 .configName(dao.getConfigName())
                 .pointsMultiplication(dao.isPointsMultiplication())
                 .pointNeighborhoodVerification(dao.isPointNeighborhoodVerification())
@@ -32,8 +31,7 @@ public class ZoneByPointsConfigMapper implements Mapper<ZoneByPointsConfig,
 
     @Override
     public ZoneByPointsConfig reverseMap(ZoneByPointsConfigDto dto) {
-        ZoneByPointsConfig dao = ZoneByPointsConfig
-                .builder()
+        ZoneByPointsConfig dao = ZoneByPointsConfig.builder()
                 .configName(dto.getConfigName())
                 .pointsMultiplication(dto.isPointsMultiplication())
                 .pointNeighborhoodVerification(dto.isPointNeighborhoodVerification())

@@ -15,8 +15,7 @@ public class TrackMapper implements Mapper<Track, TrackDto> {
 
     @Override
     public TrackDto map(Track dao) {
-        TrackDto dto =  TrackDto
-                .builder()
+        TrackDto dto =  TrackDto.builder()
                 .trackName(dao.getTrackName())
                 .mapConfigName(dao.getMapConfig().getConfigName())
                 .processingConfigName(dao.getProcessingConfig().getConfigName())
@@ -57,8 +56,7 @@ public class TrackMapper implements Mapper<Track, TrackDto> {
 
     @Override
     public Track reverseMap(TrackDto dto) {
-        Track dao = Track
-                .builder()
+        Track dao = Track.builder()
                 .trackName(dto.getTrackName())
                 .build();
         if (dto.getDropStartTime() != null && !dto.getDropStartTime().isEmpty()) {

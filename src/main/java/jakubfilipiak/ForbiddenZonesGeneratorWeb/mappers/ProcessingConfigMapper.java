@@ -13,8 +13,7 @@ public class ProcessingConfigMapper implements Mapper<ProcessingConfig, Processi
 
     @Override
     public ProcessingConfigDto map(ProcessingConfig dao) {
-        return ProcessingConfigDto
-                .builder()
+        return ProcessingConfigDto.builder()
                 .configName(dao.getConfigName())
                 .zoneByDropTimeCreation(dao.isZoneByDropTimeCreation())
                 .zoneByPointsCreation(dao.isZoneByPointsCreation())
@@ -26,8 +25,7 @@ public class ProcessingConfigMapper implements Mapper<ProcessingConfig, Processi
 
     @Override
     public ProcessingConfig reverseMap(ProcessingConfigDto dto) {
-        return ProcessingConfig
-                .builder()
+        return ProcessingConfig.builder()
                 .configName(dto.getConfigName())
                 .zoneByDropTimeCreation(dto.isZoneByDropTimeCreation())
                 .zoneByPointsCreation(dto.isZoneByPointsCreation())

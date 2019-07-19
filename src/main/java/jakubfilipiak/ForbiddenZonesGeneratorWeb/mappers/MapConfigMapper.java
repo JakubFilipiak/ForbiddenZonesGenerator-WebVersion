@@ -13,8 +13,7 @@ public class MapConfigMapper implements Mapper<MapConfig, MapConfigDto> {
 
     @Override
     public MapConfigDto map(MapConfig dao) {
-        return MapConfigDto
-                .builder()
+        return MapConfigDto.builder()
                 .configName(dao.getConfigName())
                 .originalFileName(dao.getMapFile().getOriginalName())
                 .uniqueFileName(dao.getMapFile().getUniqueName())
@@ -31,8 +30,7 @@ public class MapConfigMapper implements Mapper<MapConfig, MapConfigDto> {
 
     @Override
     public MapConfig reverseMap(MapConfigDto dto) {
-        return MapConfig
-                .builder()
+        return MapConfig.builder()
                 .configName(dto.getConfigName())
                 .allowedRGBColor(dto.getAllowedRGBColor().trim())
                 .forbiddenRGBColor(dto.getForbiddenRGBColor().trim())

@@ -14,8 +14,7 @@ public class ZoneByTurnsConfigMapper implements Mapper<ZoneByTurnsConfig,
 
     @Override
     public ZoneByTurnsConfigDto map(ZoneByTurnsConfig dao) {
-        ZoneByTurnsConfigDto dto = ZoneByTurnsConfigDto
-                .builder()
+        ZoneByTurnsConfigDto dto = ZoneByTurnsConfigDto.builder()
                 .configName(dao.getConfigName())
                 .minTurnInitiationAngle(dao.getMinTurnInitiationAngle())
                 .ignoreTurns(dao.isIgnoreTurns())
@@ -33,8 +32,7 @@ public class ZoneByTurnsConfigMapper implements Mapper<ZoneByTurnsConfig,
 
     @Override
     public ZoneByTurnsConfig reverseMap(ZoneByTurnsConfigDto dto) {
-        ZoneByTurnsConfig dao = ZoneByTurnsConfig
-                .builder()
+        ZoneByTurnsConfig dao = ZoneByTurnsConfig.builder()
                 .configName(dto.getConfigName())
                 .minTurnInitiationAngle(dto.getMinTurnInitiationAngle())
                 .ignoreTurns(dto.isIgnoreTurns())

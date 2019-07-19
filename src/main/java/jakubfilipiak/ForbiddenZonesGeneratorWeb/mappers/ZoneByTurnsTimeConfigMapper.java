@@ -9,13 +9,11 @@ import org.springframework.stereotype.Component;
  * Created by Jakub Filipiak on 14.07.2019.
  */
 @Component
-public class ZoneByTurnsTimeConfigMapper implements Mapper<ZoneByTurnsTimeConfig,
-        ZoneByTurnsTimeConfigDto> {
+public class ZoneByTurnsTimeConfigMapper implements Mapper<ZoneByTurnsTimeConfig, ZoneByTurnsTimeConfigDto> {
 
     @Override
     public ZoneByTurnsTimeConfigDto map(ZoneByTurnsTimeConfig dao) {
-        return ZoneByTurnsTimeConfigDto
-                .builder()
+        return ZoneByTurnsTimeConfigDto.builder()
                 .configName(dao.getConfigName())
                 .singleTurnZoneFullTime(dao.isSingleTurnZoneFullTime())
                 .singleTurnZoneBeginOffset(dao.getSingleTurnZoneBeginOffset())
@@ -30,8 +28,7 @@ public class ZoneByTurnsTimeConfigMapper implements Mapper<ZoneByTurnsTimeConfig
 
     @Override
     public ZoneByTurnsTimeConfig reverseMap(ZoneByTurnsTimeConfigDto dto) {
-        return ZoneByTurnsTimeConfig
-                .builder()
+        return ZoneByTurnsTimeConfig.builder()
                 .configName(dto.getConfigName())
                 .singleTurnZoneFullTime(dto.isSingleTurnZoneFullTime())
                 .singleTurnZoneBeginOffset(dto.getSingleTurnZoneBeginOffset())
