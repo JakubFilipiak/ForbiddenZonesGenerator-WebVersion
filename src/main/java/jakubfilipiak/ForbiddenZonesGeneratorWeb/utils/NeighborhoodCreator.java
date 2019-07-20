@@ -1,4 +1,4 @@
-package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
+package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils;
 
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.Coordinates;
 
@@ -8,14 +8,19 @@ import java.util.List;
 /**
  * Created by Jakub Filipiak on 04.06.2019.
  */
-public class CoordinatesService {
+public class NeighborhoodCreator {
 
     public List<Coordinates> getPixelNeighbors(Coordinates pixelCoordinates,
-                                               int RadiusOfPixelsToBeVerified) {
-        int sideOfNeighborsSquare = RadiusOfPixelsToBeVerified * 2 + 1;
-        int startPixelX = pixelCoordinates.getPixelX() - RadiusOfPixelsToBeVerified;
-        int startPixelY = pixelCoordinates.getPixelY() - RadiusOfPixelsToBeVerified;
+                                               int radiusOfPixelsToBeVerified) {
         List<Coordinates> neighbors = new ArrayList<>();
+        if (radiusOfPixelsToBeVerified <= 0) {
+            return neighbors;
+        }
+
+        int sideOfNeighborsSquare = radiusOfPixelsToBeVerified * 2 + 1;
+        int startPixelX = pixelCoordinates.getPixelX() - radiusOfPixelsToBeVerified;
+        int startPixelY = pixelCoordinates.getPixelY() - radiusOfPixelsToBeVerified;
+
 
         for (int rows = 0; rows < sideOfNeighborsSquare; rows++) {
             int actualPixelY = startPixelY + rows;

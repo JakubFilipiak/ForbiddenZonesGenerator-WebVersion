@@ -7,7 +7,7 @@ import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.ZoneByPointsConfig;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.ColorChecker;
-import jakubfilipiak.ForbiddenZonesGeneratorWeb.services.CoordinatesService;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.NeighborhoodCreator;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io.PngReader;
 
 import java.awt.*;
@@ -35,7 +35,7 @@ public class ZoneByPointsGenerator {
 
     private ColorChecker colorChecker;
     private PngReader pngReader;
-    private CoordinatesService coordinatesService;
+    private NeighborhoodCreator neighborhoodCreator;
 
     public ZoneByPointsGenerator(ZoneByPointsConfig config,
                                  ZoneByPointsTimeConfig timeConfig,
@@ -59,7 +59,7 @@ public class ZoneByPointsGenerator {
 
         colorChecker = new ColorChecker(mapConfig.getForbiddenRGBColor());
         pngReader = new PngReader(mapConfig);
-        coordinatesService = new CoordinatesService();
+        neighborhoodCreator = new NeighborhoodCreator();
     }
 
     public void updatePointsBuffer(PointOfTrack pointOfTrack) {
@@ -136,7 +136,7 @@ public class ZoneByPointsGenerator {
 
         if (isPointNeighborhoodVerification && pixelForbidden) {
             List<Coordinates> pixelNeighbors =
-                    coordinatesService.getPixelNeighbors(pixelCoordinates, radiusOfPixelsToBeVerified);
+                    neighborhoodCreator.getPixelNeighbors(pixelCoordinates, radiusOfPixelsToBeVerified);
             for (Coordinates neighbor : pixelNeighbors) {
                 Color neighborColor = pngReader.getPixelColor(neighbor);
                 if (colorChecker.isColorForbidden(neighborColor))
