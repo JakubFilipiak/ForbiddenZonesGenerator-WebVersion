@@ -88,7 +88,10 @@ public class LocalFileService {
     }
 
     private String createUniqueName(String originalFileName) {
-        return UUID.randomUUID().toString() + originalFileName;
+        int extensionStartIndex = originalFileName.lastIndexOf(".");
+        String name = originalFileName.substring(0, extensionStartIndex);
+        String extension = originalFileName.substring(extensionStartIndex);
+        return name + UUID.randomUUID().toString() + extension;
     }
 
     private Optional<String> createPathname(String uniqueFileName) {
