@@ -2,29 +2,117 @@ html,
 body {
     margin: 0;
     padding: 0;
+
 }
 .mytable {
     overflow-x: scroll;
-    margin-right: 310px;
-    margin-left: 170px;
+    margin-right: 280px;
+    margin-left: 250px;
+    word-wrap: break-word;
+
 }
+
+.mytable th{
+    text-align: center;
+
+    height: 90px;
+    padding: 8px;
+    background-color: #343A40;
+    color: white;
+}
+
+.mytable td{
+    padding: 8px;
+    height: 90px;
+    overflow-y: auto;
+    border-bottom: 1px solid blac
+}
+
+thead{
+    vertical-align: bottom;
+}
+
+
 .firstfromleft {
     position: absolute;
-    max-width: 150px;
-    word-wrap: break-word;
     left: 0;
+    width: 250px;
+    overflow-y: auto;
+
 }
 .firstfromright {
     position: absolute;
     right: 0;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y:auto;
 }
 
 .secondfromright {
     position: absolute;
-    right: 70px;
+    right: 60px;
+    width: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y:auto;
 }
 
 .thirdfromright {
     position: absolute;
-    right: 190px;
+    right: 170px;
+    width: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y:auto;
+}
+.center{
+    max-width: 160px;
+    max-height: 10px;
+    overflow-y: auto;
+}
+.firstfromleftth{
+    position: absolute;
+    left: 0;
+    width: 250px;
+    border-right: 2px solid white;
+    display: flex;
+    justify-content: center;
+    align-items:flex-end;
+}
+
+.firstfromrightth{
+    position: absolute;
+    right: 0;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items:flex-end;
+}
+
+.secondfromrightth{
+    position: absolute;
+    right: 60px;
+    width: 110px;
+    display: flex;
+    justify-content: center;
+    align-items:flex-end;
+}
+.thirdfromrightth{
+    position: absolute;
+    right: 170px;
+    width: 110px;
+    border-left: 2px solid white;
+    display: flex;
+    justify-content: center;
+    align-items:flex-end;
+}
+
+.centerth{
+    max-width: 160px;
+    height: px;
+    overflow-y:auto;
 }

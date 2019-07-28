@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+
 <div class="container" xmlns:th="http://www.thymeleaf.org"
      th:fragment="tracksTable">
     <div class="col-md-12">
@@ -7,51 +20,51 @@
             </div>
 
             <div class="mytable">
-                <table class="table">
+                <table>
                     <thead>
                     <tr>
-                        <th class="firstfromleft" scope="col">Nazwa</th>
-                        <th scope="col">Plik trasy</th>
-                        <th scope="col">Czas rozpoczęcia zrzutu</th>
-                        <th scope="col">Czas zakończenia zrzutu</th>
-                        <th scope="col">Konfiguracja mapy</th>
-                        <th scope="col">Konfiguracja strefy z punktów</th>
-                        <th scope="col">Konfiguracja strefy z zakrętów</th>
-                        <th scope="col">Konfiguracja offsetów dla punktów</th>
-                        <th scope="col">Konfiguracja offsetów dla zakrętów</th>
-                        <th scope="col">Konfiguracja przetwarzania</th>
-                        <th scope="col">Plik wyjściowy</th>
-                        <th scope="col">Plik wyjściowy DEBUG</th>
-                        <th class="thirdfromright" scope="col">Poprawność</th>
-                        <th class="secondfromright" scope="col">Przetwarzaj</th>
-                        <th class="firstfromright" scope="col">Usuń</th>
+                        <th class="firstfromleftth" scope="col">Nazwa</th>
+                        <th class="centerth" scope="col">Plik trasy</th>
+                        <th class="centerth" scope="col">Czas rozpoczęcia zrzutu</th>
+                        <th class="centerth" scope="col">Czas zakończenia zrzutu</th>
+                        <th class="centerth" scope="col">Konfiguracja mapy</th>
+                        <th class="centerth" scope="col">Konfiguracja strefy z punktów</th>
+                        <th class="centerth" scope="col">Konfiguracja strefy z zakrętów</th>
+                        <th class="centerth" scope="col">Konfiguracja offsetów dla punktów</th>
+                        <th class="centerth" scope="col">Konfiguracja offsetów dla zakrętów</th>
+                        <th class="centerth" scope="col">Konfiguracja przetwarzania</th>
+                        <th class="centerth" scope="col">Plik wyjściowy</th>
+                        <th class="centerth" scope="col">Plik wyjściowy DEBUG</th>
+                        <th class="thirdfromrightth" scope="col">Poprawność</th>
+                        <th class="secondfromrightth" scope="col">Przetwarzaj</th>
+                        <th class="firstfromrightth" scope="col">Usuń</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="t : ${tracks}">
                         <td  class="firstfromleft"
                              th:text="${t.getTrackName()}"></td>
-                        <td th:text="${t.getOriginalTrackFileName()}"></td>
-                        <td th:text="${t.getDropStartTime()}"></td>
-                        <td th:text="${t.getDropStopTime()}"></td>
-                        <td th:text="${t.getMapConfigName()}"></td>
-                        <td th:text="${t.getZoneByPointsConfigName()}"></td>
-                        <td th:text="${t.getZoneByTurnsConfigName()}"></td>
-                        <td th:text="${t.getZoneByPointsTimeConfigName()}"></td>
-                        <td th:text="${t.getZoneByTurnsTimeConfigName()}"></td>
-                        <td th:text="${t.getProcessingConfigName()}"></td>
-                        <td>
+                        <td class="center" th:text="${t.getOriginalTrackFileName()}"></td>
+                        <td class="center" th:text="${t.getDropStartTime()}"></td>
+                        <td class="center" th:text="${t.getDropStopTime()}"></td>
+                        <td class="center" th:text="${t.getMapConfigName()}"></td>
+                        <td class="center" th:text="${t.getZoneByPointsConfigName()}"></td>
+                        <td class="center" th:text="${t.getZoneByTurnsConfigName()}"></td>
+                        <td class="center" th:text="${t.getZoneByPointsTimeConfigName()}"></td>
+                        <td class="center" th:text="${t.getZoneByTurnsTimeConfigName()}"></td>
+                        <td class="center" th:text="${t.getProcessingConfigName()}"></td>
+                        <td class="center">
                             <div th:if="${t.getUniqueOutputFileName() != null}">
                                 <a th:href="@{'/download/' + ${t.getUniqueOutputFileName()}}">Pobierz na dysk</a>
                                 <a th:href="@{'/openinbrowser/' + ${t.getUniqueOutputFileName()}}"
-                                        target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
+                                   target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
                             </div>
                         </td>
-                        <td>
+                        <td class="center">
                             <div th:if="${t.getUniqueOutputDebugFileName() != null}">
                                 <a th:href="@{'/download/' + ${t.getUniqueOutputDebugFileName()}}">Pobierz na dysk</a>
                                 <a th:href="@{'/openinbrowser/' + ${t.getUniqueOutputDebugFileName()}}"
-                                        target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
+                                   target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
                             </div>
                         </td>
                         <td class="thirdfromright">
@@ -100,3 +113,6 @@
         </div>
     </div>
 </div>
+
+</body>
+</html>
