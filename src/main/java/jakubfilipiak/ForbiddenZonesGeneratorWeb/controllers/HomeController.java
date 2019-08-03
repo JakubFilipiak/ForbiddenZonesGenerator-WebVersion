@@ -76,7 +76,7 @@ public class HomeController {
             model.addAttribute("wrongConfig", configDto);
             return "mapconfigs";
         } else {
-            localFileService.uploadFile(file).ifPresent(uploadedFile ->
+            localFileService.uploadEncryptedFile(file).ifPresent(uploadedFile ->
                             mapConfigService.addConfig(configDto, uploadedFile));
             return "redirect:/mapconfigs";
         }
@@ -320,7 +320,7 @@ public class HomeController {
             model.addAttribute("wrongTrack", trackDto);
             return "newtrack";
         } else {
-            localFileService.uploadFile(file).ifPresent(uploadedFile ->
+            localFileService.uploadEncryptedFile(file).ifPresent(uploadedFile ->
                             trackService.addTrack(trackDto, uploadedFile));
             return "redirect:/tracks";
         }

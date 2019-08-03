@@ -1,8 +1,10 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.services;
 
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.crypto.CustomSecretKey;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.TypeOfFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.storage.LocalFile;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.repositories.LocalFileRepository;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.CryptographyUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,15 +35,19 @@ public class LocalFileService {
     private String tmpStoragePath;
     private final String storagePath = "uploadedFiles/";
 
+    private CustomSecretKeyService keyService;
+
     public LocalFileService(LocalFileRepository fileRepository,
-                            ServletContext servletContext) {
+                            ServletContext servletContext,
+                            CustomSecretKeyService keyService) {
         this.fileRepository = fileRepository;
         this.servletContext = servletContext;
+        this.keyService = keyService;
         createContextDirectory();
     }
 
     private void createContextDirectory() {
-        tmpStoragePath = servletContext.getRealPath("/uploads");
+        tmpStoragePath = servletContext.getRealPath("/tmpFiles/");
         LOGGER.log(Level.INFO, tmpStoragePath);
 
         Path path = Paths.get(tmpStoragePath);
@@ -73,9 +79,45 @@ public class LocalFileService {
         return Optional.empty();
     }
 
+    public Optional<LocalFile> uploadEncryptedFile(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        String uniqueFileName = createUniqueName(originalFileName);
+        Optional<String> pathName = createPathname(uniqueFileName);
+        if (pathName.isPresent()) {
+            Optional<CustomSecretKey> aesKey = keyService.getAesKey();
+            if (aesKey.isPresent()) {
+                Optional<File> encryptedFile =
+                        CryptographyUtils.encryptFile(aesKey.get().getKey(), file,
+                                pathName.get());
+                if (encryptedFile.isPresent()) {
+                    return Optional.of(LocalFile.builder()
+                            .originalName(originalFileName)
+                            .uniqueName(uniqueFileName)
+                            .pathName(pathName.get())
+                            .build());
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     public Optional<LocalFile> createFileInStorageDir(String fileName) {
         String uniqueFileName = createUniqueName(fileName);
         Optional<String> pathName = createPathname(uniqueFileName);
+        if (pathName.isPresent()) {
+            new File(pathName.get());
+            return Optional.of(LocalFile.builder()
+                    .originalName(fileName)
+                    .uniqueName(uniqueFileName)
+                    .pathName(pathName.get())
+                    .build());
+        }
+        return Optional.empty();
+    }
+
+    public Optional<LocalFile> createFileInTmpDir(String fileName) {
+        String uniqueFileName = createUniqueName(fileName);
+        Optional<String> pathName = createTmpPathname(uniqueFileName);
         if (pathName.isPresent()) {
             new File(pathName.get());
             return Optional.of(LocalFile.builder()
@@ -98,6 +140,15 @@ public class LocalFileService {
         String directory;
         if (isFileTypeAllowed(uniqueFileName)) {
             directory = storagePath;
+            return Optional.of(directory + uniqueFileName);
+        }
+        return Optional.empty();
+    }
+
+    private Optional<String> createTmpPathname(String uniqueFileName) {
+        String directory;
+        if (isFileTypeAllowed(uniqueFileName)) {
+            directory = tmpStoragePath;
             return Optional.of(directory + uniqueFileName);
         }
         return Optional.empty();
@@ -131,6 +182,10 @@ public class LocalFileService {
 
     public String getStoragePath() {
         return storagePath;
+    }
+
+    public String getTmpStoragePath() {
+        return tmpStoragePath;
     }
 
     public File downloadFile(String uniqueFileName) {

@@ -1,5 +1,7 @@
 package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
@@ -22,11 +24,19 @@ public class CryptographyUtils {
         return doFileCryptography(Cipher.ENCRYPT_MODE, key, inFile, outFilePath);
     }
 
+    public static Optional<File> encryptFile(String key, MultipartFile inFile,
+                                             String outFilePath) {
+        return doMultipartFileCryptography(Cipher.ENCRYPT_MODE, key, inFile,
+                outFilePath);
+    }
+
     public static Optional<File> decryptFile(String key, File inFile, String outFilePath) {
         return doFileCryptography(Cipher.DECRYPT_MODE, key, inFile, outFilePath);
     }
 
-    private static Optional<File> doFileCryptography(int mode, String key, File inFile,
+    private static Optional<File> doFileCryptography(int mode,
+                                                     String key,
+                                                     File inFile,
                                                      String outFilePath) {
         BufferedInputStream inStream = null;
         CipherOutputStream outStream = null;
@@ -37,6 +47,44 @@ public class CryptographyUtils {
 
             File outFile = new File(outFilePath);
             inStream = new BufferedInputStream(new FileInputStream(inFile));
+            outStream = new CipherOutputStream(new FileOutputStream(outFile), cipher);
+
+            byte[] buffer = new byte[8192];
+            int counter;
+
+            while ((counter = inStream.read(buffer)) > 0) {
+                outStream.write(buffer, 0, counter);
+            }
+            return Optional.of(outFile);
+        } catch (NoSuchAlgorithmException
+                | InvalidKeyException
+                | NoSuchPaddingException
+                | IOException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        } finally {
+            try {
+                if (inStream != null) inStream.close();
+                if (outStream != null) outStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static Optional<File> doMultipartFileCryptography(int mode,
+                                                              String key,
+                                                              MultipartFile inFile,
+                                                              String outFilePath) {
+        BufferedInputStream inStream = null;
+        CipherOutputStream outStream = null;
+        try {
+            Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
+            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+            cipher.init(mode, secretKey);
+
+            File outFile = new File(outFilePath);
+            inStream = new BufferedInputStream(inFile.getInputStream());
             outStream = new CipherOutputStream(new FileOutputStream(outFile), cipher);
 
             byte[] buffer = new byte[8192];

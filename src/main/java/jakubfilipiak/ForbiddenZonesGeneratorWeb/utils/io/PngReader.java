@@ -3,6 +3,7 @@ package jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.io;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.Coordinates;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.helpers.PointOfTrack;
 import jakubfilipiak.ForbiddenZonesGeneratorWeb.models.config.MapConfig;
+import jakubfilipiak.ForbiddenZonesGeneratorWeb.utils.FileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,8 +22,7 @@ public class PngReader {
     private FileInputStream mapStream;
     private BufferedImage mapImage;
 
-    public
-    PngReader(MapConfig config) {
+    public PngReader(MapConfig config) {
         this.config = config;
         createBufferedImage();
     }
