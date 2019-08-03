@@ -31,7 +31,7 @@ public class LocalFileService {
     private LocalFileRepository fileRepository;
     private ServletContext servletContext;
     private String tmpStoragePath;
-    private final String storagePath = "uploadedFiles/";
+    private final String storagePath = "localFiles/";
 
     public LocalFileService(LocalFileRepository fileRepository,
                             ServletContext servletContext) {
@@ -41,7 +41,7 @@ public class LocalFileService {
     }
 
     private void createContextDirectory() {
-        tmpStoragePath = servletContext.getRealPath("/uploads");
+        tmpStoragePath = servletContext.getRealPath("/tmpFiles");
         LOGGER.log(Level.INFO, tmpStoragePath);
 
         Path path = Paths.get(tmpStoragePath);
