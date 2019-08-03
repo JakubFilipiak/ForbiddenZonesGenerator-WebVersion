@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
@@ -30,7 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/newtrack")
                 .and()
                 .logout()
-                .logoutUrl("/logout");
+                .logoutUrl("/logout")
+                .and()
+                .csrf().disable()
+                .headers().frameOptions().disable();
     }
 
     @Bean
