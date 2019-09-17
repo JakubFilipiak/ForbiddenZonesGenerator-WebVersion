@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -304,6 +306,11 @@ public class HomeController {
     public String addTrack(@RequestParam("file") MultipartFile file,
                                @ModelAttribute TrackDto trackDto,
                                Model model) {
+        if (trackDto.getTrackName() == null || trackDto.getTrackName().trim().isEmpty()) {
+            trackDto.setTrackName(file.getOriginalFilename() + "-" + java.time
+                    .LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy-HH:mm:ss")));
+        }
         if (trackService.isTrackNameAlreadyInUse(trackDto.getTrackName())) {
             model.addAttribute("processingConfigsNames",
                     processingConfigService.getVerifiedConfigsNames());
