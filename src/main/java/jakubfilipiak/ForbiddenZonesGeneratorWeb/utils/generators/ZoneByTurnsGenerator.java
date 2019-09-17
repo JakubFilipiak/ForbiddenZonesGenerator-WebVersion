@@ -122,17 +122,17 @@ public class ZoneByTurnsGenerator {
             return false;
         }
         if (dataReady) {
-            if (isTotalTurnAngleForbidden()) {
-                return true;
-            } else {
+            if (isTotalTurnAngleIgnored()) {
                 cleanBuffer();
                 return false;
+            } else {
+                return true;
             }
         }
         return false;
     }
 
-    private boolean isTotalTurnAngleForbidden() {
+    private boolean isTotalTurnAngleIgnored() {
         if (ignoreTurns) {
             double totalAngle = turnAngleCalculator.calculateTurnAngle(
                     entranceTurn.getAbsoluteEntranceAngle(),
@@ -140,7 +140,7 @@ public class ZoneByTurnsGenerator {
             return totalAngle >= ignoredTurnMinValue
                     && totalAngle <= ignoredTurnMaxValue;
         }
-        return true;
+        return false;
     }
 
     private boolean isOnlyOneTurn() {
