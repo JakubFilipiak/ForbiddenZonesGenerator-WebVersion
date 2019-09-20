@@ -24,7 +24,7 @@ public enum TypeOfFile {
     public static TypeOfFile fromString(String type) {
 
         for (TypeOfFile typeOfFile : TypeOfFile.values()) {
-            if (typeOfFile.toString().toLowerCase().equals(type)) {
+            if (typeOfFile.toString().equals(type.toLowerCase())) {
                 return typeOfFile;
             }
         }
