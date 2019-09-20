@@ -309,7 +309,7 @@ public class HomeController {
         if (trackDto.getTrackName() == null || trackDto.getTrackName().trim().isEmpty()) {
             trackDto.setTrackName(file.getOriginalFilename() + "-" + java.time
                     .LocalDateTime.now()
-                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy-HH:mm:ss")));
+                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss")));
         }
         if (trackService.isTrackNameAlreadyInUse(trackDto.getTrackName())) {
             model.addAttribute("processingConfigsNames",
